@@ -6,12 +6,13 @@
     <style>
         html, body {width:100%;height:100%;margin:0;padding:0;} 
         .map_wrap {position:relative;overflow:hidden;width:100%;height:1100px;}
-        .custom_zoomcontrol {position:absolute;top:10px;right:10px;width:480px;height:38px;overflow:hidden;z-index:1;background-color:#6f7974;} 
-        .custom_zoomcontrol span {display:box;width:40px;height:100px;text-align:center;cursor:pointer;}     
-        .custom_zoomcontrol span img {width:30px;height:30px;padding:0px 1;border:none;}
-        .custom_zoomcontrol_1 {position:absolute;top:100px;right:10px;width:480px;height:38px;overflow:hidden;z-index:1;background-color:#3b383886;} 
-        .custom_zoomcontrol_1 span {display:box;width:40px;height:100px;text-align:center;cursor:pointer;}     
-        .custom_zoomcontrol_1 span img {width:30px;height:30px;padding:0px 1;border:none;}
+        .box_1 {position:absolute;top:10px;right:10px;width:480px;height:80px;overflow:hidden;z-index:1;background-color:#6f7974;} 
+        .box_1 span {display:box;width:0px;height:0px;text-align:end;cursor:auto;}     
+        .box_1 span img {width:30px;height:30px;padding:0px 1;border:none;}
+
+        .box_2 {position:absolute;top:10px;right:10px;width:180px;height:330px;overflow:hidden;z-index:1;background-color:#3b383886;} 
+        .box_2 span {display:list-item;width:480px;height:70px;text-align:start;cursor:none;font-weight:bold;font-variant-position:super;font-size:x-large;}     
+        .box_2 span img {width:40px;height:40px;padding:0px 1;border:none;}
         </style>
 </head>
 <body>
@@ -19,19 +20,15 @@
 
     <!-- 지도 확대, 축소 컨트롤 div 입니다 -->
 <div class="custom_zoomcontrol radius_border"> 
-    <span><img src="https://coby-seo.github.io/A-hydrant.png">소화전</span>  
-    <span><img src="https://coby-seo.github.io/B-hydrant.png">농촌형 소화전</span>  
-    <span><img src="https://coby-seo.github.io/watertower.png">급수탑</span>  
-    <span><img src="https://coby-seo.github.io/Lake.png">저수지</span>  
-    <span><img src="https://coby-seo.github.io/Waterstoragetank.png">저수조</span>
+    <span>소화전</span>  
 </div>
 
-<div class="custom_zoomcontrol_1 radius_border"> 
-    <span><img src="https://coby-seo.github.io/A-hydrant.png">소화전</span>  
-    <span><img src="https://coby-seo.github.io/B-hydrant.png">농촌형 소화전</span>  
-    <span><img src="https://coby-seo.github.io/watertower.png">급수탑</span>  
-    <span><img src="https://coby-seo.github.io/Lake.png">저수지</span>  
-    <span><img src="https://coby-seo.github.io/Waterstoragetank.png">저수조</span>
+<div class="box_2 radius_border"> 
+    <span><img src="https://coby-seo.github.io/A-hydrant.png">&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;소화전</span>  
+    <span><img src="https://coby-seo.github.io/B-hydrant.png">&nbsp;&nbsp;농촌형 소화전</span>  
+    <span><img src="https://coby-seo.github.io/watertower.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;급수탑</span>  
+    <span><img src="https://coby-seo.github.io/Lake.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;저수지</span>  
+    <span><img src="https://coby-seo.github.io/Waterstoragetank.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;저수조</span>
 </div>
 
 
