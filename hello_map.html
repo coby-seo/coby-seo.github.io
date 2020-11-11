@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>hello map!!</title>
+    <style>
+        html, body {width:100%;height:100%;margin:0;padding:0;} 
+        .map_wrap {position:relative;overflow:hidden;width:100%;height:1100px;}
+        .custom_zoomcontrol {position:absolute;top:10px;right:10px;width:480px;height:38px;overflow:hidden;z-index:1;background-color:#6f7974;} 
+        .custom_zoomcontrol span {display:box;width:40px;height:100px;text-align:center;cursor:pointer;}     
+        .custom_zoomcontrol span img {width:30px;height:30px;padding:0px 1;border:none;}
+        .custom_zoomcontrol_1 {position:absolute;top:100px;right:10px;width:480px;height:38px;overflow:hidden;z-index:1;background-color:#3b383886;} 
+        .custom_zoomcontrol_1 span {display:box;width:40px;height:100px;text-align:center;cursor:pointer;}     
+        .custom_zoomcontrol_1 span img {width:30px;height:30px;padding:0px 1;border:none;}
+        </style>
+</head>
+<body>
+<div id="map" style="width:100%;height:1100px;"></div>
+
+    <!-- 지도 확대, 축소 컨트롤 div 입니다 -->
+<div class="custom_zoomcontrol radius_border"> 
+    <span><img src="https://coby-seo.github.io/A-hydrant.png">소화전</span>  
+    <span><img src="https://coby-seo.github.io/B-hydrant.png">농촌형 소화전</span>  
+    <span><img src="https://coby-seo.github.io/watertower.png">급수탑</span>  
+    <span><img src="https://coby-seo.github.io/Lake.png">저수지</span>  
+    <span><img src="https://coby-seo.github.io/Waterstoragetank.png">저수조</span>
+</div>
+
+<div class="custom_zoomcontrol_1 radius_border"> 
+    <span><img src="https://coby-seo.github.io/A-hydrant.png">소화전</span>  
+    <span><img src="https://coby-seo.github.io/B-hydrant.png">농촌형 소화전</span>  
+    <span><img src="https://coby-seo.github.io/watertower.png">급수탑</span>  
+    <span><img src="https://coby-seo.github.io/Lake.png">저수지</span>  
+    <span><img src="https://coby-seo.github.io/Waterstoragetank.png">저수조</span>
+</div>
+
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f0e0ce5707fe42bbea62b96a58c3a8a&libraries=services"></script>
+<script>
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = {
+        center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };  
+
+// 지도를 생성합니다    
+var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+
+
+
+
+
+
+
+
+// 위치정보 확인코드
+
+// HTML5의 geolocation으로 사용할 수 있는지 확인
+if (navigator.geolocation) {
+    
+    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+    navigator.geolocation.getCurrentPosition(function(position) {
+        
+        var lat = position.coords.latitude, // 위도
+            lon = position.coords.longitude; // 경도
+        
+        var locPosition = new kakao.maps.LatLng(lat, lon) // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+
+        // 마커와 인포윈도우를 표시합니다
+        displayMarker(locPosition);
+            
+      });
+} else { // HTML5의 GeoLocation을 사치할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+    
+    var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
+        message = 'geolocation을 사용할수 없어요..'
+        
+    displayMarker(locPosition, message);
+}
+
+// 현재위치 지도에 마커표시
+function displayMarker(locPosition, message) {
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({  
+        map: map, 
+        position: locPosition
+    }); 
+    
+    // 지도 중심좌표를 접속위치로 변경합니다
+    map.setCenter(locPosition);      
+}  
+
+
+
+
+
+
+
+// 마커 이미지 정보 관련 코드
+
+// 마커 이미지 관련(소화전)
+var imageSrc_A = 'https://coby-seo.github.io/A-hydrant.png', // 마커이미지의 주소입니다    
+    imageSize_A = new kakao.maps.Size(28, 30), // 마커이미지의 크기입니다
+    imageOption_A = {offset: new kakao.maps.Point(12, 30)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+// 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+var markerImage_A = new kakao.maps.MarkerImage(imageSrc_A, imageSize_A, imageOption_A)
+
+// 마커 이미지 관련(농촌형 소화전)
+var imageSrc_B = 'https://coby-seo.github.io/B-hydrant.png', // 마커이미지의 주소입니다    
+    imageSize_B = new kakao.maps.Size(28, 30), // 마커이미지의 크기입니다
+    imageOption_B = {offset: new kakao.maps.Point(12, 30)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+// 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다.
+var markerImage_B = new kakao.maps.MarkerImage(imageSrc_B, imageSize_B, imageOption_B)
+
+// 마커 이미지 관련(급수탑)
+var imageSrc_C = 'https://coby-seo.github.io/watertower.png', // 마커이미지의 주소입니다    
+    imageSize_C = new kakao.maps.Size(42, 45), // 마커이미지의 크기입니다
+    imageOption_C = {offset: new kakao.maps.Point(18, 45)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+// 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다.
+var markerImage_C = new kakao.maps.MarkerImage(imageSrc_C, imageSize_C, imageOption_C)
+
+// 마커 이미지 관련(저수지)
+var imageSrc_D = 'https://coby-seo.github.io/Lake.png', // 마커이미지의 주소입니다    
+    imageSize_D = new kakao.maps.Size(28, 30), // 마커이미지의 크기입니다
+    imageOption_D = {offset: new kakao.maps.Point(12, 30)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+// 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다.
+var markerImage_D = new kakao.maps.MarkerImage(imageSrc_D, imageSize_D, imageOption_D)
+
+// 마커 이미지 관련(저수조)
+var imageSrc_E = 'https://coby-seo.github.io/Waterstoragetank.png', // 마커이미지의 주소입니다    
+    imageSize_E = new kakao.maps.Size(42, 45), // 마커이미지의 크기입니다
+    imageOption_E = {offset: new kakao.maps.Point(18, 45)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+// 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다.
+var markerImage_E = new kakao.maps.MarkerImage(imageSrc_E, imageSize_E, imageOption_E)
+
+
+
+
+
+
+// 주소-좌표 변환 객체를 생성합니다
+var geocoder = new kakao.maps.services.Geocoder();
+
+
+
+
+
+
+
+
+// 마커 표시 관련 코드
+
+// 주소 목록 작성칸
+var adress_A = [
+
+    ];
+
+// 주소로 좌표를 검색합니다
+for (var i = 0; i < adress_A.length; i ++) {
+    geocoder.addressSearch(adress_A[i].title, function(result, status) {
+
+        // 정상적으로 검색이 완료됐으면 
+        if (status === kakao.maps.services.Status.OK) {
+
+
+            // 결과값으로 받은 위치를 마커로 표시합니다
+            var marker = new kakao.maps.Marker({
+                map: map,
+                position: new kakao.maps.LatLng(result[0].y, result[0].x),
+                image: markerImage_A
+         });
+
+        marker.setMap(map);
+    } 
+})};
+
+
+
+
+// 이미지 A, 좌표
+var Coordinates_A = [
+    {
+    latlng: new kakao.maps.LatLng(35.694397, 127.911029)
+},
+{
+    latlng: new kakao.maps.LatLng(35.692459, 127.912441)
+},
+{
+    latlng: new kakao.maps.LatLng(35.692187, 127.912666)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6910856, 127.9134324)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6904589, 127.9131558)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6898902, 127.9107124)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6929355, 127.9090063)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6913912, 127.9097583)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6911508, 127.9102182)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6926669, 127.9101281)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6929355, 127.9090063)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6902747, 127.9114688)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6878226, 127.9097104)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6884832, 127.9119105)
+},
+{
+    latlng: new kakao.maps.LatLng(35.689097, 127.9119474)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6890617, 127.9141495)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6872233, 127.9131104)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6874266, 127.9141501)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6868598, 127.9119521)
+},
+{
+    latlng: new kakao.maps.LatLng(35.68832, 127.9143535)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6853801, 127.9110555)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6857451, 127.9123234)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6868234, 127.9151064)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6855951, 127.9142184)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6849972, 127.9126535)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6860813, 127.9134787)
+},
+{
+    latlng: new kakao.maps.LatLng(35.681516, 127.9161505)
+},
+{
+    latlng: new kakao.maps.LatLng(35.68089044, 127.9139175)
+},
+{
+    latlng: new kakao.maps.LatLng(35.68127, 127.9124797)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6817843, 127.9120041)
+},
+{
+    latlng: new kakao.maps.LatLng(35.682046, 127.911957)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6765065, 127.9102655)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6743923, 127.910786)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6828239, 127.9112274)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6828574, 127.9089216)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6820012, 127.9067617)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6827348, 127.9066227)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6820944, 127.9049531)
+},
+{
+    latlng: new kakao.maps.LatLng(35.682372, 127.904984)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6771505, 127.8993934)
+},
+{
+    latlng: new kakao.maps.LatLng(35.67618804, 127.8915211)
+},
+{
+    latlng: new kakao.maps.LatLng(35.675815, 127.891846)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6809363, 127.8987274)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6809363, 127.8987274)
+},
+{
+    latlng: new kakao.maps.LatLng(35.680871, 127.898668)
+},
+{
+    latlng: new kakao.maps.LatLng(35.680871, 127.898668)
+},
+{
+    latlng: new kakao.maps.LatLng(35.682717, 127.898248)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6726575, 127.916236)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6722153, 127.9168109)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6713981, 127.9173077)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6705199, 127.9182166)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6680293, 127.9325555)
+},
+{
+    latlng: new kakao.maps.LatLng(35.67061801, 127.9324925)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6704659, 127.9037485)
+},
+{
+    latlng: new kakao.maps.LatLng(35.66827102, 127.901267)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6691801, 127.9019915)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6909494, 127.9224971)
+},
+{
+    latlng: new kakao.maps.LatLng(35.69073603, 127.9237826)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6908676, 127.9258252)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6916303, 127.9203872)
+},
+{
+    latlng: new kakao.maps.LatLng(35.691643, 127.9165454)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6926272, 127.9163997)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6928064, 127.9174812)
+},
+{
+    latlng: new kakao.maps.LatLng(35.689297, 127.924375)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6909866, 127.9201348)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6891639, 127.919961)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6887266, 127.91844)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6900488, 127.9169261)
+},
+{
+    latlng: new kakao.maps.LatLng(35.690973, 127.9147474)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6916666, 127.9141224)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6890326, 127.9151859)
+},
+{
+    latlng: new kakao.maps.LatLng(35.693019, 127.917484)
+},
+{
+    latlng: new kakao.maps.LatLng(35.687097, 127.9159171)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6869382, 127.9183092)
+},
+{
+    latlng: new kakao.maps.LatLng(35.69073603, 127.9237826)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6877719, 127.916913)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6826853, 127.9205452)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6837157, 127.9221738)
+},
+{
+    latlng: new kakao.maps.LatLng(35.683803, 127.919235)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6888782, 127.9271716)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6837426, 127.9165957)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6838619, 127.9144213)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6805463, 127.9126395)
+},
+{
+    latlng: new kakao.maps.LatLng(35.693033, 127.913822)
+},
+{
+    latlng: new kakao.maps.LatLng(35.69364409, 127.9206388)
+},
+{
+    latlng: new kakao.maps.LatLng(35.69429512, 127.9227144)
+},
+{
+    latlng: new kakao.maps.LatLng(35.69429512, 127.9227144)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6930764, 127.9236663)
+},
+{
+    latlng: new kakao.maps.LatLng(35.69261562, 127.9207772)
+},
+{
+    latlng: new kakao.maps.LatLng(35.7496355, 127.913107)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6845339, 127.9089076)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6844899, 127.9056275)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6837873, 127.9027967)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6869382, 127.9183092)
+},
+{
+    latlng: new kakao.maps.LatLng(35.68467949, 127.8990477)
+},
+{
+    latlng: new kakao.maps.LatLng(35.687252, 127.8910834)
+},
+{
+    latlng: new kakao.maps.LatLng(35.68944032, 127.9016376)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6881394, 127.9032776)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6873482, 127.9045977)
+},
+{
+    latlng: new kakao.maps.LatLng(35.689122, 127.927292)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6846469, 127.9002767)
+},
+{
+    latlng: new kakao.maps.LatLng(35.683994, 127.916569)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6854182, 127.903219)
+},
+{
+    latlng: new kakao.maps.LatLng(35.68448726, 127.9025761)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6852947, 127.906665)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6855555, 127.9082645)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6860483, 127.9102913)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6881653, 127.9074881)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6859823, 127.9065107)
+},
+{
+    latlng: new kakao.maps.LatLng(35.694123, 127.922941)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6832741, 127.9129327)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6894925, 127.9092853)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6899852, 127.9087257)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6899852, 127.9087257)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6906672, 127.9060423)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6900983, 127.9057932)
+},
+{
+    latlng: new kakao.maps.LatLng(35.684719, 127.910587)
+},
+{
+    latlng: new kakao.maps.LatLng(35.689371, 127.9070956)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6890829, 127.9075611)
+},
+{
+    latlng: new kakao.maps.LatLng(35.68937967, 127.9020347)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6919101, 127.9025404)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6933552, 127.9028171)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6933552, 127.9028171)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6926431, 127.9038345)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6884495, 127.9054913)
+},
+{
+    latlng: new kakao.maps.LatLng(35.692019, 127.9080803)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6957419, 127.9061004)
+},
+{
+    latlng: new kakao.maps.LatLng(35.7033244, 127.8976013)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6914882, 127.903595)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6911323, 127.8940204)
+},
+{
+    latlng: new kakao.maps.LatLng(35.8054989, 127.91798)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6431884, 127.910199)
+},
+{
+    latlng: new kakao.maps.LatLng(35.65524089, 127.9327334)
+},
+{
+    latlng: new kakao.maps.LatLng(35.65325475, 127.9341016)
+},
+{
+    latlng: new kakao.maps.LatLng(35.65096917, 127.9257007)
+},
+{
+    latlng: new kakao.maps.LatLng(35.65622955, 127.9270159)
+},
+{
+    latlng: new kakao.maps.LatLng(35.65308815, 127.9300096)
+},
+{
+    latlng: new kakao.maps.LatLng(35.65327141, 127.9277502)
+},
+{
+    latlng: new kakao.maps.LatLng(35.567945, 127.9251465)
+},
+{
+    latlng: new kakao.maps.LatLng(35.7013813, 127.8548365)
+},
+{
+    latlng: new kakao.maps.LatLng(35.749173, 127.8327774)
+},
+{
+    latlng: new kakao.maps.LatLng(35.749173, 127.8327774)
+},
+{
+    latlng: new kakao.maps.LatLng(35.8781081, 127.8545237)
+},
+{
+    latlng: new kakao.maps.LatLng(35.7102401, 128.0128907)
+},
+{
+    latlng: new kakao.maps.LatLng(35.71051161, 128.0156521)
+},
+{
+    latlng: new kakao.maps.LatLng(35.7093685, 128.0134309)
+},
+{
+    latlng: new kakao.maps.LatLng(35.7133234, 127.9994066)
+},
+{
+    latlng: new kakao.maps.LatLng(35.7109637, 128.0147309)
+},
+{
+    latlng: new kakao.maps.LatLng(35.70703036, 128.0168013)
+},
+{
+    latlng: new kakao.maps.LatLng(35.71053194, 128.0175132)
+},
+{
+    latlng: new kakao.maps.LatLng(35.7099535, 128.0192464)
+},
+{
+    latlng: new kakao.maps.LatLng(35.7004126, 128.0196839)
+},
+{
+    latlng: new kakao.maps.LatLng(35.7085463, 128.0146034)
+},
+{
+    latlng: new kakao.maps.LatLng(35.7078053, 128.015169)
+},
+{
+    latlng: new kakao.maps.LatLng(35.71043284, 128.0155893)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6705375, 127.9923639)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6705375, 127.9923639)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6705375, 127.9923639)
+},
+{
+    latlng: new kakao.maps.LatLng(35.7102401, 128.0128907)
+},
+{
+    latlng: new kakao.maps.LatLng(35.82635245, 127.9847553)
+},
+{
+    latlng: new kakao.maps.LatLng(35.67288366, 127.9345954)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6683751, 127.9304201)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6671029, 127.9003791)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6878774, 127.9208561)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6890288, 127.9243132)
+},
+{
+    latlng: new kakao.maps.LatLng(35.69181993, 127.9192302)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6938011, 127.9155675)
+},
+{
+    latlng: new kakao.maps.LatLng(35.69272022, 127.9184097)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6895714, 127.9201296)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6889784, 127.9175249)
+},
+{
+    latlng: new kakao.maps.LatLng(35.652754, 127.930255)
+},
+{
+    latlng: new kakao.maps.LatLng(35.68616954, 127.9161032)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6865377, 127.9165607)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6822351, 127.9186013)
+},
+{
+    latlng: new kakao.maps.LatLng(35.68321645, 127.9223217)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6866604, 127.9220748)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6938529, 127.922806)
+},
+{
+    latlng: new kakao.maps.LatLng(35.7000697, 127.9306157)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6841718, 127.906926)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6837041, 127.9013738)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6846469, 127.9002767)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6858581, 127.9000167)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6880895, 127.9028025)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6879349, 127.9044578)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6871442, 127.9009597)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6859869, 127.903194)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6848342, 127.9033489)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6850789, 127.9050445)
+},
+{
+    latlng: new kakao.maps.LatLng(35.709047, 128.016161)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6866286, 127.91002)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6858028, 127.9051365)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6885918, 127.9065286)
+},
+{
+    latlng: new kakao.maps.LatLng(35.8148132, 127.8714331)
+},
+{
+    latlng: new kakao.maps.LatLng(35.7482937, 127.8324387)
+},
+{
+    latlng: new kakao.maps.LatLng(35.7507188, 127.8314539)
+},
+{
+    latlng: new kakao.maps.LatLng(35.708057, 128.015104)
+},
+{
+    latlng: new kakao.maps.LatLng(35.7075214, 128.0148275)
+},
+{
+    latlng: new kakao.maps.LatLng(35.71008577, 128.0131406)
+},
+{
+    latlng: new kakao.maps.LatLng(35.7126304, 128.0137962)
+},
+{
+    latlng: new kakao.maps.LatLng(35.7087633, 128.0160987)
+},
+{
+    latlng: new kakao.maps.LatLng(35.7105086, 128.0144379)
+},
+{
+    latlng: new kakao.maps.LatLng(35.71406564, 127.9997755)
+},
+{
+    latlng: new kakao.maps.LatLng(35.7142347, 128.0145171)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6960953, 128.0233933)
+}
+];
+
+// 이미지 A 마커생성
+for (var i = 0; i < Coordinates_A.length; i ++) {
+    
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: Coordinates_A[i].latlng, // 마커를 표시할 위치
+        title : Coordinates_A[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+        image : markerImage_A // 마커 이미지 
+    });
+}
+
+// 이미지 C, 좌표
+var Coordinates_C = [
+    {
+        latlng: new kakao.maps.LatLng(35.6917816, 127.9229725)
+    },
+    {
+        latlng: new kakao.maps.LatLng(35.6989268, 128.0265324)
+    }
+];
+
+// 이미지 C 마커생성
+for (var i = 0; i < Coordinates_C.length; i ++) {
+    
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: Coordinates_C[i].latlng, // 마커를 표시할 위치
+        title : Coordinates_C[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+        image : markerImage_C // 마커 이미지 
+    });
+}
+
+// 이미지 E, 좌표
+var Coordinates_E = [
+    {
+    latlng: new kakao.maps.LatLng(35.6905539, 127.9063462)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6905598, 127.9168559)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6927894, 127.913761)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6851977, 127.9182779)
+},
+{
+    latlng: new kakao.maps.LatLng(35.68275189, 127.9146988)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6816788, 127.9169812)
+},
+{
+    latlng: new kakao.maps.LatLng(35.749441, 127.832673)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6938528, 127.9228059)
+},
+{
+    latlng: new kakao.maps.LatLng(35.6984525, 128.0229597)
+}
+];
+
+// 이미지 E 마커생성
+for (var i = 0; i < Coordinates_E.length; i ++) {
+    
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: Coordinates_E[i].latlng, // 마커를 표시할 위치
+        title : Coordinates_E[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+        image : markerImage_E // 마커 이미지 
+    });
+}
+
+
+</script>
+</body>
+</html>
