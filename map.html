@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>hello map!!</title>
+    
+</head>
+<body>
+<div id="map" style="width:100%;height:1100px;"></div>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=594a6873663ade6d541daf87de8249a0&libraries=services"></script>
+<script>
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = {
+        center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };  
+
+// 지도를 생성합니다    
+var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+// HTML5의 geolocation으로 사용할 수 있는지 확인
+if (navigator.geolocation) {
+    
+    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+    navigator.geolocation.getCurrentPosition(function(position) {
+        
+        var lat = position.coords.latitude, // 위도
+            lon = position.coords.longitude; // 경도
+        
+        var locPosition = new kakao.maps.LatLng(lat, lon) // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+
+        // 마커와 인포윈도우를 표시합니다
+        displayMarker(locPosition);
+            
+      });
+} else { // HTML5의 GeoLocation을 사치할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+    
+    var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
+        message = 'geolocation을 사용할수 없어요..'
+        
+    displayMarker(locPosition, message);
+}
+
+// 지도에 마커표시
+function displayMarker(locPosition, message) {
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({  
+        map: map, 
+        position: locPosition
+    }); 
+    
+    // 지도 중심좌표를 접속위치로 변경합니다
+    map.setCenter(locPosition);      
+}  
+
+// 마커 이미지 관련
+var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png', // 마커이미지의 주소입니다    
+    imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
+    imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+// 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
+
+// 주소-좌표 변환 객체를 생성합니다
+var geocoder = new kakao.maps.services.Geocoder();
+
+// 주소 목록 작성칸
+var adress = [
+{
+    title: '경상남도 거창군 고제면 봉산리 472'
+},
+{
+    title: '경상남도 거창군 위천면 황산리 765'
+},
+{
+    title: '경상남도 거창군 위천면 황산리 765'
+},
+{
+    title: '경상남도 거창군 위천면 황산리 766'
+},
+{
+    title: '경상남도 거창군 위천면 황산리 598'
+},
+{
+    title: '경상남도 거창군 남하면 무릉리 1136'
+},
+{
+    title: '경상남도 거창군 위천면 황산리 604-2'
+},
+{
+    title: '경상남도 거창군 위천면 장기리 303'
+},
+{
+    title: '경상남도 거창군 북상면 갈계리 1167'
+},
+{
+    title: '경상남도 거창군 가조면 일부리 180'
+},
+{
+    title: '경상남도 거창군 가북면 용산리 154'
+},
+{
+    title: '경상남도 거창군 위천면 황산리 485'
+},
+{
+    title: '경상남도 거창군 위천면 황산리 610-1'
+},
+{
+    title: '경상남도 거창군 위천면 황산리 610-1'
+},
+{
+    title: '경상남도 거창군 위천면 황산리 656'
+},
+{
+    title: '경상남도 거창군 위천면 황산리 736'
+},
+{
+    title: '경상남도 거창군 위천면 황산리 490-2'
+},
+{
+    title: '경상남도 거창군 북상면 갈계리 1173-1'
+},
+{
+    title: '경상남도 거창군 위천면 황산리 606'
+},
+{
+    title: '경상남도 거창군 가북면 박암리 615'
+},
+{
+    title: '경상남도 거창군 가북면 박암리 629'
+},
+{
+    title: '경상남도 거창군 북상면 갈계리 1444-1'
+},
+{
+    title: '경상남도 거창군 북상면 농산리 63'
+},
+{
+    title: '경상남도 거창군 북상면 농산리 125'
+},
+{
+    title: '경상남도 거창군 북상면 농산리 314'
+},
+{
+    title: '경상남도 거창군 가조면 동례리 1316-1'
+},
+{
+    title: '경상남도 거창군 가북면 용암리 1496'
+},
+{
+    title: '경상남도 거창군 가조면 기리 321-1'
+},
+{
+    title: '경상남도 거창군 가북면 박암리 642'
+},
+{
+    title: '경상남도 거창군 남하면 지산리 942'
+},
+{
+    title: '경상남도 거창군 남하면 무릉리 260'
+}
+
+
+    ];
+
+// 주소로 좌표를 검색합니다
+for (var i = 0; i < adress.length; i ++) {
+    geocoder.addressSearch(adress[i].title, function(result, status) {
+
+        // 정상적으로 검색이 완료됐으면 
+        if (status === kakao.maps.services.Status.OK) {
+
+
+            // 결과값으로 받은 위치를 마커로 표시합니다
+            var marker = new kakao.maps.Marker({
+                map: map,
+                position: new kakao.maps.LatLng(result[0].y, result[0].x),
+                image: markerImage
+         });
+
+        marker.setMap(map);
+    } 
+})};
+</script>
+</body>
+</html>
