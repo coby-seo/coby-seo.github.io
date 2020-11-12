@@ -71,15 +71,14 @@ var map = new kakao.maps.Map(mapContainer, mapOption);
 
 
 
-
-
 // 위치정보 확인코드
 
 // HTML5의 geolocation으로 사용할 수 있는지 확인
 if (navigator.geolocation) {
     
+    var options = {timeout: 5000};
     // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-    navigator.geolocation.getCurrentPosition(function(position) {
+    navigator.geolocation.watchPosition(function(position) {
         
         var lat = position.coords.latitude, // 위도
             lon = position.coords.longitude; // 경도
@@ -88,16 +87,7 @@ if (navigator.geolocation) {
 
         // 마커 표시
         displayMarker(locPosition);
-        alert("위치 허용했습니다.")
-      }, function(error) {
-        alert(error.code)
-    });
-} else { // HTML5의 GeoLocation을 사치할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
-    
-    var locPosition = new kakao.maps.LatLng(37.566826, 126.9786567);
-    alert("위치 허용 안하노!")
-        
-    displayMarker(locPosition);
+      }, null, options);
 }
 
 // 현재위치 지도에 마커표시
@@ -108,13 +98,10 @@ function displayMarker(locPosition, message) {
         map: map, 
         position: locPosition
     });
-    
-    // 지도 중심좌표를 접속위치로 변경합니다
-    map.setCenter(locPosition);
 }  
 
-
-
+// 지도 위치 
+map.setCenter(locPosition);
 
 
 
@@ -984,44 +971,6 @@ for (var i = 0; i < Coordinates_D.length; i ++) {
 
     kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
 }
-
-
-    
-    
-    
-function my_Coordinates() {
-
-    // HTML5의 geolocation으로 사용할 수 있는지 확인
-    if (navigator.geolocation) {
-    
-        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-        navigator.geolocation.getCurrentPosition(function(position) {
-            
-            var lat = position.coords.latitude, // 위도
-                lon = position.coords.longitude; // 경도
-            
-            var locPosition = new kakao.maps.LatLng(lat, lon) // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-
-            // 마커 표시
-            displayMarker(locPosition);
-            alert("허용123")
-
-          });
-    }
-
-    // 현재위치 지도에 마커표시
-    function displayMarker(locPosition, message) {
-
-        // 마커를 생성합니다
-        var marker = new kakao.maps.Marker({  
-            map: map, 
-            position: locPosition
-        }); 
-    }
-}
-
-setInterval(my_Coordinates, 10000);
-
 
 
 </script>
