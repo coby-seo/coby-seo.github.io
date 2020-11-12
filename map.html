@@ -3,21 +3,22 @@
 <head>
     <meta charset="utf-8">
     <title>hello map!!</title>
+
     <style>
         html, body {width:100%;height:100%;margin:0;padding:0;} 
         .map_wrap {position:relative;overflow:hidden;width:100%;height:1100px;}
-        .box_1 {position:absolute;top:10px;right:10px;width:480px;height:80px;overflow:hidden;z-index:1;background-color:#6f7974;} 
-        .box_1 span {display:box;width:0px;height:0px;text-align:end;cursor:auto;}     
-        .box_1 span img {width:30px;height:30px;padding:0px 1;border:none;}
 
-        .box_2 {position:absolute;top:10px;right:10px;width:185px;height:335px;overflow:hidden;z-index:1;background-color:#3b383886;} 
-        .box_2 span {display:list-item;width:480px;height:70px;text-align:start;cursor:none;font-weight:bold;font-variant-position:super;font-size:x-large;}     
+        .box_2 {position:absolute;top:20px;right:10px;width:185px;height:335px;overflow:hidden;z-index:1;background-color:#3b383886;} 
+        .box_2 span {display:list-item;width:480px;height:70px;text-align:start;cursor:pointer;font-weight:bold;font-variant-position:super;font-size:x-large;}     
         .box_2 span img {width:40px;height:35px;padding:0px 1;border:none;}
 
-        .box_3 {position:absolute;top:65px;right:10px;width:185px;height:3px;overflow:hidden;z-index:1;background-color:#dbdbdb;} 
-        .box_4 {position:absolute;top:135px;right:10px;width:185px;height:3px;overflow:hidden;z-index:1;background-color:#dbdbdb;} 
-        .box_5 {position:absolute;top:205px;right:10px;width:185px;height:3px;overflow:hidden;z-index:1;background-color:#dbdbdb;} 
-        .box_6 {position:absolute;top:275px;right:10px;width:185px;height:3px;overflow:hidden;z-index:1;background-color:#dbdbdb;} 
+        .box_3 {position:absolute;top:70px;right:10px;width:185px;height:3px;overflow:hidden;z-index:1;background-color:#dbdbdb;} 
+        .box_4 {position:absolute;top:140px;right:10px;width:185px;height:3px;overflow:hidden;z-index:1;background-color:#dbdbdb;} 
+        .box_5 {position:absolute;top:210px;right:10px;width:185px;height:3px;overflow:hidden;z-index:1;background-color:#dbdbdb;} 
+        .box_6 {position:absolute;top:280px;right:10px;width:185px;height:3px;overflow:hidden;z-index:1;background-color:#dbdbdb;} 
+        .box_7 {position:absolute;top:10px;right:10px;width:185px;height:10px;overflow:hidden;z-index:1;background-color:#3b383886;} 
+        .box_8 {position:absolute;top:10px;right:10px;width:185px;height:1px;overflow:hidden;z-index:1;background-color:#ff5100;} 
+
 
 
         </style>
@@ -25,13 +26,8 @@
 <body>
 <div id="map" style="width:100%;height:1100px;"></div>
 
-    <!-- 지도 확대, 축소 컨트롤 div 입니다 -->
-<div class="custom_zoomcontrol radius_border"> 
-    <span>소화전</span>  
-</div>
-
 <div class="box_2 radius_border"> 
-    <span><img src="https://coby-seo.github.io/A-hydrant.png">&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;소화전</span>  
+    <span><img src="https://coby-seo.github.io/A-hydrant.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소화전</span>  
     <span><img src="https://coby-seo.github.io/B-hydrant.png">&nbsp;&nbsp;농촌형 소화전</span>  
     <span><img src="https://coby-seo.github.io/watertower.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;급수탑</span>  
     <span><img src="https://coby-seo.github.io/Lake.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;저수지</span>  
@@ -48,6 +44,12 @@
     <span></span>  
 </div>
 <div class="box_6 radius_border"> 
+    <span></span>  
+</div>
+<div class="box_7 radius_border"> 
+    <span></span>  
+</div>
+<div class="box_8 radius_border"> 
     <span></span>  
 </div>
 
@@ -83,7 +85,7 @@ if (navigator.geolocation) {
         
         var locPosition = new kakao.maps.LatLng(lat, lon) // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
 
-        // 마커와 인포윈도우를 표시합니다
+        // 마커 표시
         displayMarker(locPosition);
             
       });
@@ -102,10 +104,10 @@ function displayMarker(locPosition, message) {
     var marker = new kakao.maps.Marker({  
         map: map, 
         position: locPosition
-    }); 
+    });
     
     // 지도 중심좌표를 접속위치로 변경합니다
-    map.setCenter(locPosition);      
+    map.setCenter(locPosition);
 }  
 
 
@@ -893,6 +895,46 @@ for (var i = 0; i < Coordinates_E.length; i ++) {
     });
 }
 
+
+
+
+function my_Coordinates()
+
+    // HTML5의 geolocation으로 사용할 수 있는지 확인
+    if (navigator.geolocation) {
+    
+        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+        navigator.geolocation.getCurrentPosition(function(position) {
+            
+            var lat = position.coords.latitude, // 위도
+                lon = position.coords.longitude; // 경도
+            
+            var locPosition = new kakao.maps.LatLng(lat, lon) // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+
+            // 마커 표시
+            displayMarker(locPosition);
+
+          });
+    } else { // HTML5의 GeoLocation을 사치할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+        
+        var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
+            message = 'geolocation을 사용할수 없어요..'
+
+        displayMarker(locPosition, message);
+    }
+
+    // 현재위치 지도에 마커표시
+    function displayMarker(locPosition, message) {
+
+        // 마커를 생성합니다
+        var marker = new kakao.maps.Marker({  
+            map: map, 
+            position: locPosition
+        }); 
+    }
+}
+
+setTimeout(my_Coordinates(), 10000);
 
 </script>
 </body>
