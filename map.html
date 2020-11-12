@@ -10,7 +10,7 @@
         .map_wrap {position:relative;overflow:hidden;width:100%;height:1100px;}
 
         .box_2 {position:absolute;top:20px;right:10px;width:185px;height:335px;overflow:hidden;z-index:1;background-color:#3b383886;} 
-        .box_2 span {display:list-item;width:480px;height:70px;text-align:start;cursor:pointer;font-weight:bold;font-variant-position:super;font-size:x-large;}     
+        .box_2 span {display:list-item;width:480px;height:70px;text-align:start;font-weight:bold;font-variant-position:super;font-size:x-large;}     
         .box_2 span img {width:40px;height:35px;padding:0px 1;border:none;}
 
         .box_3 {position:absolute;top:70px;right:10px;width:185px;height:3px;overflow:hidden;z-index:1;background-color:#dbdbdb;} 
@@ -856,30 +856,39 @@ for (var i = 0; i < Coordinates_C.length; i ++) {
 // 이미지 E, 좌표
 var Coordinates_E = [
     {
+    title: '중앙-1 지상식<br>거창군 거창읍 거함대로 1',
     latlng: new kakao.maps.LatLng(35.6905539, 127.9063462)
 },
 {
+    title: '중앙-1 지상식<br>거창군 거창읍 거함대로 2',
     latlng: new kakao.maps.LatLng(35.6905598, 127.9168559)
 },
 {
+    title: '중앙-1 지상식<br>거창군 거창읍 거함대로 3',
     latlng: new kakao.maps.LatLng(35.6927894, 127.913761)
 },
 {
+    title: '중앙-1 지상식<br>거창군 거창읍 거함대로 4',
     latlng: new kakao.maps.LatLng(35.6851977, 127.9182779)
 },
 {
+    title: '중앙-1 지상식<br>거창군 거창읍 거함대로 5',
     latlng: new kakao.maps.LatLng(35.68275189, 127.9146988)
 },
 {
+    title: '중앙-1 지상식<br>거창군 거창읍 거함대로 6',
     latlng: new kakao.maps.LatLng(35.6816788, 127.9169812)
 },
 {
+    title: '중앙-1 지상식<br>거창군 거창읍 거함대로 7',
     latlng: new kakao.maps.LatLng(35.749441, 127.832673)
 },
 {
+    title: '중앙-1 지상식<br>거창군 거창읍 거함대로 8',
     latlng: new kakao.maps.LatLng(35.6938528, 127.9228059)
 },
 {
+    title: '중앙-1 지상식<br>거창군 거창읍 거함대로 9',
     latlng: new kakao.maps.LatLng(35.6984525, 128.0229597)
 }
 ];
@@ -889,17 +898,35 @@ for (var i = 0; i < Coordinates_E.length; i ++) {
     
     // 마커를 생성합니다
     var marker = new kakao.maps.Marker({
-        map: map, // 마커를 표시할 지도
+        map: map,
         position: Coordinates_E[i].latlng, // 마커를 표시할 위치
-        title : Coordinates_E[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+        clickable: true,
         image : markerImage_E // 마커 이미지 
     });
+
+    var iwContent = Coordinates_E[i].title,
+        iwRemovable = true;
+
+    var infowindow = new kakao.maps.InfoWindow({
+        content: iwContent,
+        removable: iwRemovable
+    });
+
+    kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+}
+
+
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
 }
 
 
 
 
-function my_Coordinates(){
+/*
+function my_Coordinates() {
 
     // HTML5의 geolocation으로 사용할 수 있는지 확인
     if (navigator.geolocation) {
@@ -935,8 +962,8 @@ function my_Coordinates(){
     }
 }
 
-setTimeout(my_Coordinates, 1000);
-
+setInterval(my_Coordinates, 1000);
+*/
 </script>
 </body>
 </html>
