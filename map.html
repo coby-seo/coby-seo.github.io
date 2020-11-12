@@ -88,12 +88,12 @@ if (navigator.geolocation) {
 
         // 마커 표시
         displayMarker(locPosition);
-        alter("위치 허용했습니다.")
+        alert("위치 허용했습니다.")
       });
 } else { // HTML5의 GeoLocation을 사치할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
     
     var locPosition = new kakao.maps.LatLng(37.566826, 126.9786567);
-    alter("위치 허용 안하노!")
+    alert("위치 허용 안하노!")
         
     displayMarker(locPosition);
 }
