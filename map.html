@@ -989,7 +989,7 @@ for (var i = 0; i < Coordinates_D.length; i ++) {
     
 
 
-/*
+
 function my_Coordinates() {
 
     // HTML5의 geolocation으로 사용할 수 있는지 확인
@@ -1005,14 +1005,8 @@ function my_Coordinates() {
 
             // 마커 표시
             displayMarker(locPosition);
-
+            alert(위치 계속 찍히는중)
           });
-    } else { // HTML5의 GeoLocation을 사치할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
-        
-        var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
-            message = 'geolocation을 사용할수 없어요..'
-
-        displayMarker(locPosition, message);
     }
 
     // 현재위치 지도에 마커표시
@@ -1026,8 +1020,8 @@ function my_Coordinates() {
     }
 }
 
-setInterval(my_Coordinates, 1000);
-*/
+setInterval(my_Coordinates, 3000);
+
 </script>
 </body>
 </html>
