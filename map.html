@@ -922,7 +922,69 @@ function makeOverListener(map, marker, infowindow) {
     };
 }
 
+// 이미지 D, 좌표
+var Coordinates_D = [
+    {
+        title: '대평 자-01 자연수리(하천)<br>거창군 거창읍 양평리 1160 스포츠파크 앞',
+        latlng: new kakao.maps.LatLng(35.695012, 127.925419)
+    },
+    {
+        title: '대평 자-02 자연수리(저수지)<br>거창군 웅양면 산포리 산265-1 웅양저수지',
+        latlng: new kakao.maps.LatLng(35.829152, 127.927938)
+    },
+    {
+        title: '신원 자-01 자연수리(하천)<br>거창군 신원면 청수리 564-2 수동마을회관 옆',
+        latlng: new kakao.maps.LatLng(35.563116, 127.897040)
+    },
+    {
+        title: '위천 자-01 자연수리(하천)<br>거창군 북상면 창선리 510 창선교 아래',
+        latlng: new kakao.maps.LatLng(35.765065, 127.777068)
+    },
+    {
+        title: '위천 자-02 자연수리(하천)<br>거창군 고제면 궁항리 1144-4 원궁향교 아래',
+        latlng: new kakao.maps.LatLng(35.828996, 127.877794)
+    },
+    {
+        title: '가조 자-01 자연수리(하천)<br>거창군 가조면 수월리 산33-56 고견천',
+        latlng: new kakao.maps.LatLng(35.723321, 128.035051)
+    },
+    {
+        title: '가조 자-02 자연수리(하천)<br>거창군 가조면 일부리 71-5 초정제',
+        latlng: new kakao.maps.LatLng(35.702632, 128.039079)
+    },
+    {
+        title: '가조 자-03 자연수리(하천)<br>거창군 남하면 대야리 산208 조금실교 아래',
+        latlng: new kakao.maps.LatLng(35.653482, 128.009616)
+    }
+];
 
+
+
+
+
+for (var i = 0; i < Coordinates_D.length; i ++) {
+    
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        map: map,
+        position: Coordinates_D[i].latlng, // 마커를 표시할 위치
+        clickable: true,
+        image : markerImage_D // 마커 이미지 
+    });
+
+    var iwContent = Coordinates_D[i].title,
+        iwRemovable = true;
+
+    var infowindow = new kakao.maps.InfoWindow({
+        content: iwContent,
+        removable: iwRemovable
+    });
+
+    kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+}
+
+
+    
 
 
 /*
