@@ -26,13 +26,14 @@
 </head>
 <body>
 <div id="map" style="width:100%;height:100%;"></div>
-    
+
+
 <div class="box_2 radius_border"> 
-    <span><img src="https://coby-seo.github.io/A-hydrant.png">&nbsp;&nbsp;&nbsp;&nbsp;소화전</span>  
-    <span><img src="https://coby-seo.github.io/B-hydrant.png">&nbsp;&nbsp;&nbsp;&nbsp;농촌형 소화전</span>  
-    <span><img src="https://coby-seo.github.io/watertower.png">&nbsp;&nbsp;&nbsp;&nbsp;급수탑</span>  
-    <span><img src="https://coby-seo.github.io/Lake.png">&nbsp;&nbsp;&nbsp;&nbsp;저수지</span>  
-    <span><img src="https://coby-seo.github.io/Waterstoragetank.png">&nbsp;&nbsp;&nbsp;&nbsp;저수조</span>
+    <span><img src="https://coby-seo.github.io/A-hydrant.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소화전</span>  
+    <span><img src="https://coby-seo.github.io/B-hydrant.png">&nbsp;&nbsp;농촌형 소화전</span>  
+    <span><img src="https://coby-seo.github.io/watertower.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;급수탑</span>  
+    <span><img src="https://coby-seo.github.io/Lake.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;저수지</span>  
+    <span><img src="https://coby-seo.github.io/Waterstoragetank.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;저수조</span>
 </div>
 
 <div class="box_3 radius_border"> 
@@ -54,7 +55,7 @@
     <span></span>  
 </div>
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=594a6873663ade6d541daf87de8249a0&libraries=services"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f0e0ce5707fe42bbea62b96a58c3a8a&libraries=services"></script>
 <script>
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = {
@@ -67,10 +68,52 @@ var map = new kakao.maps.Map(mapContainer, mapOption);
 
 
 
+
+/*
+// 위치정보 확인코드
+
+// HTML5의 geolocation으로 사용할 수 있는지 확인
+if (navigator.geolocation) {
     
+    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+    navigator.geolocation.getCurrentPosition(function(position) {
+        
+        var lat = position.coords.latitude, // 위도
+            lon = position.coords.longitude; // 경도
+        
+        var locPosition = new kakao.maps.LatLng(lat, lon) // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+
+        // 마커 표시
+        displayMarker(locPosition);
+        alert("첫 위치 허용함")
+      });
+} else { // HTML5의 GeoLocation을 사치할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
     
+    var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
+        message = 'geolocation을 사용할수 없어요..'
+        
+    displayMarker(locPosition);
+    alert("위치 사용 불가")
+}
+
+// 현재위치 지도에 마커표시
+function displayMarker(locPosition, message) {
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({  
+        map: map, 
+        position: locPosition
+    });
     
-    
+    // 지도 중심좌표를 접속위치로 변경합니다
+    map.setCenter(locPosition);
+}  
+*/
+
+
+
+
+
 
 
 
@@ -103,18 +146,70 @@ function marker_array(locPosition) {
         position: locPosition
     });
 
-    // 마커를 배열에 추가합니다
+    // 마커를 배열에 추가, 표시, 삭제
     arr_marker.push(marker);
     arr_marker[0].setMap(map);
     arr_marker.pop();
 }
 
+
+
+
+/*
+
+// 위치정보 확인코드
+
+// html5의 geolocation으로 사용할 수 있는지 확인
+if (navigator.geolocation) {
     
-    
-    
-    
-    
-    
+    var options = {timeout: 5000};
+    // geolocation을 이용해서 접속 위치를 얻어옵니다
+    navigator.geolocation.watchPosition(function(position) {
+        
+        var lat = position.coords.latitude, // 위도
+            lon = position.coords.longitude; // 경도
+        
+        var locposition = new kakao.maps.latlng(lat, lon) // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+
+        // 마커 표시
+        displaymarker(locposition);
+        alert("위치정보 계속 확인중")
+      }, null, options);
+}
+
+// 현재위치 지도에 마커표시
+function displaymarker(locposition, message) {
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.marker({  
+        map: map, 
+        position: locposition
+    });
+
+
+    map.center(locposition);
+}  
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -175,12 +270,36 @@ var geocoder = new kakao.maps.services.Geocoder();
 
 
 
-    
-   
 
 
-    
-    
+
+// 마커 표시 관련 코드
+
+// 주소 목록 작성칸
+var adress_A = [
+
+    ];
+
+// 주소로 좌표를 검색합니다
+for (var i = 0; i < adress_A.length; i ++) {
+    geocoder.addressSearch(adress_A[i].title, function(result, status) {
+
+        // 정상적으로 검색이 완료됐으면 
+        if (status === kakao.maps.services.Status.OK) {
+
+
+            // 결과값으로 받은 위치를 마커로 표시합니다
+            var marker = new kakao.maps.Marker({
+                map: map,
+                position: new kakao.maps.LatLng(result[0].y, result[0].x),
+                image: markerImage_A
+         });
+
+        marker.setMap(map);
+    } 
+})};
+
+
 
 
 // 이미지 A, 좌표
@@ -836,39 +955,30 @@ for (var i = 0; i < Coordinates_C.length; i ++) {
 // 이미지 E, 좌표
 var Coordinates_E = [
     {
-    title: '중앙-1 지상식<br>거창군 거창읍 거함대로 1',
     latlng: new kakao.maps.LatLng(35.6905539, 127.9063462)
 },
 {
-    title: '중앙-1 지상식<br>거창군 거창읍 거함대로 2',
     latlng: new kakao.maps.LatLng(35.6905598, 127.9168559)
 },
 {
-    title: '중앙-1 지상식<br>거창군 거창읍 거함대로 3',
     latlng: new kakao.maps.LatLng(35.6927894, 127.913761)
 },
 {
-    title: '중앙-1 지상식<br>거창군 거창읍 거함대로 4',
     latlng: new kakao.maps.LatLng(35.6851977, 127.9182779)
 },
 {
-    title: '중앙-1 지상식<br>거창군 거창읍 거함대로 5',
     latlng: new kakao.maps.LatLng(35.68275189, 127.9146988)
 },
 {
-    title: '중앙-1 지상식<br>거창군 거창읍 거함대로 6',
     latlng: new kakao.maps.LatLng(35.6816788, 127.9169812)
 },
 {
-    title: '중앙-1 지상식<br>거창군 거창읍 거함대로 7',
     latlng: new kakao.maps.LatLng(35.749441, 127.832673)
 },
 {
-    title: '중앙-1 지상식<br>거창군 거창읍 거함대로 8',
     latlng: new kakao.maps.LatLng(35.6938528, 127.9228059)
 },
 {
-    title: '중앙-1 지상식<br>거창군 거창읍 거함대로 9',
     latlng: new kakao.maps.LatLng(35.6984525, 128.0229597)
 }
 ];
@@ -893,13 +1003,6 @@ for (var i = 0; i < Coordinates_E.length; i ++) {
     });
 
     kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
-}
-
-
-function makeOverListener(map, marker, infowindow) {
-    return function() {
-        infowindow.open(map, marker);
-    };
 }
 
 // 이미지 D, 좌표
@@ -962,6 +1065,60 @@ for (var i = 0; i < Coordinates_D.length; i ++) {
 
     kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
 }
+
+
+
+
+
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
+}
+
+
+
+
+/*
+function my_Coordinates() {
+
+    // HTML5의 geolocation으로 사용할 수 있는지 확인
+    if (navigator.geolocation) {
+    
+        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+        navigator.geolocation.getCurrentPosition(function(position) {
+            
+            var lat = position.coords.latitude, // 위도
+                lon = position.coords.longitude; // 경도
+            
+            var locPosition = new kakao.maps.LatLng(lat, lon) // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+
+            // 마커 표시
+            displayMarker(locPosition);
+            alert("허용123")
+
+          });
+    }
+
+    // 현재위치 지도에 마커표시
+    function displayMarker(locPosition, message) {
+
+        // 마커를 생성합니다
+        var marker = new kakao.maps.Marker({  
+            map: map, 
+            position: locPosition
+        }); 
+    }
+}
+
+setInterval(my_Coordinates, 10000);
+*/
+
+
+
+
+
+
 
 
 </script>
