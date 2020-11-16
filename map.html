@@ -29,7 +29,7 @@
 
 
 <div class="box_2 radius_border"> 
-    <span><img src="https://coby-seo.github.io/A-hydrant.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소화전fixkey</span>  
+    <span><img src="https://coby-seo.github.io/A-hydrant.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소화전</span>  
     <span><img src="https://coby-seo.github.io/B-hydrant.png">&nbsp;&nbsp;농촌형 소화전</span>  
     <span><img src="https://coby-seo.github.io/watertower.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;급수탑</span>  
     <span><img src="https://coby-seo.github.io/Lake.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;저수지</span>  
@@ -113,7 +113,7 @@ function displayMarker(locPosition, message) {
 
 
 
-
+/*
 
 
 
@@ -135,7 +135,7 @@ if (navigator.geolocation) {
 
         // 마커 배열 변경
         marker_array(locPosition);
-      });
+      }, null, {enableHighAccuracy: true, timeout: 1000});
 }
 
 // 마커 배열 변경
@@ -146,11 +146,39 @@ function marker_array(locPosition) {
         position: locPosition
     });
 
-    // 마커를 배열에 추가, 표시, 삭제
+    hideMarkers();
+    arr_marker = [];
     arr_marker.push(marker);
-    arr_marker.setMap(map);
-    arr_marker.pop();
+    showMarkers();
 }
+
+
+*/
+
+function setMarkers(map) {
+    arr_marker[0].setMap(map);
+}
+
+function showMarkers() {
+    setMarkers(map)
+}
+
+function hideMarkers() {
+    setMarkers(null);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -223,7 +251,6 @@ var imageSrc_A = 'https://coby-seo.github.io/A-hydrant.png', // 마커이미지�
     imageSize_A = new kakao.maps.Size(28, 30), // 마커이미지의 크기입니다
     imageOption_A = {offset: new kakao.maps.Point(12, 30)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-// 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
 var markerImage_A = new kakao.maps.MarkerImage(imageSrc_A, imageSize_A, imageOption_A)
 
 // 마커 이미지 관련(농촌형 소화전)
@@ -231,7 +258,6 @@ var imageSrc_B = 'https://coby-seo.github.io/B-hydrant.png', // 마커이미지�
     imageSize_B = new kakao.maps.Size(28, 30), // 마커이미지의 크기입니다
     imageOption_B = {offset: new kakao.maps.Point(12, 30)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-// 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다.
 var markerImage_B = new kakao.maps.MarkerImage(imageSrc_B, imageSize_B, imageOption_B)
 
 // 마커 이미지 관련(급수탑)
@@ -239,7 +265,6 @@ var imageSrc_C = 'https://coby-seo.github.io/watertower.png', // 마커이미지
     imageSize_C = new kakao.maps.Size(42, 45), // 마커이미지의 크기입니다
     imageOption_C = {offset: new kakao.maps.Point(18, 45)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-// 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다.
 var markerImage_C = new kakao.maps.MarkerImage(imageSrc_C, imageSize_C, imageOption_C)
 
 // 마커 이미지 관련(저수지)
@@ -247,7 +272,6 @@ var imageSrc_D = 'https://coby-seo.github.io/Lake.png', // 마커이미지의 �
     imageSize_D = new kakao.maps.Size(28, 30), // 마커이미지의 크기입니다
     imageOption_D = {offset: new kakao.maps.Point(12, 30)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-// 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다.
 var markerImage_D = new kakao.maps.MarkerImage(imageSrc_D, imageSize_D, imageOption_D)
 
 // 마커 이미지 관련(저수조)
@@ -255,7 +279,6 @@ var imageSrc_E = 'https://coby-seo.github.io/Waterstoragetank.png', // 마커이
     imageSize_E = new kakao.maps.Size(42, 45), // 마커이미지의 크기입니다
     imageOption_E = {offset: new kakao.maps.Point(18, 45)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-// 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다.
 var markerImage_E = new kakao.maps.MarkerImage(imageSrc_E, imageSize_E, imageOption_E)
 
 
@@ -1079,7 +1102,9 @@ function makeOverListener(map, marker, infowindow) {
 
 
 
-/*
+var one_time = 0;
+var arr_marker = [];
+
 function my_Coordinates() {
 
     // HTML5의 geolocation으로 사용할 수 있는지 확인
@@ -1095,24 +1120,34 @@ function my_Coordinates() {
 
             // 마커 표시
             displayMarker(locPosition);
-            alert("허용123")
-
-          });
+          }, null, {enableHighAccuracy: true});
     }
 
     // 현재위치 지도에 마커표시
-    function displayMarker(locPosition, message) {
+    function displayMarker(locPosition) {
 
         // 마커를 생성합니다
         var marker = new kakao.maps.Marker({  
-            map: map, 
-            position: locPosition
-        }); 
+            map: map
+        });
+
+        if (one_time == 0) {
+            arr_marker.push(marker);
+            showMarkers();
+            map.center(locPosition)
+            one_time = 1;
+        }
+        else {
+            hideMarkers();
+            arr_marker.shift();
+            arr_marker.push(marker);
+            showMarkers();
+        }
     }
 }
 
-setInterval(my_Coordinates, 10000);
-*/
+setInterval(my_Coordinates, 3000);
+
 
 
 
