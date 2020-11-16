@@ -113,11 +113,17 @@ function displayMarker(locPosition, message) {
 
 
 
-/*
+
 
 
 
 var arr_marker = [];
+var one = 0;
+var options = {
+    enableHighAccuracy: true,
+    timeout: 1000,
+    maximumAge: 0
+};
 
 
 // 위치정보 확인코드
@@ -135,7 +141,7 @@ if (navigator.geolocation) {
 
         // 마커 배열 변경
         marker_array(locPosition);
-      }, null, {enableHighAccuracy: true, timeout: 1000});
+      }, null, options);
 }
 
 // 마커 배열 변경
@@ -146,14 +152,19 @@ function marker_array(locPosition) {
         position: locPosition
     });
 
-    hideMarkers();
-    arr_marker = [];
-    arr_marker.push(marker);
-    showMarkers();
+    if (one == 0) {
+        arr_marker.push(marker);
+        showMarkers();
+        map.setCenter(locPosition);
+        one = 1;
+    } else {
+        hideMarkers();
+        arr_marker.pop();
+        arr_marker.push(marker);
+        showMarkers();
+    }
 }
 
-
-*/
 
 function setMarkers(map) {
     arr_marker[0].setMap(map);
@@ -166,10 +177,6 @@ function showMarkers() {
 function hideMarkers() {
     setMarkers(null);
 }
-
-
-
-
 
 
 
@@ -1102,9 +1109,7 @@ function makeOverListener(map, marker, infowindow) {
 
 
 
-var one_time = 0;
-var arr_marker = [];
-
+/*
 function my_Coordinates() {
 
     // HTML5의 geolocation으로 사용할 수 있는지 확인
@@ -1120,36 +1125,25 @@ function my_Coordinates() {
 
             // 마커 표시
             displayMarker(locPosition);
-          });
+          }, null, {enableHighAccuracy: true});
     }
 
     // 현재위치 지도에 마커표시
-    function displayMarker(locPosition) {
+    function displayMarker(locPosition, message) {
 
         // 마커를 생성합니다
         var marker = new kakao.maps.Marker({  
-            map: map
+            position: locPosition
         });
-
-        if (one_time == 0) {
-            arr_marker.push(marker);
-            showMarkers();
-            map.center(locPosition)
-            one_time = 1;
-        }
-        else {
-            hideMarkers();
-            arr_marker.shift();
-            arr_marker.push(marker);
-            showMarkers();
-        }
+        marker.setMap(map);
+        map.setCenter(locPosition);
     }
 }
 
-setInterval(my_Coordinates, 3000);
+setInterval(my_Coordinates, 2000);
 
 
-
+*/
 
 
 
