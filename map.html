@@ -1105,10 +1105,6 @@ function makeOverListener(map, marker, infowindow) {
 var one_time = 0;
 var arr_marker = [];
 
-const options = {
-    enableHighAccuracy: true
-};
-    
 function my_Coordinates() {
 
     // HTML5의 geolocation으로 사용할 수 있는지 확인
@@ -1124,7 +1120,7 @@ function my_Coordinates() {
 
             // 마커 표시
             displayMarker(locPosition);
-          }, null, options);
+          });
     }
 
     // 현재위치 지도에 마커표시
