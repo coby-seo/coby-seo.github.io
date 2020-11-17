@@ -149,7 +149,8 @@ function marker_array(locPosition) {
 
     // 마커를 생성합니다
     var marker = new kakao.maps.Marker({
-        position: locPosition
+        position: locPosition,
+        image : markerImage_fire
     });
 
     if (one == 0) {
@@ -288,7 +289,11 @@ var imageSrc_E = 'https://coby-seo.github.io/Waterstoragetank.png', // 마커이
 
 var markerImage_E = new kakao.maps.MarkerImage(imageSrc_E, imageSize_E, imageOption_E)
 
+var imageSrc_fire = 'https://coby-seo.github.io/f3.png', // 마커이미지의 주소입니다    
+    imageSize_fire = new kakao.maps.Size(50.4, 54), // 마커이미지의 크기입니다
+    imageOption_fire = {offset: new kakao.maps.Point(21.6, 54)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
+var markerImage_fire = new kakao.maps.MarkerImage(imageSrc_fire, imageSize_fire, imageOption_fire)
 
 
 
