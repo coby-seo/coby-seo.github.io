@@ -76,8 +76,8 @@
         <div class="option">
             <div>
                 <form onsubmit="searchPlaces(); return false;">
-                    키워드 : <input type="text" value="이태원 맛집" id="keyword" size="15"> 
-                    <button type="submit">검색하기</button> 
+                    <input type="text" value="" id="keyword" size="15"> 
+                    <button type="submit">검색</button> 
                 </form>
             </div>
         </div>
@@ -92,7 +92,7 @@
 
 
 <div class="box_2 radius_border"> 
-    <span><img src="https://coby-seo.github.io/A-hydrant.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소화전121</span>  
+    <span><img src="https://coby-seo.github.io/A-hydrant.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소화전12231</span>  
     <span><img src="https://coby-seo.github.io/B-hydrant.png">&nbsp;&nbsp;농촌형 소화전</span>  
     <span><img src="https://coby-seo.github.io/watertower.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;급수탑</span>  
     <span><img src="https://coby-seo.github.io/Lake.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;저수지</span>  
@@ -1232,7 +1232,6 @@ function searchPlaces() {
 var keyword = document.getElementById('keyword').value;
 
 if (!keyword.replace(/^\s+|\s+$/g, '')) {
-    alert('키워드를 입력해주세요!');
     return false;
 }
 
