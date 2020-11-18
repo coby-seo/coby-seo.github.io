@@ -1305,6 +1305,7 @@ function displayPlaces(places) {
 
             itemEl.onmouseover =  function () {
                 displayInfowindow(marker, title);
+                map.setCenter(bounds);
             };
 
             itemEl.onmouseout =  function () {
