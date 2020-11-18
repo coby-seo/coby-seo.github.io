@@ -92,7 +92,7 @@
 
 
 <div class="box_2 radius_border"> 
-    <span><img src="https://coby-seo.github.io/A-hydrant.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소화전12231</span>  
+    <span><img src="https://coby-seo.github.io/A-hydrant.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소화전</span>  
     <span><img src="https://coby-seo.github.io/B-hydrant.png">&nbsp;&nbsp;농촌형 소화전</span>  
     <span><img src="https://coby-seo.github.io/watertower.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;급수탑</span>  
     <span><img src="https://coby-seo.github.io/Lake.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;저수지</span>  
@@ -1296,6 +1296,7 @@ function displayPlaces(places) {
         (function(marker, title) {
             kakao.maps.event.addListener(marker, 'mouseover', function() {
                 displayInfowindow(marker, title);
+                map.setCenter(bounds);
             });
 
             kakao.maps.event.addListener(marker, 'mouseout', function() {
