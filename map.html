@@ -118,7 +118,7 @@
     <span></span>  
 </div>
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=594a6873663ade6d541daf87de8249a0&libraries=services"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f0e0ce5707fe42bbea62b96a58c3a8a&libraries=services"></script>
 <script>
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = {
@@ -131,57 +131,9 @@ var map = new kakao.maps.Map(mapContainer, mapOption);
 
 
 
-
-/*
-// 위치정보 확인코드
-
-// HTML5의 geolocation으로 사용할 수 있는지 확인
-if (navigator.geolocation) {
-    
-    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-    navigator.geolocation.getCurrentPosition(function(position) {
-        
-        var lat = position.coords.latitude, // 위도
-            lon = position.coords.longitude; // 경도
-        
-        var locPosition = new kakao.maps.LatLng(lat, lon) // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-
-        // 마커 표시
-        displayMarker(locPosition);
-        alert("첫 위치 허용함")
-      });
-} else { // HTML5의 GeoLocation을 사치할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
-    
-    var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
-        message = 'geolocation을 사용할수 없어요..'
-        
-    displayMarker(locPosition);
-    alert("위치 사용 불가")
-}
-
-// 현재위치 지도에 마커표시
-function displayMarker(locPosition, message) {
-
-    // 마커를 생성합니다
-    var marker = new kakao.maps.Marker({  
-        map: map, 
-        position: locPosition
-    });
-    
-    // 지도 중심좌표를 접속위치로 변경합니다
-    map.setCenter(locPosition);
-}  
-*/
-
-
-
-
-
-
-
-
 var arr_marker = [];
 var one = 0;
+var num = 0;
 var options = {
     enableHighAccuracy: true,
     timeout: 1000,
@@ -226,6 +178,7 @@ function marker_array(locPosition) {
         arr_marker.pop();
         arr_marker.push(marker);
         showMarkers();
+        num = num + 1;
     }
 }
 
@@ -241,79 +194,6 @@ function showMarkers() {
 function hideMarkers() {
     setMarkers(null);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-// 위치정보 확인코드
-
-// html5의 geolocation으로 사용할 수 있는지 확인
-if (navigator.geolocation) {
-    
-    var options = {timeout: 5000};
-    // geolocation을 이용해서 접속 위치를 얻어옵니다
-    navigator.geolocation.watchPosition(function(position) {
-        
-        var lat = position.coords.latitude, // 위도
-            lon = position.coords.longitude; // 경도
-        
-        var locposition = new kakao.maps.latlng(lat, lon) // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-
-        // 마커 표시
-        displaymarker(locposition);
-        alert("위치정보 계속 확인중")
-      }, null, options);
-}
-
-// 현재위치 지도에 마커표시
-function displaymarker(locposition, message) {
-
-    // 마커를 생성합니다
-    var marker = new kakao.maps.marker({  
-        map: map, 
-        position: locposition
-    });
-
-
-    map.center(locposition);
-}  
-
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // 마커 이미지 정보 관련 코드
 
@@ -352,11 +232,16 @@ var imageSrc_E = 'https://coby-seo.github.io/Waterstoragetank.png', // 마커이
 
 var markerImage_E = new kakao.maps.MarkerImage(imageSrc_E, imageSize_E, imageOption_E)
 
-var imageSrc_fire = 'https://coby-seo.github.io/f3.png', // 마커이미지의 주소입니다    
-    imageSize_fire = new kakao.maps.Size(50.4, 54), // 마커이미지의 크기입니다
-    imageOption_fire = {offset: new kakao.maps.Point(21.6, 54)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+// 마커 이미지 관련(내 위치)
+var imageSrc_fire = 'https://coby-seo.github.io/circle.png', // 마커이미지의 주소입니다    
+    imageSize_fire = new kakao.maps.Size(42, 30), // 마커이미지의 크기입니다
+    imageOption_fire = {offset: new kakao.maps.Point(18, 30)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
 var markerImage_fire = new kakao.maps.MarkerImage(imageSrc_fire, imageSize_fire, imageOption_fire)
+
+
+
+
 
 
 
@@ -365,654 +250,829 @@ var markerImage_fire = new kakao.maps.MarkerImage(imageSrc_fire, imageSize_fire,
 var geocoder = new kakao.maps.services.Geocoder();
 
 
-
-
-
-
-
-
 // 마커 표시 관련 코드
-
-// 주소 목록 작성칸
-var adress_A = [
-
-    ];
-
-// 주소로 좌표를 검색합니다
-for (var i = 0; i < adress_A.length; i ++) {
-    geocoder.addressSearch(adress_A[i].title, function(result, status) {
-
-        // 정상적으로 검색이 완료됐으면 
-        if (status === kakao.maps.services.Status.OK) {
-
-
-            // 결과값으로 받은 위치를 마커로 표시합니다
-            var marker = new kakao.maps.Marker({
-                map: map,
-                position: new kakao.maps.LatLng(result[0].y, result[0].x),
-                image: markerImage_A
-         });
-
-        marker.setMap(map);
-    } 
-})};
-
-
-
 
 // 이미지 A, 좌표
 var Coordinates_A = [
-    {
-    latlng: new kakao.maps.LatLng(35.694397, 127.911029)
+{
+    title: '중앙-1 (지상)<br>거창군 거창읍 죽전4길 92 샛별중 입구앞',
+    latlng: new kakao.maps.LatLng(35.693446, 127.912032)
+},
+{
+    title: '중앙-2 (지상)<br>거창군 거창읍 죽전7길 4 가정주택 앞',
+    latlng: new kakao.maps.LatLng(35.692252, 127.912332)
 },
 {
-    latlng: new kakao.maps.LatLng(35.692459, 127.912441)
+    title: '중앙-3 (지상)<br>거창군 거창읍 죽전5길 40 가정주택 앞',
+    latlng: new kakao.maps.LatLng(35.691741, 127.912597)
 },
 {
-    latlng: new kakao.maps.LatLng(35.692187, 127.912666)
+    title: '중앙-4 (지상)<br>거창군 거창읍 죽전6길 15 가정주택 앞',
+    latlng: new kakao.maps.LatLng(35.691211, 127.913622)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6910856, 127.9134324)
+    title: '중앙-5 (지상)<br>거창군 거창읍 거열로 179 유밀건강원 앞',
+    latlng: new kakao.maps.LatLng(35.690381, 127.913158)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6904589, 127.9131558)
+    title: '중앙-6 (지상)<br>거창군 거창읍 거열로 155 거창주유소 앞',
+    latlng: new kakao.maps.LatLng(35.689684, 127.910555)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6898902, 127.9107124)
+    title: '중앙-7 (지상)<br>거창군 거창읍 죽전1길 72 거창여고 입구 앞',
+    latlng: new kakao.maps.LatLng(35.692171, 127.908456)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6929355, 127.9090063)
+    title: '중앙-8 (지상)<br>거창군 거창읍 죽전2길 55 스카이하우스 앞',
+    latlng: new kakao.maps.LatLng(35.691617, 127.909948)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6913912, 127.9097583)
+    title: '중앙-9 (지상)<br>거창군 거창읍 죽전2길 34-3 샛별주택 앞',
+    latlng: new kakao.maps.LatLng(35.691095, 127.910203)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6911508, 127.9102182)
+    title: '중앙-10 (지상)<br>거창군 거창읍 죽전4길 39 거창여중 정문 옆 ',
+    latlng: new kakao.maps.LatLng(35.691913, 127.910856)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6926669, 127.9101281)
+    title: '중앙-11 (지상)<br>거창군 거창읍 죽전1길 72 거창여고 후문 입구',
+    latlng: new kakao.maps.LatLng(35.692892, 127.910463)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6929355, 127.9090063)
+    title: '중앙-12 (지상)<br>거창군 거창읍 죽전길 93 중앙오토바이 앞',
+    latlng: new kakao.maps.LatLng(35.690162, 127.911466)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6902747, 127.9114688)
+    title: '중앙-13 (지상)<br>거창군 거창읍 아림로 53 거창초 정만 몬나니 분식 앞',
+    latlng: new kakao.maps.LatLng(35.687787, 127.909767)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6878226, 127.9097104)
+    title: '중앙-14 (지하)<br>거창군 거창읍 하동1길 38 거창초 뒤 미연출 미용실 앞',
+    latlng: new kakao.maps.LatLng(35.688478, 127.911831)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6884832, 127.9119105)
+    title: '중앙-15 (지상)<br>거창군 거창읍 하동1길 52 녹천탕 앞',
+    latlng: new kakao.maps.LatLng(35.689171, 127.911736)
 },
 {
-    latlng: new kakao.maps.LatLng(35.689097, 127.9119474)
+    title: '중앙-16 (지상)<br>거창군 거창읍 아림로2길 83 상록플라워 앞',
+    latlng: new kakao.maps.LatLng(35.689047, 127.914100)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6890617, 127.9141495)
+    title: '중앙-17 (지상)<br>거창군 거창읍 중앙로 135 고센시티 앞 인도',
+    latlng: new kakao.maps.LatLng(35.687219, 127.913228)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6872233, 127.9131104)
+    title: '중앙-18 (지하)<br>거창군 거창읍 중앙로 145 거창시장 입구 도로 앞',
+    latlng: new kakao.maps.LatLng(35.686510, 127.914369)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6874266, 127.9141501)
+    title: '중앙-19 (지상)<br>거창군 거창읍 중앙로 123-2 아식스 앞 인도',
+    latlng: new kakao.maps.LatLng(35.686785, 127.911919)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6868598, 127.9119521)
+    title: '중앙-20 (지하)<br>거창군 거창읍 하동3길 2 혜밀도예 앞',
+    latlng: new kakao.maps.LatLng(35.688265, 127.914429)
 },
 {
-    latlng: new kakao.maps.LatLng(35.68832, 127.9143535)
+    title: '중앙-21 (지상)<br>거창군 거창읍 아림로 26 All f○r y○u 앞',
+    latlng: new kakao.maps.LatLng(35.685445, 127.910974)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6853801, 127.9110555)
+    title: '중앙-22 (지상)<br>거창군 거창읍 시장1길 20 문화지원센터 앞',
+    latlng: new kakao.maps.LatLng(35.685832, 127.912322)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6857451, 127.9123234)
+    title: '중앙-23 (지하)<br>거창군 거창읍 시장길 83 덕성상사 사거리',
+    latlng: new kakao.maps.LatLng(35.686816, 127.915115)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6868234, 127.9151064)
+    title: '중앙-24 (지상)<br>거창군 거창읍 강변로 157 아림월드 건물',
+    latlng: new kakao.maps.LatLng(35.685420, 127.914160)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6855951, 127.9142184)
+    title: '중앙-25 (지상)<br>거창군 거창읍 강변로 143 커피플라워 건물',
+    latlng: new kakao.maps.LatLng(35.684972, 127.912686)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6849972, 127.9126535)
+    title: '중앙-26 (지상)<br>거창군 거창읍 시장2길 20 태백상회 건물',
+    latlng: new kakao.maps.LatLng(35.686165, 127.913464)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6860813, 127.9134787)
+    title: '김천-1 (지하)<br>거창군 거창읍 거함대로4길 82 삼미짱야식 건물',
+    latlng: new kakao.maps.LatLng(35.683250, 127.912944)
 },
 {
-    latlng: new kakao.maps.LatLng(35.681516, 127.9161505)
+    title: '김천-2 (지상)<br>거창군 거창읍 거함대로 3241 거창술도가 옆 인도상',
+    latlng: new kakao.maps.LatLng(35.681515, 127.916475)
 },
 {
-    latlng: new kakao.maps.LatLng(35.68089044, 127.9139175)
+    title: '김천-3 (지하)<br>거창군 거창읍 거함대로 3219 주공2차 선진사료 건물',
+    latlng: new kakao.maps.LatLng(35.680746, 127.913668)
 },
 {
-    latlng: new kakao.maps.LatLng(35.68127, 127.9124797)
+    title: '김천-4 (지하)<br>거창군 거창읍 수남로 2268 킹스세탁소 빨래방 앞',
+    latlng: new kakao.maps.LatLng(35.682597, 127.912059)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6817843, 127.9120041)
+    title: '김천-5 (지하)<br>거창군 거창읍 거함대로1길 44 김천리 마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.681863, 127.911974)
 },
 {
-    latlng: new kakao.maps.LatLng(35.682046, 127.911957)
+    title: '김천-6 (지상)<br>거창군 거창읍 수남로 232 스카이시티 맞은편 삼거리슈퍼 앞',
+    latlng: new kakao.maps.LatLng(35.678166, 127.911520)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6765065, 127.9102655)
+    title: '김천-7 (지상)<br>거창군 거창읍 김천2길 21 한송빌 옆 삼거리 정자 옆',
+    latlng: new kakao.maps.LatLng(35.676487, 127.910081)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6743923, 127.910786)
+    title: '김천-8 (지상)<br>거창군 거창읍 수남로 2181 거창문화센터 앞',
+    latlng: new kakao.maps.LatLng(35.673329, 127.910828)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6828239, 127.9112274)
+    title: '송정-1 (지상)<br>거창군 거창읍 강남로1길 196-6 금호추어탕 맞은편',
+    latlng: new kakao.maps.LatLng(35.682950, 127.911120)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6828574, 127.9089216)
+    title: '송정-2 (지상)<br>거창군 거창읍 강남로 104 송정주유소 후문',
+    latlng: new kakao.maps.LatLng(35.682823, 127.908963)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6820012, 127.9067617)
+    title: '송정-3 (지하)<br>거창군 거창읍 강남로2길 22 금호수석관 차고지 앞',
+    latlng: new kakao.maps.LatLng(35.682005, 127.906782)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6827348, 127.9066227)
+    title: '송정-4 (지상)<br>거창군 거창읍 강남로 80 E-1 LPG 충전소 후문',
+    latlng: new kakao.maps.LatLng(35.682502, 127.906540)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6820944, 127.9049531)
+    title: '송정-5 (지상)<br>거창군 거창읍 강남로1길 75 가정주택 정문 맞은편',
+    latlng: new kakao.maps.LatLng(35.681957, 127.904958)
 },
 {
-    latlng: new kakao.maps.LatLng(35.682372, 127.904984)
+    title: '송정-6 (지상)<br>거창군 거창읍 강남로 16-28 서경병원 택시승강장 옆',
+    latlng: new kakao.maps.LatLng(35.681181, 127.898207)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6771505, 127.8993934)
+    title: '송정-7 (지상)<br>거창군 거창읍 운정1길 70 주택 정문 좌측 30m 삼거리 앞',
+    latlng: new kakao.maps.LatLng(35.677153, 127.899630)
 },
 {
-    latlng: new kakao.maps.LatLng(35.67618804, 127.8915211)
+    title: '송정-8 (지상)<br>거창군 거창읍 운정3길 176 가정주택 앞',
+    latlng: new kakao.maps.LatLng(35.675802, 127.891554)
 },
 {
-    latlng: new kakao.maps.LatLng(35.675815, 127.891846)
+    title: '송정-9 (지상)<br>거창군 거창읍 송정2길 33 푸르지오 후문',
+    latlng: new kakao.maps.LatLng(35.682131, 127.898875)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6809363, 127.8987274)
+    title: '송정-10 (지상)<br>거창군 거창읍 거함대로 3079 서경병원 입구',
+    latlng: new kakao.maps.LatLng(35.681268, 127.898276)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6809363, 127.8987274)
+    title: '송정-11 (지상)<br>거창군 거창읍 거함대로 3079  거창보건소 주차장',
+    latlng: new kakao.maps.LatLng(35.680899, 127.898731)
 },
 {
-    latlng: new kakao.maps.LatLng(35.680871, 127.898668)
+    title: '송정-12 (지상)<br>거창군 거창읍 송정리 131 푸르지오 103동 뒤편 인도상',
+    latlng: new kakao.maps.LatLng(35.681196, 127.899792)
 },
 {
-    latlng: new kakao.maps.LatLng(35.680871, 127.898668)
+    title: '송정-13 (지상)<br>거창군 거창읍 송정리 312  거창군장애인복합문화관 뒤편 공터',
+    latlng: new kakao.maps.LatLng(35.682245, 127.897946)
 },
 {
-    latlng: new kakao.maps.LatLng(35.682717, 127.898248)
+    title: '송정-14 (지상)<br>거창군 거창읍 송정리 144  어울림빌라 삼거리',
+    latlng: new kakao.maps.LatLng(35.678938, 127.891263)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6726575, 127.916236)
+    title: '송정-15 (지상)<br>거창군 거창읍 송정리 883-3 샛단마을 입구 교차로',
+    latlng: new kakao.maps.LatLng(35.683796, 127.893195)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6722153, 127.9168109)
+    title: '정장-1 (지상)<br>거창군 거창읍 정장길 149 가정주택 앞',
+    latlng: new kakao.maps.LatLng(35.672540, 127.916284)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6713981, 127.9173077)
+    title: '정장-2 (지상)<br>거창군 거창읍 정장길 167 풍창농원 옆',
+    latlng: new kakao.maps.LatLng(35.671884, 127.916800)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6705199, 127.9182166)
+    title: '정장-3 (지상)<br>거창군 거창읍 정장길 183 전동판 가게 옆',
+    latlng: new kakao.maps.LatLng(35.671259, 127.917310)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6680293, 127.9325555)
+    title: '정장-4 (지상)<br>거창군 거창읍 정장길 211 정장마을회관 부근',
+    latlng: new kakao.maps.LatLng(35.670170, 127.918397)
 },
 {
-    latlng: new kakao.maps.LatLng(35.67061801, 127.9324925)
+    title: '정장-5 (지상)<br>거창군 거창읍 밤티재로 1262 남한정비 앞',
+    latlng: new kakao.maps.LatLng(35.667770, 127.931419)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6704659, 127.9037485)
+    title: '정장-6 (지상)<br>거창군 거창읍 거함대로 3442 국농소사무소 맞은 편',
+    latlng: new kakao.maps.LatLng(35.673839, 127.934289)
 },
 {
-    latlng: new kakao.maps.LatLng(35.66827102, 127.901267)
+    title: '정장-7 (지상)<br>거창군 거창읍 밤티재로 1288 한국철강 앞',
+    latlng: new kakao.maps.LatLng(35.670219, 127.933029)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6691801, 127.9019915)
+    title: '정장-8 (지상)<br>거창군 거창읍 밤티재로 1273-13 광산전기 앞',
+    latlng: new kakao.maps.LatLng(35.668855, 127.929343)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6909494, 127.9224971)
+    title: '장팔-1 (지상)<br>거창군 거창읍 장팔길 249 헌옷수거함 옆',
+    latlng: new kakao.maps.LatLng(35.670512, 127.903438)
 },
 {
-    latlng: new kakao.maps.LatLng(35.69073603, 127.9237826)
+    title: '장팔-2 (지상)<br>거창군 거창읍 장팔2길 92-3 입구부근',
+    latlng: new kakao.maps.LatLng(35.671259, 127.901510)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6908676, 127.9258252)
+    title: '장팔-3 (지상)<br>거창군 거창읍 장팔2길 122-1 가드레일뒤',
+    latlng: new kakao.maps.LatLng(35.667027, 127.900709)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6916303, 127.9203872)
+    title: '장팔-4 (지상)<br>거창군 거창읍 장팔2길 66 우측담벼락 부근',
+    latlng: new kakao.maps.LatLng(35.669276, 127.902028)
 },
 {
-    latlng: new kakao.maps.LatLng(35.691643, 127.9165454)
+    title: '대동-1 (지상)<br>거창군 거창읍 창동로 120 한흥스포렉스 맞은편',
+    latlng: new kakao.maps.LatLng(35.687789, 127.920873)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6926272, 127.9163997)
+    title: '대동-2 (지상)<br>거창군 거창읍 동동6길 53 빌드원리쎄 정문',
+    latlng: new kakao.maps.LatLng(35.690616, 127.922255)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6928064, 127.9174812)
+    title: '대동-3 (지상)<br>거창군 대동리 동동6길 성언숯불갈비와 베어스타운101동 사이',
+    latlng: new kakao.maps.LatLng(35.690615, 127.924171)
 },
 {
-    latlng: new kakao.maps.LatLng(35.689297, 127.924375)
+    title: '대동-4 (지상)<br>거창군 거창읍 강변로 259 주공1차 109동 앞',
+    latlng: new kakao.maps.LatLng(35.689636, 127.925174)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6909866, 127.9201348)
+    title: '대동-5 (지상)<br>거창군 거창읍 강변로 285 항아리갈비 앞',
+    latlng: new kakao.maps.LatLng(35.690991, 127.925887)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6891639, 127.919961)
+    title: '대동-6 (지상)<br>거창군 거창읍 동동5길 60-3 서진전기 앞',
+    latlng: new kakao.maps.LatLng(35.691921, 127.922931)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6887266, 127.91844)
+    title: '대동-7 (지상)<br>거창군 거창읍 동동5길 12 대장목재 앞',
+    latlng: new kakao.maps.LatLng(35.691811, 127.920421)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6900488, 127.9169261)
+    title: '대동-8 (지하)<br>거창군 거창읍 중앙로1길 153 신광이발관 앞',
+    latlng: new kakao.maps.LatLng(35.691926, 127.919322)
 },
 {
-    latlng: new kakao.maps.LatLng(35.690973, 127.9147474)
+    title: '대동-9 (지상)<br>거창군 거창읍 거열로 213 참사랑교회 입구',
+    latlng: new kakao.maps.LatLng(35.691738, 127.916777)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6916666, 127.9141224)
+    title: '대동-10 (지상)<br>거창군 거창읍 거열로3길 26 세한아트빌 주차장 앞',
+    latlng: new kakao.maps.LatLng(35.692717, 127.916284)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6890326, 127.9151859)
+    title: '대동-11 (지상)<br>거창군 거창읍 거열로3길 256 동방아트빌 우측 50m',
+    latlng: new kakao.maps.LatLng(35.693810, 127.915630)
 },
 {
-    latlng: new kakao.maps.LatLng(35.693019, 127.917484)
+    title: '대동-12 (지상)<br>거창군 거창읍 개봉길 17-5 대동주유소 뒤',
+    latlng: new kakao.maps.LatLng(35.692899, 127.917432)
 },
 {
-    latlng: new kakao.maps.LatLng(35.687097, 127.9159171)
+    title: '대동-13 (지상)<br>거창군 거창읍 거열로 234-6 신성타이어 옆 삼성하이츠빌 골목입구',
+    latlng: new kakao.maps.LatLng(35.692765, 127.918225)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6869382, 127.9183092)
+    title: '대동-14 (지상)<br>거창군 거창읍 성터길 91 개봉사거리 앞',
+    latlng: new kakao.maps.LatLng(35.694475, 127.919533)
 },
 {
-    latlng: new kakao.maps.LatLng(35.69073603, 127.9237826)
+    title: '대동-15 (지하)<br>거창군 거창읍 창동로 154 맥스토어 남쪽 10m 지점',
+    latlng: new kakao.maps.LatLng(35.690587, 127.919800)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6877719, 127.916913)
+    title: '대동-16 (지상)<br>거창군 거창읍 창동로 140 거창중 근처 왕라면 앞',
+    latlng: new kakao.maps.LatLng(35.689441, 127.919919)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6826853, 127.9205452)
+    title: '대동-17 (지상)<br>거창군 거창읍 중앙로 202 거창중 근처 동부공구철물 앞',
+    latlng: new kakao.maps.LatLng(35.688725, 127.920089)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6837157, 127.9221738)
+    title: '대동-18 (지상)<br>거창군 거창읍 중앙로2길 13 대동우체국 앞',
+    latlng: new kakao.maps.LatLng(35.688449, 127.918557)
 },
 {
-    latlng: new kakao.maps.LatLng(35.683803, 127.919235)
+    title: '대동-19 (지상)<br>거창군 거창읍 강변로9길 51 아진빌라텔 사거리',
+    latlng: new kakao.maps.LatLng(35.688817, 127.917835)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6888782, 127.9271716)
+    title: '대동-20 (지상)<br>거창군 거창읍 중앙로1길 94 화성주유소 맞은편',
+    latlng: new kakao.maps.LatLng(35.690244, 127.917094)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6837426, 127.9165957)
+    title: '대동-21 (지하)<br>거창군 거창읍 중앙로1길 99 화성주유소 사거리',
+    latlng: new kakao.maps.LatLng(35.690576, 127.917163)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6838619, 127.9144213)
+    title: '대동-22 (지상)<br>거창군 거창읍 거열로1길 6 북부식육식당 앞',
+    latlng: new kakao.maps.LatLng(35.690893, 127.914787)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6805463, 127.9126395)
+    title: '대동-23 (지상)<br>거창군 거창읍 거열로1길 25 보고슈퍼 맞은편 산내들 한정식 앞',
+    latlng: new kakao.maps.LatLng(35.691804, 127.914297)
 },
 {
-    latlng: new kakao.maps.LatLng(35.693033, 127.913822)
+    title: '대동-25 (지상)<br>거창군 거창읍 거열로1길 49 그린아파트 바동 입구 ',
+    latlng: new kakao.maps.LatLng(35.692738, 127.913726)
 },
 {
-    latlng: new kakao.maps.LatLng(35.69364409, 127.9206388)
+    title: '대동-26 (지상)<br>거창군 거창읍 거창대로 85 주은식당 옆 ',
+    latlng: new kakao.maps.LatLng(35.689108, 127.915160)
 },
 {
-    latlng: new kakao.maps.LatLng(35.69429512, 127.9227144)
+    title: '대동-27 (지상)<br>거창군 거창읍 거창대로 71 수승대 약국 앞 인도 크리스피도넛',
+    latlng: new kakao.maps.LatLng(35.687802, 127.915747)
 },
 {
-    latlng: new kakao.maps.LatLng(35.69429512, 127.9227144)
+    title: '대동-28 (지상)<br>거창군 거창읍 거창대로 68 SB게임랜드 앞 인도상',
+    latlng: new kakao.maps.LatLng(35.687688, 127.915980)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6930764, 127.9236663)
+    title: '대동-29 (지상)<br>거창군 거창읍 시장길 98 서부약국(시장방향) 앞',
+    latlng: new kakao.maps.LatLng(35.687145, 127.916015)
 },
 {
-    latlng: new kakao.maps.LatLng(35.69261562, 127.9207772)
+    title: '대동-30 (지상)<br>거창군 거창읍 강변로 177 2교입구 비타민 노래타운 입구 앞 인도상',
+    latlng: new kakao.maps.LatLng(35.686238, 127.916339)
 },
 {
-    latlng: new kakao.maps.LatLng(35.7496355, 127.913107)
+    title: '대동-31 (지상)<br>거창군 거창읍 강변로 199 남경회센터 앞',
+    latlng: new kakao.maps.LatLng(35.686824, 127.918263)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6845339, 127.9089076)
+    title: '대동-32 (지상)<br>거창군 거창읍 거창대로 56 김치과 의원 앞 인도상',
+    latlng: new kakao.maps.LatLng(35.686866, 127.916299)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6844899, 127.9056275)
+    title: '대동-33 (지상)<br>거창군 거창읍 동동6길 81 큐마트 정문우측',
+    latlng: new kakao.maps.LatLng(35.690623, 127.923960)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6837873, 127.9027967)
+    title: '대동-34 (지상)<br>거창군 거창읍 중앙로 170 육삼순두부 뒤 소공원 내 ',
+    latlng: new kakao.maps.LatLng(35.687714, 127.916938)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6869382, 127.9183092)
+    title: '대평-1 (지하)<br>거창군 거창읍 거함대로5길 7 충남석재',
+    latlng: new kakao.maps.LatLng(35.681999, 127.918479)
 },
 {
-    latlng: new kakao.maps.LatLng(35.68467949, 127.8990477)
+    title: '대평-2 (지하)<br>거창군 거창읍 거함대로5길 45 성민카 좌측',
+    latlng: new kakao.maps.LatLng(35.682513, 127.920443)
 },
 {
-    latlng: new kakao.maps.LatLng(35.687252, 127.8910834)
+    title: '대평-3 (지하)<br>거창군 거창읍 창동로 65 타이어뱅크 앞 모퉁이',
+    latlng: new kakao.maps.LatLng(35.683194, 127.922499)
 },
 {
-    latlng: new kakao.maps.LatLng(35.68944032, 127.9016376)
+    title: '대평-4 (지하)<br>거창군 거창읍 창동로 71 고속주유소 건너 인도상 30m',
+    latlng: new kakao.maps.LatLng(35.683899, 127.922368)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6881394, 127.9032776)
+    title: '대평-5 (지상)<br>거창군 거창읍 대평6길 30 세륭2차 정문 부근(현대타일상사 앞)',
+    latlng: new kakao.maps.LatLng(35.683878, 127.919208)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6873482, 127.9045977)
+    title: '대평-6 (지상)<br>거창군 거창읍 강남로 236 시외버스터미널 전화박스 앞',
+    latlng: new kakao.maps.LatLng(35.686929, 127.922775)
 },
 {
-    latlng: new kakao.maps.LatLng(35.689122, 127.927292)
+    title: '대평-7 (지상)<br>거창군 거창읍 새동네1길 30-3 새동네 놀이터 인근',
+    latlng: new kakao.maps.LatLng(35.688849, 127.927048)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6846469, 127.9002767)
+    title: '대평-8 (지상)<br>거창군 거창읍 강남로 194 고려정형외과 앞',
+    latlng: new kakao.maps.LatLng(35.685307, 127.918095)
 },
 {
-    latlng: new kakao.maps.LatLng(35.683994, 127.916569)
+    title: '대평-9 (지상)<br>거창군 거창읍 창남4길 63 참좋은 아파트 뒤 대평석유 사거리',
+    latlng: new kakao.maps.LatLng(35.683712, 127.916623)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6854182, 127.903219)
+    title: '대평-10 (지상)<br>거창군 거창읍 창남4길 25 백동물병원 골목 안쪽 강촌추어탕 사거리',
+    latlng: new kakao.maps.LatLng(35.683821, 127.914611)
 },
 {
-    latlng: new kakao.maps.LatLng(35.68448726, 127.9025761)
+    title: '대평-11 (지상)<br>거창군 거창읍 거함대로4길 48 성당입구 상아빌딩 사거리',
+    latlng: new kakao.maps.LatLng(35.682694, 127.914722)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6852947, 127.906665)
+    title: '대평-12 (지하)<br>거창군 거창읍 거함대로 3207 서흥여객 앞 맞은편 금천탕 인도',
+    latlng: new kakao.maps.LatLng(35.680367, 127.912257)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6855555, 127.9082645)
+    title: '대평-13 (지상)<br>거창군 거창읍 창남2길 10 반대편 만남의광장 앞',
+    latlng: new kakao.maps.LatLng(35.681366, 127.916944)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6860483, 127.9102913)
+    title: '대평-14 (지상)<br>거창군 거창읍 수남로 2250 우리렌트카 맞은편',
+    latlng: new kakao.maps.LatLng(35.679828, 127.911964)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6881653, 127.9074881)
+    title: '소만-1 (지상)<br>거창군 거창읍 소만3길 14 건강보험공단 옆 인도상',
+    latlng: new kakao.maps.LatLng(35.693907, 127.920492)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6859823, 127.9065107)
+    title: '소만-2 (지하)<br>거창군 거창읍 소만1길 49 꿈꾸는별어린이집에서 쉐보레 경정비 방향20m',
+    latlng: new kakao.maps.LatLng(35.694888, 127.920829)
 },
 {
-    latlng: new kakao.maps.LatLng(35.694123, 127.922941)
+    title: '소만-3 (지상)<br>거창군 거창읍 소만2길 62 소만주공아파트 입구 인도상',
+    latlng: new kakao.maps.LatLng(35.695567, 127.921953)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6832741, 127.9129327)
+    title: '소만-4 (지하)<br>거창군 거창읍 소만3길 56 국민연금 앞 인도상',
+    latlng: new kakao.maps.LatLng(35.693893, 127.922405)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6894925, 127.9092853)
+    title: '소만-5 (지상)<br>거창군 거창읍 소만2길 62 소만주공 103동 인근',
+    latlng: new kakao.maps.LatLng(35.695228, 127.923043)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6899852, 127.9087257)
+    title: '소만-6 (지상)<br>거창군 거창읍 소만4길 33 순복음교회 입구 인도상',
+    latlng: new kakao.maps.LatLng(35.694139, 127.924070)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6899852, 127.9087257)
+    title: '소만-7 (지하)<br>거창군 거창읍 소만4길 22 은진어린이집 옆 도로상',
+    latlng: new kakao.maps.LatLng(35.692957, 127.923997)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6906672, 127.9060423)
+    title: '소만-8 (지하)<br>거창군 거창읍 소만1길 15-7 초록원룸 입구 도로상',
+    latlng: new kakao.maps.LatLng(35.692732, 127.920900)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6900983, 127.9057932)
+    title: '양평-1 (지상)<br>거창군 거창읍 노혜2길 15 노혜마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.699920, 127.930202)
 },
 {
-    latlng: new kakao.maps.LatLng(35.684719, 127.910587)
+    title: '상림-1 (지하)<br>거창군 거창읍 강변로 123 한성시티 앞',
+    latlng: new kakao.maps.LatLng(35.684415, 127.910633)
 },
 {
-    latlng: new kakao.maps.LatLng(35.689371, 127.9070956)
+    title: '상림-2 (지하)<br>거창군 거창읍 강변로 109 침류정 앞',
+    latlng: new kakao.maps.LatLng(35.684428, 127.909222)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6890829, 127.9075611)
+    title: '상림-3 (지상)<br>거창군 거창읍 강변로 89 YMCA 인근',
+    latlng: new kakao.maps.LatLng(35.684121, 127.906909)
 },
 {
-    latlng: new kakao.maps.LatLng(35.68937967, 127.9020347)
+    title: '상림-4 (지상)<br>거창군 거창읍 상동길 6 가온휘트니스 ',
+    latlng: new kakao.maps.LatLng(35.684072, 127.905639)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6919101, 127.9025404)
+    title: '상림-5 (지상)<br>거창군 거창읍 강변로 51 원상동 마을회관',
+    latlng: new kakao.maps.LatLng(35.683755, 127.902835)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6933552, 127.9028171)
+    title: '상림-6 (지상)<br>거창군 거창읍 강변로 39 선우하이파크',
+    latlng: new kakao.maps.LatLng(35.683623, 127.901350)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6933552, 127.9028171)
+    title: '상림-7 (지상)<br>거창군 거창읍 강변로 19 상림빌라',
+    latlng: new kakao.maps.LatLng(35.683496, 127.899573)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6926431, 127.9038345)
+    title: '상림-8 (지상)<br>거창군 거창읍 공수들1길 1 가정주택 앞(구.까치막창)',
+    latlng: new kakao.maps.LatLng(35.684594, 127.900305)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6884495, 127.9054913)
+    title: '상림-9 (지상)<br>거창군 거창읍 거열로26 거창가구백화점 앞',
+    latlng: new kakao.maps.LatLng(35.684676, 127.898936)
 },
 {
-    latlng: new kakao.maps.LatLng(35.692019, 127.9080803)
+    title: '상림-10 (지상)<br>거창군 거창읍 거열로9길 158 거열빌라 입구',
+    latlng: new kakao.maps.LatLng(35.686811, 127.894332)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6957419, 127.9061004)
+    title: '상림-11 (지하)<br>거창군 거창읍 거열로 42 르노삼성자동차 대리점 앞',
+    latlng: new kakao.maps.LatLng(35.685943, 127.899862)
 },
 {
-    latlng: new kakao.maps.LatLng(35.7033244, 127.8976013)
+    title: '상림-12 (지상)<br>거창군 거창읍 거열로7길 29 대경아파트 105동 앞 인도상',
+    latlng: new kakao.maps.LatLng(35.688067, 127.901418)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6914882, 127.903595)
+    title: '상림-13 (지상)<br>거창군 거창읍 공수들4길 44 상동주유소 앞 인도',
+    latlng: new kakao.maps.LatLng(35.688217, 127.902670)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6911323, 127.8940204)
+    title: '상림-14 (지상)<br>거창군 거창읍 거열로 86 덕유문고와 읍사무소 사이 인도',
+    latlng: new kakao.maps.LatLng(35.688027, 127.903448)
 },
 {
-    latlng: new kakao.maps.LatLng(35.8054989, 127.91798)
+    title: '상림-15 (지상)<br>거창군 거창읍 상동길 48 이해숙머리방 앞',
+    latlng: new kakao.maps.LatLng(35.688008, 127.904321)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6431884, 127.910199)
+    title: '상림-16 (지하)<br>거창군 거창읍 상동7길 3 대구왕볼찜 인근',
+    latlng: new kakao.maps.LatLng(35.687332, 127.904484)
 },
 {
-    latlng: new kakao.maps.LatLng(35.65524089, 127.9327334)
+    title: '상림-17 (지상)<br>거창군 거창읍 공수들3길 45 금계찜닭 인근',
+    latlng: new kakao.maps.LatLng(35.686937, 127.902278)
 },
 {
-    latlng: new kakao.maps.LatLng(35.65325475, 127.9341016)
+    title: '상림-18 (지상)<br>거창군 거창읍 공수들1길 59 마루찻집 인근',
+    latlng: new kakao.maps.LatLng(35.687178, 127.901079)
 },
 {
-    latlng: new kakao.maps.LatLng(35.65096917, 127.9257007)
+    title: '상림-19 (지하)<br>거창군 거창읍 공수들1길 1 청림하이빌 인근',
+    latlng: new kakao.maps.LatLng(35.685631, 127.901824)
 },
 {
-    latlng: new kakao.maps.LatLng(35.65622955, 127.9270159)
+    title: '상림-20 (지하)<br>거창군 거창읍 공수들7길 62 밀길따라 인근',
+    latlng: new kakao.maps.LatLng(35.686143, 127.903340)
 },
 {
-    latlng: new kakao.maps.LatLng(35.65308815, 127.9300096)
+    title: '상림-21 (지상)<br>거창군 거창읍 상동길 71 농업기반공사 인근',
+    latlng: new kakao.maps.LatLng(35.686478, 127.904671)
 },
 {
-    latlng: new kakao.maps.LatLng(35.65327141, 127.9277502)
+    title: '상림-22 (지하)<br>거창군 거창읍 공수들8길 53 오송빌라 입구',
+    latlng: new kakao.maps.LatLng(35.685455, 127.903391)
 },
 {
-    latlng: new kakao.maps.LatLng(35.567945, 127.9251465)
+    title: '상림-23 (지상)<br>거창군 거창읍 중앙로 41 상림할인마트 인근',
+    latlng: new kakao.maps.LatLng(35.684778, 127.903368)
 },
 {
-    latlng: new kakao.maps.LatLng(35.7013813, 127.8548365)
+    title: '상림-24 (지상)<br>거창군 거창읍 중앙로 36-2 상림에어컨 인근',
+    latlng: new kakao.maps.LatLng(35.684524, 127.902465)
 },
 {
-    latlng: new kakao.maps.LatLng(35.749173, 127.8327774)
+    title: '상림-25 (지상)<br>거창군 거창읍 상동길 15 세븐일레븐 인근',
+    latlng: new kakao.maps.LatLng(35.685098, 127.905174)
 },
 {
-    latlng: new kakao.maps.LatLng(35.749173, 127.8327774)
+    title: '상림-26 (지상)<br>거창군 거창읍 중앙로 73 중앙표구사 인근',
+    latlng: new kakao.maps.LatLng(35.685163, 127.906696)
 },
 {
-    latlng: new kakao.maps.LatLng(35.8781081, 127.8545237)
+    title: '상림-27 (지상)<br>거창군 거창읍 상동2길 2 상동약국 인근',
+    latlng: new kakao.maps.LatLng(35.685371, 127.908113)
 },
 {
-    latlng: new kakao.maps.LatLng(35.7102401, 128.0128907)
+    title: '상림-28 (지상)<br>거창군 거창읍 상동2길 98 거창경찰서 앞',
+    latlng: new kakao.maps.LatLng(35.685694, 127.909272)
 },
 {
-    latlng: new kakao.maps.LatLng(35.71051161, 128.0156521)
+    title: '상림-29 (지상)<br>거창군 거창읍 중앙로 108-1 ○K 미용재료 인근',
+    latlng: new kakao.maps.LatLng(35.686279, 127.910241)
 },
 {
-    latlng: new kakao.maps.LatLng(35.7093685, 128.0134309)
+    title: '상림-30 (지상)<br>거창군 거창읍 중앙로 103 거창군청 앞 ',
+    latlng: new kakao.maps.LatLng(35.686243, 127.910232)
 },
 {
-    latlng: new kakao.maps.LatLng(35.7133234, 127.9994066)
+    title: '상림-31 (지하)<br>거창군 거창읍 상동2길 63 렘브란트 미술수학 인근',
+    latlng: new kakao.maps.LatLng(35.688332, 127.907421)
 },
 {
-    latlng: new kakao.maps.LatLng(35.7109637, 128.0147309)
+    title: '상림-32 (지상)<br>거창군 거창읍 상동8길 27 혜성여중 인근',
+    latlng: new kakao.maps.LatLng(35.686024, 127.906647)
 },
 {
-    latlng: new kakao.maps.LatLng(35.70703036, 128.0168013)
+    title: '상림-33 (지상)<br>거창군 거창읍 상동8길 3 땅땅치킨 앞',
+    latlng: new kakao.maps.LatLng(35.685804, 127.905049)
 },
 {
-    latlng: new kakao.maps.LatLng(35.71053194, 128.0175132)
+    title: '상림-34 (지상)<br>거창군 거창읍 상동5길 31-9 벽돌집 앞',
+    latlng: new kakao.maps.LatLng(35.688048, 127.905884)
 },
 {
-    latlng: new kakao.maps.LatLng(35.7099535, 128.0192464)
+    title: '상림-35 (지상)<br>거창군 거창읍 거열로 116 경남은행 앞',
+    latlng: new kakao.maps.LatLng(35.688669, 127.906201)
 },
 {
-    latlng: new kakao.maps.LatLng(35.7004126, 128.0196839)
+    title: '상림-36 (지상)<br>거창군 거창읍 죽전1길 6 88대패삼겹살 앞',
+    latlng: new kakao.maps.LatLng(35.689476, 127.909169)
 },
 {
-    latlng: new kakao.maps.LatLng(35.7085463, 128.0146034)
+    title: '상림-37 (지상)<br>거창군 거창읍 죽전길 44 아림법무사 인근',
+    latlng: new kakao.maps.LatLng(35.690021, 127.908761)
 },
 {
-    latlng: new kakao.maps.LatLng(35.7078053, 128.015169)
+    title: '상림-38 (지상)<br>거창군 거창읍 죽전길 44 법원정문 삼거리 인근',
+    latlng: new kakao.maps.LatLng(35.690698, 127.908506)
 },
 {
-    latlng: new kakao.maps.LatLng(35.71043284, 128.0155893)
+    title: '상림-39 (지상)<br>거창군 거창읍 거열로6길 69 충혼탑 앞',
+    latlng: new kakao.maps.LatLng(35.690707, 127.906164)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6705375, 127.9923639)
+    title: '상림-40 (지상)<br>거창군 거창읍 거열로6길 56-3 순살이 양념치킨 앞',
+    latlng: new kakao.maps.LatLng(35.690098, 127.905662)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6705375, 127.9923639)
+    title: '상림-41 (지상)<br>거창군 거창읍 거열로6길 70 대성고 운동장 앞',
+    latlng: new kakao.maps.LatLng(35.689437, 127.904048)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6705375, 127.9923639)
+    title: '상림-42 (지상)<br>거창군 거창읍 거열로 12 아림초등학교 인근',
+    latlng: new kakao.maps.LatLng(35.689006, 127.905491)
 },
 {
-    latlng: new kakao.maps.LatLng(35.7102401, 128.0128907)
+    title: '상림-43 (지하)<br>거창군 거창읍 거열로4길 7-10 좋은그림미술학원 인근',
+    latlng: new kakao.maps.LatLng(35.689313, 127.907289)
 },
 {
-    latlng: new kakao.maps.LatLng(35.82635245, 127.9847553)
+    title: '상림-44 (지상)<br>거창군 거창읍 거열로 125 동방식육식당 앞',
+    latlng: new kakao.maps.LatLng(35.689020, 127.907593)
 },
 {
-    latlng: new kakao.maps.LatLng(35.67288366, 127.9345954)
+    title: '상림-45 (지상)<br>거창군 거창읍 거열로7길 25 대경상가 앞',
+    latlng: new kakao.maps.LatLng(35.689329, 127.902292)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6683751, 127.9304201)
+    title: '상림-46 (지상)<br>거창군 거창읍 성산길 1 대성중 인근',
+    latlng: new kakao.maps.LatLng(35.690506, 127.902102)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6671029, 127.9003791)
+    title: '상림-47 (지상)<br>거창군 거창읍 성산길 36 대성고 기숙사 ',
+    latlng: new kakao.maps.LatLng(35.690887, 127.903805)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6878774, 127.9208561)
+    title: '상림-48 (지상)<br>거창군 거창읍 성산길 36 중앙고등학교 인근 ',
+    latlng: new kakao.maps.LatLng(35.692820, 127.902664)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6890288, 127.9243132)
+    title: '상림-49 (지상)<br>거창군 거창읍 성산길 34 향교 할매묵집 인근',
+    latlng: new kakao.maps.LatLng(35.692320, 127.904650)
 },
 {
-    latlng: new kakao.maps.LatLng(35.69181993, 127.9192302)
+    title: '가지-1 (지상)<br>거창군 거창읍 거열로4길 82 궁전맨션 앞',
+    latlng: new kakao.maps.LatLng(35.692324, 127.907553)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6938011, 127.9155675)
+    title: '가지-2 (지상)<br>거창군 거창읍 거열로4길 168 대동교회 앞',
+    latlng: new kakao.maps.LatLng(35.692334, 127.907533)
 },
 {
-    latlng: new kakao.maps.LatLng(35.69272022, 127.9184097)
+    title: '가지-3 (지상)<br>거창군 거창읍 지내길 62 지내마을회관 인근',
+    latlng: new kakao.maps.LatLng(35.703249, 127.897326)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6895714, 127.9201296)
+    title: '가지-4 (지상)<br>거창군 거창읍 교촌길 61 충효회관 인근',
+    latlng: new kakao.maps.LatLng(35.691387, 127.904182)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6889784, 127.9175249)
+    title: '가지-5 (지상)<br>거창군 거창읍 성산길 241 성산마을입구 인근 ',
+    latlng: new kakao.maps.LatLng(35.690953, 127.894392)
 },
 {
-    latlng: new kakao.maps.LatLng(35.652754, 127.930255)
+    title: '남상-2 (지상)<br>거창군 남상면 홍덕길 22 KC프레쉬 맞은편',
+    latlng: new kakao.maps.LatLng(35.655772, 127.933115)
 },
 {
-    latlng: new kakao.maps.LatLng(35.68616954, 127.9161032)
+    title: '남상-3 (지상)<br>거창군 남상면 홍덕길 77 홍덕하이코드 앞',
+    latlng: new kakao.maps.LatLng(35.652901, 127.932965)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6865377, 127.9165607)
+    title: '남상-4 (지상)<br>거창군 남상면 일반산업길 276 대덕기술 옆',
+    latlng: new kakao.maps.LatLng(35.650597, 127.927095)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6822351, 127.9186013)
+    title: '남상-5 (지상)<br>거창군 남상면 일반산업길 160 일반산업길 도로상',
+    latlng: new kakao.maps.LatLng(35.656205, 127.927452)
 },
 {
-    latlng: new kakao.maps.LatLng(35.68321645, 127.9223217)
+    title: '남상-6 (지상)<br>거창군 남상면 승강기길 80 승강기 센터 인근',
+    latlng: new kakao.maps.LatLng(35.653333, 127.930683)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6866604, 127.9220748)
+    title: '남상-7 (지상)<br>거창군 남상면 일반산업길 225 일반산업길 도로상 ',
+    latlng: new kakao.maps.LatLng(35.653212, 127.927260)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6938529, 127.922806)
+    title: '위천- 1  (지상)<br>거창군 위천면 원학길 321 위천119안전센터 내',
+    latlng: new kakao.maps.LatLng(35.749200, 127.832930)
 },
 {
-    latlng: new kakao.maps.LatLng(35.7000697, 127.9306157)
+    title: '위천- 2  (지상)<br>거창군 위천면 원학길 370 전봇대 옆',
+    latlng: new kakao.maps.LatLng(35.750638, 127.831407)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6841718, 127.906926)
+    title: '마상-1 (지상)<br>거창군 가조면 가조가야로 1079 가조파출소 앞',
+    latlng: new kakao.maps.LatLng(35.709869, 128.012986)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6837041, 127.9013738)
+    title: '마상-2 (지상)<br>거창군 가조면 지산로 1467 세븐일레븐편의점 옆',
+    latlng: new kakao.maps.LatLng(35.707510, 128.016060)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6846469, 127.9002767)
+    title: '마상-3 (지하)<br>거창군 가조면 마상3길 5 개인택시 앞',
+    latlng: new kakao.maps.LatLng(35.710347, 128.015788)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6858581, 127.9000167)
+    title: '마상-4 (지상)<br>거창군 가조면 마상 5길 6 이종무씨 댁 앞 ',
+    latlng: new kakao.maps.LatLng(35.707038, 128.014155)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6880895, 127.9028025)
+    title: '마상-5 (지상)<br>거창군 가조면 마상5길 134-3 농협건조실 앞 ',
+    latlng: new kakao.maps.LatLng(35.708780, 128.013880)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6879349, 127.9044578)
+    title: '마상-6 (지상)<br>거창군 가조면 마상1길 6 가조초등학교 서편담 전봇대 옆 ',
+    latlng: new kakao.maps.LatLng(35.711785, 128.012877)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6871442, 127.9009597)
+    title: '마상-7 (지상)<br>거창군 가조면 가조가야로 942 마을놀이터 내',
+    latlng: new kakao.maps.LatLng(35.713239, 127.999350)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6859869, 127.903194)
+    title: '마상-8 (지상)<br>거창군 가조면 장군봉 1길 8 가조면사무소 앞',
+    latlng: new kakao.maps.LatLng(35.710288, 128.014715)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6848342, 127.9033489)
+    title: '마상-9 (지하)<br>거창군 가조면 마상2길 25 가조어린이집 앞',
+    latlng: new kakao.maps.LatLng(35.712614, 128.013947)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6850789, 127.9050445)
+    title: '마상-10 (지상)<br>거창군 가조면 지산로 1458 건너편 안내도 입간판 아래',
+    latlng: new kakao.maps.LatLng(35.707026, 128.016625)
 },
 {
-    latlng: new kakao.maps.LatLng(35.709047, 128.016161)
+    title: '마상-11 (지하)<br>거창군 가조면 지산로 1480 협동이발소 앞',
+    latlng: new kakao.maps.LatLng(35.708846, 128.015983)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6866286, 127.91002)
+    title: '마상-12 (지상)<br>거창군 가조면 월포2길 3  가조상회 옆',
+    latlng: new kakao.maps.LatLng(35.710380, 128.017397)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6858028, 127.9051365)
+    title: '마상-13 (지하)<br>거창군 가조면 장군봉1길 7 가조공인중개사사무소 앞',
+    latlng: new kakao.maps.LatLng(35.710256, 128.014466)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6885918, 127.9065286)
+    title: '수월-14 (지상)<br>거창군 가조면 가조가야로 1134 가조2교 인근',
+    latlng: new kakao.maps.LatLng(35.710180, 128.019625)
 },
 {
-    latlng: new kakao.maps.LatLng(35.8148132, 127.8714331)
+    title: '일부-15 (지상)<br>거창군 가조면 지산로 1376 도산마을 입구',
+    latlng: new kakao.maps.LatLng(35.700102, 128.019808)
 },
 {
-    latlng: new kakao.maps.LatLng(35.7482937, 127.8324387)
+    title: '장기-16 (지하)<br>거창군 가조면 가조가야로 949 장기삼거리 앞',
+    latlng: new kakao.maps.LatLng(35.713765, 128.000024)
 },
 {
-    latlng: new kakao.maps.LatLng(35.7507188, 127.8314539)
+    title: '마상-17 (지상)<br>거창군 가조면 마상4길 61 가조교회 앞',
+    latlng: new kakao.maps.LatLng(35.708824, 128.014927)
 },
 {
-    latlng: new kakao.maps.LatLng(35.708057, 128.015104)
+    title: '마상-18 (지상)<br>거창군 가조면 마상4길 44 중마2구 경로당 인근',
+    latlng: new kakao.maps.LatLng(35.707470, 128.015180)
 },
 {
-    latlng: new kakao.maps.LatLng(35.7075214, 128.0148275)
+    title: '마상-19 (지상)<br>거창군 가조면 장군봉 1길 91 축사 옆 ',
+    latlng: new kakao.maps.LatLng(35.714408, 128.014713)
 },
 {
-    latlng: new kakao.maps.LatLng(35.71008577, 128.0131406)
+    title: '마상-20 (지상)<br>거창군 가조면 가조가야로 1103-1 세탁소 앞',
+    latlng: new kakao.maps.LatLng(35.710379, 128.015650)
 },
 {
-    latlng: new kakao.maps.LatLng(35.7126304, 128.0137962)
+    title: '일부-21 (지상)<br>거창군 가조면 온천길 44 아이원 모텔 부근',
+    latlng: new kakao.maps.LatLng(35.696327, 128.022405)
 },
 {
-    latlng: new kakao.maps.LatLng(35.7087633, 128.0160987)
+    title: '일부-22 (지상)<br>거창군 가조면 지산로 1343 더우내다리 부근',
+    latlng: new kakao.maps.LatLng(35.696867, 128.021053)
 },
 {
-    latlng: new kakao.maps.LatLng(35.7105086, 128.0144379)
+    title: '일부-23 (지상)<br>거창군 가조면 온천길 108-29 테마모텔 진입로',
+    latlng: new kakao.maps.LatLng(35.698530, 128.025002)
 },
 {
-    latlng: new kakao.maps.LatLng(35.71406564, 127.9997755)
+    title: '일부-24 (지상)<br>가조면 지산로  한수교부근',
+    latlng: new kakao.maps.LatLng(35.696800, 128.021100)
 },
 {
-    latlng: new kakao.maps.LatLng(35.7142347, 128.0145171)
+    title: '일부-25 (지상)<br>거창군 가조면 지산로 1343  온천 반대편 밭 인근',
+    latlng: new kakao.maps.LatLng(35.695620, 128.017700)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6960953, 128.0233933)
+    title: '일부-26 (지상)<br>거창군 가조면 온천길 161 백두산천지온천 건너편 전봇대 인근',
+    latlng: new kakao.maps.LatLng(35.698778, 128.022423)
 }
 ];
 
@@ -1023,19 +1083,1877 @@ for (var i = 0; i < Coordinates_A.length; i ++) {
     var marker = new kakao.maps.Marker({
         map: map, // 마커를 표시할 지도
         position: Coordinates_A[i].latlng, // 마커를 표시할 위치
-        title : Coordinates_A[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+        clickable: true,
         image : markerImage_A // 마커 이미지 
     });
+
+    var iwContent = Coordinates_A[i].title,
+        iwRemovable = true;
+
+    var infowindow = new kakao.maps.InfoWindow({
+        content: iwContent,
+        removable: iwRemovable
+    });
+
+    kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+}
+
+// 이미지 B, 좌표
+var Coordinates_B = [
+{
+    title: '정장-1 (농촌형 소화전)<br>거창군 거창읍 정장2길 5 ',
+    latlng: new kakao.maps.LatLng(35.671147, 127.916255)
+},
+{
+    title: '정장-2 (농촌형 소화전)<br>거창군 거창읍 정장2길 21 ',
+    latlng: new kakao.maps.LatLng(35.670912, 127.918275)
+},
+{
+    title: '정장-3 (농촌형 소화전)<br>거창군 거창읍 정장길 218 ',
+    latlng: new kakao.maps.LatLng(35.670219, 127.918367)
+},
+{
+    title: '정장-4 (농촌형 소화전)<br>거창군 거창읍 정장길 186-10 ',
+    latlng: new kakao.maps.LatLng(35.670829, 127.918410)
+},
+{
+    title: '정장-5 (농촌형 소화전)<br>거창군 거창읍 정장1길 37 ',
+    latlng: new kakao.maps.LatLng(35.670753, 127.915631)
+},
+{
+    title: '운정-1 (농촌형 소화전)<br>거창군 거창읍 운정1길 69 ',
+    latlng: new kakao.maps.LatLng(35.67715, 127.899613)
+},
+{
+    title: '운정-2 (농촌형 소화전)<br>거창군 거창읍 운정1길 64-19 집앞',
+    latlng: new kakao.maps.LatLng(35.677544, 127.899294)
+},
+{
+    title: '운정-3 (농촌형 소화전)<br>거창군 거창읍 운겅2길 70 ',
+    latlng: new kakao.maps.LatLng(35.676664, 127.898519)
+},
+{
+    title: '국농소-1 (농촌형 소화전)<br>거창군 거창읍 국농소1길 37-6 ',
+    latlng: new kakao.maps.LatLng(35.674129, 127.933477)
+},
+{
+    title: '국농소-2 (농촌형 소화전)<br>거창군 거창읍 국농소1길 11 ',
+    latlng: new kakao.maps.LatLng(35.673964, 127.934224)
+},
+{
+    title: '국농소-3 (농촌형 소화전)<br>거창군 거창읍 국농소2길 48 ',
+    latlng: new kakao.maps.LatLng(35.67481, 127.934934)
+},
+{
+    title: '국농소-4 (농촌형 소화전)<br>거창군 거창읍 국농소2길 38-1 ',
+    latlng: new kakao.maps.LatLng(35.674401, 127.935015)
+},
+{
+    title: '국농소-5 (농촌형 소화전)<br>거창군 거창읍 거함대로 3445-33 ',
+    latlng: new kakao.maps.LatLng(35.674119, 127.934724)
+},
+{
+    title: '김용-1 (농촌형 소화전)<br>거창군 거창읍 김용길 50 ',
+    latlng: new kakao.maps.LatLng(35.688112, 127.93872)
+},
+{
+    title: '의동-1 (농촌형 소화전)<br>거창군 거창읍 의동1길 71-6 ',
+    latlng: new kakao.maps.LatLng(35.716412, 127.929519)
+},
+{
+    title: '의동-2 (농촌형 소화전)<br>거창군 거창읍 의동2길 14 ',
+    latlng: new kakao.maps.LatLng(35.716026, 127.929869)
+},
+{
+    title: '의동-3 (농촌형 소화전)<br>거창군 거창읍 의동2길 24 집앞',
+    latlng: new kakao.maps.LatLng(35.716412, 127.930469)
+},
+{
+    title: '의동-4 (농촌형 소화전)<br>거창군 거창읍 의동2길 3 ',
+    latlng: new kakao.maps.LatLng(35.716085, 127.929328)
+},
+{
+    title: '의동-5 (농촌형 소화전)<br>거창군 거창읍 의동1길 85-2 ',
+    latlng: new kakao.maps.LatLng(35.71662, 127.930192)
+},
+{
+    title: '양평-1 (농촌형 소화전)<br>거창군 거창읍 양평1길 89 ',
+    latlng: new kakao.maps.LatLng(35.703928, 127.928556)
+},
+{
+    title: '양평-2 (농촌형 소화전)<br>거창군 거창읍 양평2길 26 ',
+    latlng: new kakao.maps.LatLng(35.704444, 127.927439)
+},
+{
+    title: '당동-1 (농촌형 소화전)<br>거창군 거창읍 당동 2길 27 ',
+    latlng: new kakao.maps.LatLng(35.713556, 127.939959)
+},
+{
+    title: '당동-2 (농촌형 소화전)<br>거창군 거창읍 당동 1길 406-10 ',
+    latlng: new kakao.maps.LatLng(35.717812, 127.944179)
+},
+{
+    title: '춘전-1 (농촌형 소화전)<br>거창군 남상면 수남로 941  강종열 집 앞',
+    latlng: new kakao.maps.LatLng(35.583017, 127.853083)
+},
+{
+    title: '춘전-2 (농촌형 소화전)<br>거창군 남상면 춘전길 4 ',
+    latlng: new kakao.maps.LatLng(35.582013, 127.852893)
+},
+{
+    title: '춘전-3 (농촌형 소화전)<br>거창군 남상면 수남로 1019 ',
+    latlng: new kakao.maps.LatLng(35.588604, 127.85798)
+},
+{
+    title: '진목-1 (농촌형 소화전)<br>거창군 남상면 진목리 새마을창고 앞',
+    latlng: new kakao.maps.LatLng(35.594719, 127.870847)
+},
+{
+    title: '진목-2 (농촌형 소화전)<br>거창군 남상면 진목1길 87  이덕이 집 앞',
+    latlng: new kakao.maps.LatLng(35.596844, 127.867918)
+},
+{
+    title: '남진-1 (농촌형 소화전)<br>거창군 남상면 남진1길 52 배경순 집 앞',
+    latlng: new kakao.maps.LatLng(35.596673, 127.873571)
+},
+{
+    title: '남진-2 (농촌형 소화전)<br>거창군 남상면 남진2길 35-4  강병선 집 앞',
+    latlng: new kakao.maps.LatLng(35.595688, 127.873448)
+},
+{
+    title: '남진-3 (농촌형 소화전)<br>거창군 남상면 남진1길 130  김옥여 집 앞',
+    latlng: new kakao.maps.LatLng(35.599113, 127.876565)
+},
+{
+    title: '동령-1 (농촌형 소화전)<br>거창군 남상면 동령길 36  김재택 축사 앞',
+    latlng: new kakao.maps.LatLng(35.606424, 127.877045)
+},
+{
+    title: '동령-2 (농촌형 소화전)<br>거창군 남상면 동령길 38 유병중 집 뒤',
+    latlng: new kakao.maps.LatLng(35.606653, 127.876501)
+},
+{
+    title: '신기-1 (농촌형 소화전)<br>거창군 남상면 신기길 42-6 마을회관 뒤',
+    latlng: new kakao.maps.LatLng(35.612433, 127.879685)
+},
+{
+    title: '신기-2 (농촌형 소화전)<br>거창군 남상면 수남로 1371-20  정현석 집 앞',
+    latlng: new kakao.maps.LatLng(35.610764, 127.878273)
+},
+{
+    title: '묵동-1 (농촌형 소화전)<br>거창군 남상면 묵동1길 80 묵동마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.623062, 127.893298)
+},
+{
+    title: '묵동-2 (농촌형 소화전)<br>거창군 남상면 목동1길 95 신인식 집 앞',
+    latlng: new kakao.maps.LatLng(35.622665, 127.893736)
+},
+{
+    title: '오계 (농촌형 소화전)<br>거창군 남상면 오계길 250-10 담장 앞',
+    latlng: new kakao.maps.LatLng(35.624388, 127.902536)
+},
+{
+    title: '상매 (농촌형 소화전)<br>거창군 남상면 상매1길 85 마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.628095, 127.910278)
+},
+{
+    title: '매산-1 (농촌형 소화전)<br>거창군 남상면 매산1길 36-5 이임득 집 앞',
+    latlng: new kakao.maps.LatLng(35.632244, 127.903791)
+},
+{
+    title: '매산-2 (농촌형 소화전)<br>거창군 남상면 매산2길 12-7  김효문 집 앞',
+    latlng: new kakao.maps.LatLng(35.631692, 127.904814)
+},
+{
+    title: '매산-3 (농촌형 소화전)<br>거창군 남상면 매산2길 18 전춘선 집 앞',
+    latlng: new kakao.maps.LatLng(35.631307, 127.905467)
+},
+{
+    title: '매산-4 (농촌형 소화전)<br>거창군 남상면 감악산로 972 마을회관 앞 (매산교 부근)',
+    latlng: new kakao.maps.LatLng(35.631927, 127.905504)
+},
+{
+    title: '매산-5 (농촌형 소화전)<br>거창군 남상면 매산1길 72 김효열 집 앞 ',
+    latlng: new kakao.maps.LatLng(35.631348, 127.905437)
+},
+{
+    title: '무촌-1 (농촌형 소화전)<br>거창군 남상면 남상면 수남로 1765 신성도 집 앞',
+    latlng: new kakao.maps.LatLng(35.639422, 127.903789)
+},
+{
+    title: '무촌-2 (농촌형 소화전)<br>거창군 남상면 수남로 1789-27 신홍재 집 앞',
+    latlng: new kakao.maps.LatLng(35.64109, 127.905151)
+},
+{
+    title: '무촌-3 (농촌형 소화전)<br>거창군 남상면 무촌길 18-10 허중근 집 앞',
+    latlng: new kakao.maps.LatLng(35.640827, 127.904812)
+},
+{
+    title: '무촌-4 (농촌형 소화전)<br>거창군 남상면 수남로 1800-19 마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.640887, 127.906891)
+},
+{
+    title: '무촌-5 (농촌형 소화전)<br>거창군 남상면 무촌길 8-3 무촌상회 안쪽',
+    latlng: new kakao.maps.LatLng(35.640357, 127.904799)
+},
+{
+    title: '괴화 (농촌형 소화전)<br>거창군 남상면 괴화길 13-2 ',
+    latlng: new kakao.maps.LatLng(35.644754, 127.920439)
+},
+{
+    title: '청림 (농촌형 소화전)<br>거창군 남상면 청림1길 17 청림마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.646358, 127.92592)
+},
+{
+    title: '한산 (농촌형 소화전)<br>거창군 남상면 가곡길 175  가곡경로당 앞',
+    latlng: new kakao.maps.LatLng(35.640145, 127.932234)
+},
+{
+    title: '대현-1 (농촌형 소화전)<br>거창군 남상면 대산1길 6 김동헌 집 앞',
+    latlng: new kakao.maps.LatLng(35.651099, 127.937503)
+},
+{
+    title: '대현-2 (농촌형 소화전)<br>거창군 남상면 밤티재로 1061 앞',
+    latlng: new kakao.maps.LatLng(35.651654, 127.937815)
+},
+{
+    title: '월평-1 (농촌형 소화전)<br>거창군 남상면 하월평길 76-9 염도권 집 앞',
+    latlng: new kakao.maps.LatLng(35.661055, 127.931119)
+},
+{
+    title: '월평-2 (농촌형 소화전)<br>거창군 남상면 하월평길 75-14 추동우 집 앞',
+    latlng: new kakao.maps.LatLng(35.660883, 127.930476)
+},
+{
+    title: '월평-3 (농촌형 소화전)<br>거창군 남상면 하월평길 69-4 김홍조 집 앞',
+    latlng: new kakao.maps.LatLng(35.660448, 127.930856)
+},
+{
+    title: '월평-4 (농촌형 소화전)<br>거창군 남상면 하월평길 51-4 경주김씨재실 앞',
+    latlng: new kakao.maps.LatLng(35.659694, 127.931532)
+},
+{
+    title: '월평-5 (농촌형 소화전)<br>거창군 남상면 상월평길 32 염태수 집 앞',
+    latlng: new kakao.maps.LatLng(35.661805, 127.930264)
+},
+{
+    title: '월평-6 (농촌형 소화전)<br>거창군 남상면 상월평길 62-2  정현철 집 앞',
+    latlng: new kakao.maps.LatLng(35.661873, 127.928961)
+},
+{
+    title: '전척-1 (농촌형 소화전)<br>거창군 남상면 명산동길 46  마을경로당 뒤',
+    latlng: new kakao.maps.LatLng(35.627534, 127.960694)
+},
+{
+    title: '전척-2 (농촌형 소화전)<br>거창군 남상면 전척1길 57 앞',
+    latlng: new kakao.maps.LatLng(35.629086, 127.955488)
+},
+{
+    title: '전척-3 (농촌형 소화전)<br>거창군 남상면 전척1길 46-1 앞',
+    latlng: new kakao.maps.LatLng(35.629931, 127.956112)
+},
+{
+    title: '고척-1 (농촌형 소화전)<br>거창군 남상면 고척길 477 주기화씨 집 앞',
+    latlng: new kakao.maps.LatLng(35.620792, 127.937109)
+},
+{
+    title: '고척-2 (농촌형 소화전)<br>거창군 남상면 고척길 443-26  정우분 집 앞',
+    latlng: new kakao.maps.LatLng(35.620904, 127.937912)
+},
+{
+    title: '고척-3 (농촌형 소화전)<br>거창군 남상면 고척길 443-2 마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.621191, 127.937994)
+},
+{
+    title: '임불-1 (농촌형 소화전)<br>거창군 남상면 임불마을  구판장 관정 옆',
+    latlng: new kakao.maps.LatLng(35.614212, 127.969103)
+},
+{
+    title: '임불-2 (농촌형 소화전)<br>거창군 남상면 임불2길 50  김상봉 집 앞',
+    latlng: new kakao.maps.LatLng(35.613086, 127.970621)
+},
+{
+    title: '임불-3 (농촌형 소화전)<br>거창군 남상면 임불1길 92 김경희 집 앞',
+    latlng: new kakao.maps.LatLng(35.614173, 127.970422)
+},
+{
+    title: '월포-1 (농촌형 소화전)<br>거창군 남상면 월행로 358 마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.627266, 127.988594)
+},
+{
+    title: '월포-2 (농촌형 소화전)<br>거창군 남상면 상월포길 10-1  이기출 집 앞',
+    latlng: new kakao.maps.LatLng(35.626784, 127.988517)
+},
+{
+    title: '월포-3 (농촌형 소화전)<br>거창군 남상면 하월포길 21-1 조복연 집 앞',
+    latlng: new kakao.maps.LatLng(35.628066, 127.988794)
+},
+{
+    title: '영승-1 (농촌형 소화전)<br>거창군 마리면 영승2길 53  오일남 집 옆',
+    latlng: new kakao.maps.LatLng(35.714645, 127.857941)
+},
+{
+    title: '영승-2 (농촌형 소화전)<br>거창군 마리면 영승중앙길 55 마을회관 옆',
+    latlng: new kakao.maps.LatLng(35.71522, 127.856992)
+},
+{
+    title: '영승-3 (농촌형 소화전)<br>거창군 마리면 영승중앙길 75-6 전병길 집 앞',
+    latlng: new kakao.maps.LatLng(35.715483, 127.858397)
+},
+{
+    title: '영승-4 (농촌형 소화전)<br>거창군 마리면 영승2길 40  집 앞',
+    latlng: new kakao.maps.LatLng(35.714173, 127.857486)
+},
+{
+    title: '영승-5 (농촌형 소화전)<br>거창군 마리면 영승1길 23 이기래 집 앞',
+    latlng: new kakao.maps.LatLng(35.715976, 127.857349)
+},
+{
+    title: '계동-1 (농촌형 소화전)<br>거창군 마리면 계동길 185-3  서동화 집 옆',
+    latlng: new kakao.maps.LatLng(35.703215, 127.863969)
+},
+{
+    title: '월화-1 (농촌형 소화전)<br>거창군 마리면 월화길 162-7  여정자 집 앞',
+    latlng: new kakao.maps.LatLng(35.719964, 127.847411)
+},
+{
+    title: '월화-2 (농촌형 소화전)<br>거창군 마리면 월화길 267  김상욱 집 앞',
+    latlng: new kakao.maps.LatLng(35.72094, 127.845672)
+},
+{
+    title: '월화-3 (농촌형 소화전)<br>거창군 마리면 월화길 180 월화제실 앞',
+    latlng: new kakao.maps.LatLng(35.719936, 127.847356)
+},
+{
+    title: '월화-4 (농촌형 소화전)<br>거창군 마리면 월화길 213 이길수 집 앞',
+    latlng: new kakao.maps.LatLng(35.719133, 127.846955)
+},
+{
+    title: '영신-1 (농촌형 소화전)<br>거창군 마리면 빼재로 145 마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.712677, 127.853859)
+},
+{
+    title: '학동-1 (농촌형 소화전)<br>거창군 마리면 학동1길 197-31 ',
+    latlng: new kakao.maps.LatLng(35.712732, 127.843142)
+},
+{
+    title: '성락-1 (농촌형 소화전)<br>거창군 마리면 토점길 126-5 최일순 집 옆',
+    latlng: new kakao.maps.LatLng(35.709257, 127.847348)
+},
+{
+    title: '진산-1 (농촌형 소화전)<br>거창군 마리면 거안로 842 국일식당 안골목',
+    latlng: new kakao.maps.LatLng(35.699248, 127.855174)
+},
+{
+    title: '진산-2 (농촌형 소화전)<br>거창군 마리면 진산길 13 구회관 뒤 오인순 집 앞',
+    latlng: new kakao.maps.LatLng(35.698751, 127.855823)
+},
+{
+    title: '진산-3 (농촌형 소화전)<br>거창군 마리면 거안로 860-9 전봉우 집 앞',
+    latlng: new kakao.maps.LatLng(35.698792, 127.85733)
+},
+{
+    title: '진산-4 (농촌형 소화전)<br>경남 거창군 마리면 진산길 11-32 이종형 집 앞',
+    latlng: new kakao.maps.LatLng(35.698498, 127.856556)
+},
+{
+    title: '지동-1 (농촌형 소화전)<br>거창군 마리면 지동길 25 노병원 집 앞',
+    latlng: new kakao.maps.LatLng(35.694961, 127.851716)
+},
+{
+    title: '지동-2 (농촌형 소화전)<br>거창군 마리면 지동길 34-3 신중일 집 앞',
+    latlng: new kakao.maps.LatLng(35.694846, 127.852127)
+},
+{
+    title: '지동-3 (농촌형 소화전)<br>거창군 마리면 지동길 56 유정순 집 앞',
+    latlng: new kakao.maps.LatLng(35.695513, 127.851729)
+},
+{
+    title: '지동-4 (농촌형 소화전)<br>거창군 마리면 지동길 25-13 지동마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.695213, 127.851064)
+},
+{
+    title: '지동-5 (농촌형 소화전)<br>거창군 마리면 지동길 67-4 이두순 집 옆',
+    latlng: new kakao.maps.LatLng(35.695586, 127.850945)
+},
+{
+    title: '주암-1 (농촌형 소화전)<br>거창군 마리면 주암길 44-4  신용구 집 앞',
+    latlng: new kakao.maps.LatLng(35.68893, 127.844606)
+},
+{
+    title: '주암-2 (농촌형 소화전)<br>거창군 마리면 주암길 16-1 주암마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.689785, 127.845651)
+},
+{
+    title: '주암-3 (농촌형 소화전)<br>거창군 마리면 주암길 36-4 조화제 집 앞',
+    latlng: new kakao.maps.LatLng(35.689325, 127.845041)
+},
+{
+    title: '창촌-1 (농촌형 소화전)<br>거창군 마리면 창촌길 16 창촌마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.699926, 127.845542)
+},
+{
+    title: '원말흘-1 (농촌형 소화전)<br>거창군 마리면 원말흘2길 9 마을회관 옆',
+    latlng: new kakao.maps.LatLng(35.701743, 127.840029)
+},
+{
+    title: '병항-1 (농촌형 소화전)<br>거창군 마리면 병항길 34 마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.682088, 127.8286)
+},
+{
+    title: '병항-2 (농촌형 소화전)<br>거창군 마리면 병항길 108 김말임 집 앞',
+    latlng: new kakao.maps.LatLng(35.681519, 127.828276)
+},
+{
+    title: '병항-3 (농촌형 소화전)<br>거창군 마리면 병항길 59 집 앞',
+    latlng: new kakao.maps.LatLng(35.682441, 127.827659)
+},
+{
+    title: '상촌-1 (농촌형 소화전)<br>거창군 마리면 상촌길 9  경순임 집 담벼락 앞',
+    latlng: new kakao.maps.LatLng(35.692791, 127.820077)
+},
+{
+    title: '상촌-2 (농촌형 소화전)<br>거창군 마리면 상촌길 1 상촌마을회관 옆 소마굿간 뒤',
+    latlng: new kakao.maps.LatLng(35.693022, 127.81944)
+},
+{
+    title: '고대-1 (농촌형 소화전)<br>거창군 마리면 고학고대길 9-3  고대마을회관 뒤',
+    latlng: new kakao.maps.LatLng(35.688216, 127.826657)
+},
+{
+    title: '고대-2 (농촌형 소화전)<br>거창군 마리면 고학고대길 45-26 집 옆',
+    latlng: new kakao.maps.LatLng(35.689135, 127.826594)
+},
+{
+    title: '고대-3 (농촌형 소화전)<br>거창군 마리면 고학고대길 52 정정순 집 뒤',
+    latlng: new kakao.maps.LatLng(35.688882, 127.827642)
+},
+{
+    title: '신기-1 (농촌형 소화전)<br>거창군 마리면 원신기길 64 신기마을회관 옆',
+    latlng: new kakao.maps.LatLng(35.687588, 127.851347)
+},
+{
+    title: '동편-1 (농촌형 소화전)<br>거창군 마리면 동편길 27 동편마을회관 옆',
+    latlng: new kakao.maps.LatLng(127.858475, 127.858475)
+},
+{
+    title: '고창-1 (농촌형 소화전)<br>거창군 마리면 고창길 120 하고창마을회관 옆',
+    latlng: new kakao.maps.LatLng(35.681983, 127.864328)
+},
+{
+    title: '고창-2 (농촌형 소화전)<br>거창군 마리면 고창길 183-2  상고창마을회관 옆',
+    latlng: new kakao.maps.LatLng(35.676691, 127.863183)
+},
+{
+    title: '소곡-1 (농촌형 소화전)<br>거창군 마리면 소곡2길 49-3  서만암 집 옆',
+    latlng: new kakao.maps.LatLng(35.685331, 127.874012)
+},
+{
+    title: '상율-1 (농촌형 소화전)<br>거창군 마리면 상율1길 83-4 ',
+    latlng: new kakao.maps.LatLng(35.738058, 127.857656)
+},
+{
+    title: '엄대-1 (농촌형 소화전)<br>거창군 마리면 엄대1길 146 ',
+    latlng: new kakao.maps.LatLng(35.675104, 127.84581)
+},
+{
+    title: '갈계-1 (농촌형 소화전)<br>거창군 북상면 샘골길 18 갈계마을 김화중 집 옆',
+    latlng: new kakao.maps.LatLng(35.780661, 127.818391)
+},
+{
+    title: '갈계-2 (농촌형 소화전)<br>거창군 북상면 갈계리 1251 갈계마을 회관 10M위 양수장',
+    latlng: new kakao.maps.LatLng(35.780671, 127.820697)
+},
+{
+    title: '갈계-3 (농촌형 소화전)<br>거창군 북상면 치내길 67 / 65-2 임무임 집 옆',
+    latlng: new kakao.maps.LatLng(35.78149, 127.820677)
+},
+{
+    title: '갈계-4 (농촌형 소화전)<br>거창군 북상면 치내길 33 임기술 집 옆',
+    latlng: new kakao.maps.LatLng(35.780099, 127.819761)
+},
+{
+    title: '갈계-5 (농촌형 소화전)<br>거창군 북상면 갈밭길 30 임금순 집 옆',
+    latlng: new kakao.maps.LatLng(35.783156, 127.81684)
+},
+{
+    title: '갈계-6 (농촌형 소화전)<br>거창군 북상면 갈밭길 6 / 11 농기계센터 옆',
+    latlng: new kakao.maps.LatLng(35.782486, 127.816409)
+},
+{
+    title: '갈계-7 (농촌형 소화전)<br>거창군 북상면 샘골길 48 임종균 집 앞',
+    latlng: new kakao.maps.LatLng(35.781527, 127.817205)
+},
+{
+    title: '갈계-8 (농촌형 소화전)<br>거창군 북상면 치내길 90 이남 집 옆',
+    latlng: new kakao.maps.LatLng(35.782286, 127.820693)
+},
+{
+    title: '갈계-9 (농촌형 소화전)<br>거창군 북상면 송계로 722-1 북상식육식당 앞',
+    latlng: new kakao.maps.LatLng(35.778486, 127.818678)
+},
+{
+    title: '갈계-10 (농촌형 소화전)<br>거창군 북상면 송계로 732 현해숙 집 앞',
+    latlng: new kakao.maps.LatLng(35.779357, 127.818522)
+},
+{
+    title: '탑불-1 (농촌형 소화전)<br>거창군 북상면 탑불길 45 김달순 집 앞',
+    latlng: new kakao.maps.LatLng(35.791377, 127.815634)
+},
+{
+    title: '중산-1 (농촌형 소화전)<br>거창군 북상면 함덫길 36 ',
+    latlng: new kakao.maps.LatLng(35.801279, 127.812126)
+},
+{
+    title: '중산-2 (농촌형 소화전)<br>거창군 북상면 함덫길 7-4 중산마을 마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.800934, 127.813101)
+},
+{
+    title: '중산-3 (농촌형 소화전)<br>거창군 북상면 갈계리 371-13과 372사이 ',
+    latlng: new kakao.maps.LatLng(35.800622, 127.814016)
+},
+{
+    title: '소정-1 (농촌형 소화전)<br>거창군 북상면 소정새들길  9-4 소정마을 회관 앞',
+    latlng: new kakao.maps.LatLng(35.819835, 127.81195)
+},
+{
+    title: '소정-2 (농촌형 소화전)<br>거창군 북상면 소정신기길 31 신기마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.814397, 127.810459)
+},
+{
+    title: '소정-3 (농촌형 소화전)<br>거창군 북상면 소정신기길 76 신기마을 안길 중앙',
+    latlng: new kakao.maps.LatLng(35.813755, 127.809557)
+},
+{
+    title: '개삼-1 (농촌형 소화전)<br>거창군 북상면 개삼길 13 개삼마을 정원 있는 집',
+    latlng: new kakao.maps.LatLng(35.826901, 127.807383)
+},
+{
+    title: '당산-1 (농촌형 소화전)<br>거창군 북상면 당산말길 111-21 / 123-12 당산마을 덕모재 밑',
+    latlng: new kakao.maps.LatLng(35.832045, 127.81056)
+},
+{
+    title: '당산-2 (농촌형 소화전)<br>거창군 북상면 당산말길 93-12 당산마을 이호균 집 앞',
+    latlng: new kakao.maps.LatLng(35.831364, 127.809873)
+},
+{
+    title: '강선대-1 (농촌형 소화전)<br>거창군 북상면 강선대길 85 강선대마을 이병원 집 뒤',
+    latlng: new kakao.maps.LatLng(35.771752, 127.804951)
+},
+{
+    title: '농산-1 (농촌형 소화전)<br>거창군 북상면 덕유월성로 2261-14 용수막마을 이재정 집 앞',
+    latlng: new kakao.maps.LatLng(35.77699, 127.812376)
+},
+{
+    title: '농산-2 (농촌형 소화전)<br>거창군 북상면 덕유월성로 2249-13 용수막마을 김운성 집 앞',
+    latlng: new kakao.maps.LatLng(35.776248, 127.811164)
+},
+{
+    title: '농산-3 (농촌형 소화전)<br>거창군 북상면 덕유월성로 2279 용수막마을 경로당 내부',
+    latlng: new kakao.maps.LatLng(35.776862, 127.814603)
+},
+{
+    title: '장암-1 (농촌형 소화전)<br>거창군 북상면 장자터길 69-15 장암마을 박찬위 집 내부',
+    latlng: new kakao.maps.LatLng(35.794335, 127.787691)
+},
+{
+    title: '병곡-1 (농촌형 소화전)<br>거창군 북상면 빙기실길 17 원병곡마을 정복남 집 앞',
+    latlng: new kakao.maps.LatLng(35.810854, 127.775629)
+},
+{
+    title: '병곡-2 (농촌형 소화전)<br>거창군 북상면 가리실길 11 가곡마을 안쪽길 중앙',
+    latlng: new kakao.maps.LatLng(35.787177, 127.794751)
+},
+{
+    title: '산수-1 (농촌형 소화전)<br>거창군 북상면 산수길 13 산수마을 회관 앞',
+    latlng: new kakao.maps.LatLng(35.79535, 127.759107)
+},
+{
+    title: '산수-2 (농촌형 소화전)<br>거창군 북상면 산수길 38 산수마을 김맹용 집 앞',
+    latlng: new kakao.maps.LatLng(35.796207, 127.758502)
+},
+{
+    title: '산수-4 (농촌형 소화전)<br>거창군 북상면 학현길 21-6 학현마을 마을공터 앞',
+    latlng: new kakao.maps.LatLng(35.798098, 127.76112)
+},
+{
+    title: '월성-1 (농촌형 소화전)<br>거창군 북상면 은지밭길 68 월성마을 이도영 집 앞',
+    latlng: new kakao.maps.LatLng(35.765032, 127.74367)
+},
+{
+    title: '황점-1 (농촌형 소화전)<br>거창군 북상면 황점길 13 황점마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.770508, 127.719223)
+},
+{
+    title: '창선-1 (농촌형 소화전)<br>거창군 북상면 창선길 68 창선마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.763631, 127.778113)
+},
+{
+    title: '창선-2 (농촌형 소화전)<br>거창군 북상면 창선길 94 창선마을 중앙공터',
+    latlng: new kakao.maps.LatLng(35.762703, 127.777338)
+},
+{
+    title: '동호-1 (농촌형 소화전)<br>거창군 웅양면 동호리 동호마을회관 옆',
+    latlng: new kakao.maps.LatLng(35.798916, 127.924816)
+},
+{
+    title: '동호-2 (농촌형 소화전)<br>거창군 웅양면 동호1길 157 동호마을 제실 옆',
+    latlng: new kakao.maps.LatLng(35.799164, 127.924384)
+},
+{
+    title: '성북-1 (농촌형 소화전)<br>거창군 웅양면 성북2길 14-10 성북마을 입구길 정각 옆',
+    latlng: new kakao.maps.LatLng(35.790784, 127.927766)
+},
+{
+    title: '성북-2 (농촌형 소화전)<br>거창군 웅양면 성북1길 259-6 성북마을회관 옆 논',
+    latlng: new kakao.maps.LatLng(35.791587, 127.928743)
+},
+{
+    title: '성북-3 (농촌형 소화전)<br>거창군 웅양면 성북1길 259-7 성북마을회관 옆',
+    latlng: new kakao.maps.LatLng(35.791719, 127.928436)
+},
+{
+    title: '운평-1 (농촌형 소화전)<br>거창군 웅양면 운평길 31 운평마을회관 옆',
+    latlng: new kakao.maps.LatLng(35.795549, 127.912595)
+},
+{
+    title: '운평-2 (농촌형 소화전)<br>거창군 웅양면 운평길 67-3 ',
+    latlng: new kakao.maps.LatLng(35.796679, 127.912355)
+},
+{
+    title: '묘산-1 (농촌형 소화전)<br>거창군 웅양면 운평길 131-2 묘산마을 제실 옆',
+    latlng: new kakao.maps.LatLng(35.799162, 127.911641)
+},
+{
+    title: '누룩재-1 (농촌형 소화전)<br>거창군 웅양면 누룩재길 180-5 ',
+    latlng: new kakao.maps.LatLng(35.796485, 127.906904)
+},
+{
+    title: '누룩재-2 (농촌형 소화전)<br>거창군 웅양면 죽림리 누룩재마을 정자 앞',
+    latlng: new kakao.maps.LatLng(35.796737, 127.906814)
+},
+{
+    title: '죽림-1 (농촌형 소화전)<br>거창군 웅양면 죽림길 234-61 ',
+    latlng: new kakao.maps.LatLng(35.801999, 127.902887)
+},
+{
+    title: '죽림-2 (농촌형 소화전)<br>거창군 웅양면 죽림리 죽림마을회관 옆',
+    latlng: new kakao.maps.LatLng(35.801553, 127.903459)
+},
+{
+    title: '구암-1 (농촌형 소화전)<br>거창군 웅양면 구암길 89 구암마을 제실 뒤',
+    latlng: new kakao.maps.LatLng(35.787247, 127.911266)
+},
+{
+    title: '구암-2 (농촌형 소화전)<br>거창군 웅양면 구암길 74-27  구암마을회관 아래',
+    latlng: new kakao.maps.LatLng(35.787933, 127.912077)
+},
+{
+    title: '노현-1 (농촌형 소화전)<br>거창군 웅양면 노현리 웅양중학교 내',
+    latlng: new kakao.maps.LatLng(35.807101, 127.91646)
+},
+{
+    title: '노현-2 (농촌형 소화전)<br>거창군 웅양면 노현리 웅양초등학교 내',
+    latlng: new kakao.maps.LatLng(35.803138, 127.916807)
+},
+{
+    title: '원촌-1 (농촌형 소화전)<br>거창군 웅양면 웅양로 1443-13 원촌마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.806561, 127.917983)
+},
+{
+    title: '화동-1 (농촌형 소화전)<br>거창군 웅양면 화평길171-3번지 ',
+    latlng: new kakao.maps.LatLng(35.804322, 127.909776)
+},
+{
+    title: '산포-1 (농촌형 소화전)<br>거창군 웅양면 산포우랑길 150 ',
+    latlng: new kakao.maps.LatLng(35.814293, 127.931537)
+},
+{
+    title: '산포-2 (농촌형 소화전)<br>거창군 웅양면 산포리 산포마을 광장 옆',
+    latlng: new kakao.maps.LatLng(35.814197, 127.929609)
+},
+{
+    title: '금광-1 (농촌형 소화전)<br>거창군 웅양면 우두령로217-9 ',
+    latlng: new kakao.maps.LatLng(35.835402, 127.932)
+},
+{
+    title: '용전-1 (농촌형 소화전)<br>거창군 웅양면 용전길 113-3 용전마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.832003, 127.910308)
+},
+{
+    title: '군암-1 (농촌형 소화전)<br>거창군 웅양면 군암길 4-9  ',
+    latlng: new kakao.maps.LatLng(35.845939, 127.906184)
+},
+{
+    title: '송산-1 (농촌형 소화전)<br>거창군 웅양면 웅양로2141-14 송산새마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.860258, 127.910048)
+},
+{
+    title: '송산-2 (농촌형 소화전)<br>거창군 웅양면 웅양로 2070 ',
+    latlng: new kakao.maps.LatLng(35.854246, 127.908359)
+},
+{
+    title: '아주-1 (농촌형 소화전)<br>거창군 웅양면 신촌리 아주마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.867045, 127.914501)
+},
+{
+    title: '신촌-1 (농촌형 소화전)<br>거창군 웅양면 신기촌길 214 ',
+    latlng: new kakao.maps.LatLng(35.870677, 127.905668)
+},
+{
+    title: '왕암-1 (농촌형 소화전)<br>거창군 웅양면 왕암길 260-8 ',
+    latlng: new kakao.maps.LatLng(35.877995, 127.910244)
+},
+{
+    title: '왕암-2 (농촌형 소화전)<br>거창군 웅양면 왕암길 248 ',
+    latlng: new kakao.maps.LatLng(35.877027, 127.910487)
+},
+{
+    title: '왕암-3 (농촌형 소화전)<br>거창군 웅양면 왕암길 221-47 ',
+    latlng: new kakao.maps.LatLng(35.876363, 127.908677)
+},
+{
+    title: '개화-1 (농촌형 소화전)<br>거창군 웅양면 개화길 426 개화마을 관정 옆 ',
+    latlng: new kakao.maps.LatLng(35.8781, 127.899025)
+},
+{
+    title: '진마루-1 (농촌형 소화전)<br>거창군 웅양면 진마루길 246 ',
+    latlng: new kakao.maps.LatLng(35.882083, 127.912523)
+},
+{
+    title: '오산-3(구.적하-1) (농촌형 소화전)<br>거창군 웅양면 웅양로 2317 ',
+    latlng: new kakao.maps.LatLng(35.872543, 127.921504)
+},
+{
+    title: '오산-1 (농촌형 소화전)<br>거창군 웅양면 웅양로 2367-26 ',
+    latlng: new kakao.maps.LatLng(35.874782, 127.926612)
+},
+{
+    title: '오산-2 (농촌형 소화전)<br>거창군 웅양면  한기1길 17 ',
+    latlng: new kakao.maps.LatLng(35.874423, 127.923298)
+},
+{
+    title: '백학-1 (농촌형 소화전)<br>거창군 웅양면 웅양로 2379-17  ',
+    latlng: new kakao.maps.LatLng(35.873664, 127.928571)
+},
+{
+    title: '백학-2 (농촌형 소화전)<br>거창군 웅양면 한기리 백학마을회관 옆',
+    latlng: new kakao.maps.LatLng(35.873451, 127.928304)
+},
+{
+    title: '동촌-1 (농촌형 소화전)<br>거창군 가북면 동촌길116-3 동촌 마을회관 뒤',
+    latlng: new kakao.maps.LatLng(35.807866, 127.97344)
+},
+{
+    title: '동촌-2 (농촌형 소화전)<br>거창군 가북면 동촌길135 유분임집 앞',
+    latlng: new kakao.maps.LatLng(35.808235, 127.974539)
+},
+{
+    title: '심방  (농촌형 소화전)<br>거창군 가북면 심방길 36-3 심방 마을회관 50m 위',
+    latlng: new kakao.maps.LatLng(35.826762, 127.967006)
+},
+{
+    title: '수재 (농촌형 소화전)<br>거창군 가북면 수재길247 진학조 집 입구',
+    latlng: new kakao.maps.LatLng(35.833306, 127.971816)
+},
+{
+    title: '산수 (농촌형 소화전)<br>거창군 가북면 산수마길47  ',
+    latlng: new kakao.maps.LatLng(35.815114, 127.97271)
+},
+{
+    title: '고비-1 (농촌형 소화전)<br>거창군 가북면 고비길 507-1 독거노인 공동생활가정 앞',
+    latlng: new kakao.maps.LatLng(35.8152, 127.97269)
+},
+{
+    title: '고비-2 (농촌형 소화전)<br>거창군 가북면 고비길 509 최순자 집 옆',
+    latlng: new kakao.maps.LatLng(35.826436, 127.984908)
+},
+{
+    title: '다전-1 (농촌형 소화전)<br>거창군 가북면 다전길 3 다전경로당 앞',
+    latlng: new kakao.maps.LatLng(35.806095, 127.971436)
+},
+{
+    title: '다전-2 (농촌형 소화전)<br>거창군 가북면 다전길 12 ',
+    latlng: new kakao.maps.LatLng(35.806345, 127.970967)
+},
+{
+    title: '다전-3 (농촌형 소화전)<br>거창군 가북면 가북로 1331-1 ',
+    latlng: new kakao.maps.LatLng(35.806749, 127.971238)
+},
+{
+    title: '회남 (농촌형 소화전)<br>거창군 가북면 보해길 963-3  회남마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.793497, 127.971681)
+},
+{
+    title: '추동-1 (농촌형 소화전)<br>거창군 가북면 추동길 69 추동경로당 앞',
+    latlng: new kakao.maps.LatLng(35.776365, 127.980186)
+},
+{
+    title: '추동-2 (농촌형 소화전)<br>거창군 가북면 추동길 92 ',
+    latlng: new kakao.maps.LatLng(35.775767, 127.981112)
+},
+{
+    title: '연곡 (농촌형 소화전)<br>거창군 가북면 연곡길 16-4  연곡마을 입구',
+    latlng: new kakao.maps.LatLng(35.776382, 127.974602)
+},
+{
+    title: '양암-1 (농촌형 소화전)<br>거창군 가북면 양암길 38-7  ',
+    latlng: new kakao.maps.LatLng(35.764292, 127.97851)
+},
+{
+    title: '양암-2 (농촌형 소화전)<br>거창군 가북면 양암길 62 ',
+    latlng: new kakao.maps.LatLng(35.765167, 127.979173)
+},
+{
+    title: '율리-1 (농촌형 소화전)<br>거창군 가북면 율리길 328 ',
+    latlng: new kakao.maps.LatLng(35.724823, 127.988854)
+},
+{
+    title: '율리-2 (농촌형 소화전)<br>거창군 가북면 율리길 330-17 하상용집 앞',
+    latlng: new kakao.maps.LatLng(35.725373, 127.989148)
+},
+{
+    title: '율리-3 (농촌형 소화전)<br>거창군 가북면 율리길 335 뒤편 전봇대 옆',
+    latlng: new kakao.maps.LatLng(35.725315, 127.988474)
+},
+{
+    title: '용산-1 (농촌형 소화전)<br>거창군 가북면 용산1길 4  ',
+    latlng: new kakao.maps.LatLng(35.741267, 127.990614)
+},
+{
+    title: '용산-2 (농촌형 소화전)<br>거창군 가북면 용산1길 39 정씨재실 앞',
+    latlng: new kakao.maps.LatLng(35.740576, 127.991525)
+},
+{
+    title: '용산-3 (농촌형 소화전)<br>거창군 가북면 어인길 25 전영태 집 앞',
+    latlng: new kakao.maps.LatLng(35.740275, 127.992682)
+},
+{
+    title: '용산-4 (농촌형 소화전)<br>거창군 가북면 용산2길 21 ',
+    latlng: new kakao.maps.LatLng(35.73873, 127.991252)
+},
+{
+    title: '용산-5 (농촌형 소화전)<br>거창군 가북면 가북로 306  게이트볼장 뒤',
+    latlng: new kakao.maps.LatLng(35.739727, 127.992226)
+},
+{
+    title: '어인-1 (농촌형 소화전)<br>거창군 가북면 어인길 836 옆 깃발 아래',
+    latlng: new kakao.maps.LatLng(35.760994, 128.020391)
+},
+{
+    title: '어인-2 (농촌형 소화전)<br>거창군 가북면 어인길 839-2  이성대 집 앞',
+    latlng: new kakao.maps.LatLng(35.761103, 128.020415)
+},
+{
+    title: '어인-3 (농촌형 소화전)<br>거창군 가북면 어인길 855 이임생 집 앞',
+    latlng: new kakao.maps.LatLng(35.761307, 128.021119)
+},
+{
+    title: '어인-4 (농촌형 소화전)<br>거창군 가북면 어인길 807-27 김수미자 집 앞',
+    latlng: new kakao.maps.LatLng(35.761205, 128.018362)
+},
+{
+    title: '중감월 (농촌형 소화전)<br>거창군 가북면 감월길 456 중감월 경로당 옆',
+    latlng: new kakao.maps.LatLng(35.766378, 128.014229)
+},
+{
+    title: '상감월 (농촌형 소화전)<br>거창군 가북면 감월길 867-16 ',
+    latlng: new kakao.maps.LatLng(35.774413, 128.0326)
+},
+{
+    title: '하감월 (농촌형 소화전)<br>거창군 가북면 감월길 261-7 ',
+    latlng: new kakao.maps.LatLng(35.76298, 128.006789)
+},
+{
+    title: '개금-1 (농촌형 소화전)<br>거창군 가북면 개금길 33 ',
+    latlng: new kakao.maps.LatLng(35.823302, 128.067132)
+},
+{
+    title: '개금-2 (농촌형 소화전)<br>거창군 가북면 개금길170-3 개금경로당 옆 길가',
+    latlng: new kakao.maps.LatLng(35.828001, 128.071092)
+},
+{
+    title: '개금-3 (농촌형 소화전)<br>거창군 가북면 개금길 189-4 권영수 씨 집 앞',
+    latlng: new kakao.maps.LatLng(35.82874, 128.071283)
+},
+{
+    title: '개금-4 (농촌형 소화전)<br>거창군 가북면 개금길 162  앞 주차장',
+    latlng: new kakao.maps.LatLng(35.827816, 128.070555)
+},
+{
+    title: '장전 (농촌형 소화전)<br>거창군 가북면 장전마을  장전마을 중간 정자데크 옆',
+    latlng: new kakao.maps.LatLng(35.818944, 128.0577)
+},
+{
+    title: '용암-1 (농촌형 소화전)<br>거창군 가북면 용암2길 31 ',
+    latlng: new kakao.maps.LatLng(35.81558, 128.048838)
+},
+{
+    title: '용암-2 (농촌형 소화전)<br>거창군 가북면 용암1길 25-4  용암경로당 아래 삼거리',
+    latlng: new kakao.maps.LatLng(35.815308, 128.048475)
+},
+{
+    title: '홍감 (농촌형 소화전)<br>거창군 가북면 홍감길121-6 박의수 집 앞',
+    latlng: new kakao.maps.LatLng(35.81217, 128.038704)
+},
+{
+    title: '송정-1 (농촌형 소화전)<br>거창군 가북면 송정길 23-2 장정례 집 뒤',
+    latlng: new kakao.maps.LatLng(35.806705, 128.030906)
+},
+{
+    title: '송정-2 (농촌형 소화전)<br>거창군 가북면 송정길 37-2 송정경로당 앞',
+    latlng: new kakao.maps.LatLng(35.807056, 128.030569)
+},
+{
+    title: '내촌-1 (농촌형 소화전)<br>거창군 가북면 내촌길 104 김영자 집 앞',
+    latlng: new kakao.maps.LatLng(35.805599, 128.021787)
+},
+{
+    title: '내촌-2 (농촌형 소화전)<br>거창군 가북면 내촌길 94-20 내촌재실 앞',
+    latlng: new kakao.maps.LatLng(35.805767, 128.022599)
+},
+{
+    title: '내촌-3 (농촌형 소화전)<br>거창군 가북면 내촌길93-3 김복환 집 앞',
+    latlng: new kakao.maps.LatLng(35.805214, 128.022117)
+},
+{
+    title: '명동 (농촌형 소화전)<br>거창군 가북면 명동길 83  최영관 집 앞',
+    latlng: new kakao.maps.LatLng(35.80273, 128.020654)
+},
+{
+    title: '몽석-1 (농촌형 소화전)<br>거창군 가북면 몽석2길 36 몽석교회 옆',
+    latlng: new kakao.maps.LatLng(35.792597, 128.016815)
+},
+{
+    title: '몽석-2 (농촌형 소화전)<br>거창군 가북면 몽석1길 122 윤오동 경로당 앞',
+    latlng: new kakao.maps.LatLng(35.789549, 128.013542)
+},
+{
+    title: '몽석-3 (농촌형 소화전)<br>거창군 가북면 몽석1길 39 몽석새마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.792349, 128.01498)
+},
+{
+    title: '박암 (농촌형 소화전)<br>거창군 가북면 박암길 38 ',
+    latlng: new kakao.maps.LatLng(35.78986, 128.002941)
+},
+{
+    title: '신기 (농촌형 소화전)<br>거창군 가북면 용암로 345-15 다래횟집 앞',
+    latlng: new kakao.maps.LatLng(35.787857, 128.001805)
+},
+{
+    title: '옥산 (농촌형 소화전)<br>거창군 가북면 옥산길 203 아래 길가',
+    latlng: new kakao.maps.LatLng(35.785147, 127.992756)
+},
+{
+    title: '공수 (농촌형 소화전)<br>거창군 가북면 공수길 56 이현동 집 앞',
+    latlng: new kakao.maps.LatLng(35.778592, 128.004253)
+},
+{
+    title: '우혜-1 (농촌형 소화전)<br>거창군 가북면 우혜2길79-8 ',
+    latlng: new kakao.maps.LatLng(35.765601, 127.994461)
+},
+{
+    title: '우혜-2 (농촌형 소화전)<br>거창군 가북면 우혜2길 7 손종대 집 앞',
+    latlng: new kakao.maps.LatLng(35.763741, 127.992679)
+},
+{
+    title: '우혜-3 (농촌형 소화전)<br>거창군 가북면 용암로 10 가북주유소 안',
+    latlng: new kakao.maps.LatLng(35.762111, 127.993902)
+},
+{
+    title: '우혜-4 (농촌형 소화전)<br>거창군 가북면 우혜1길 37 임영식 집 안',
+    latlng: new kakao.maps.LatLng(35.763415, 127.992183)
+},
+{
+    title: '우혜-5 (농촌형 소화전)<br>거창군 가북면 우혜리 1890-2 면사무소 앞',
+    latlng: new kakao.maps.LatLng(35.762526, 127.993392)
+},
+{
+    title: '과정-1 (농촌형 소화전)<br>거창군 신원면 신차로 3043 농기계수리점 앞',
+    latlng: new kakao.maps.LatLng(35.565775, 127.925656)
+},
+{
+    title: '과정-2 (농촌형 소화전)<br>거창군 신원면 과정1길 54 ',
+    latlng: new kakao.maps.LatLng(35.565441, 127.924891)
+},
+{
+    title: '과정-3 (농촌형 소화전)<br>거창군 신원면 과정2길 23-13 변성규 집 앞',
+    latlng: new kakao.maps.LatLng(35.567964, 127.92643)
+},
+{
+    title: '과정-4 (농촌형 소화전)<br>거창군 신원면 신차로 3060 매일슈퍼 앞',
+    latlng: new kakao.maps.LatLng(35.567056, 127.925778)
+},
+{
+    title: '과정-5 (농촌형 소화전)<br>거창군 신원면 신차로 3070 파출소 맞은편',
+    latlng: new kakao.maps.LatLng(35.568124, 127.925605)
+},
+{
+    title: '세안-1 (농촌형 소화전)<br>거창군 신원면 상감악길 5-2 ',
+    latlng: new kakao.maps.LatLng(35.571837, 127.922362)
+},
+{
+    title: '세안-2 (농촌형 소화전)<br>거창군 신원면 세안길 64 정경술 집 앞',
+    latlng: new kakao.maps.LatLng(35.574619, 127.917489)
+},
+{
+    title: '세안-3 (농촌형 소화전)<br>거창군 신원면 세안길 24-3 세안마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.573119, 127.918355)
+},
+{
+    title: '세안-4 (농촌형 소화전)<br>거창군 신원면 세안길 120 백옥석축사 옆',
+    latlng: new kakao.maps.LatLng(35.575598, 127.915273)
+},
+{
+    title: '번득-1 (농촌형 소화전)<br>거창군 신원면 상감악길 190 엄홍주축사 위쪽',
+    latlng: new kakao.maps.LatLng(35.580564, 127.923841)
+},
+{
+    title: '수옥-1 (농촌형 소화전)<br>거창군 신원면 수옥길 79 권순이 집 앞',
+    latlng: new kakao.maps.LatLng(35.583785, 127.964153)
+},
+{
+    title: '수옥-2 (농촌형 소화전)<br>거창군 신원면 수옥길 48-12 조동운 집 앞',
+    latlng: new kakao.maps.LatLng(35.584066, 127.963726)
+},
+{
+    title: '수옥-3 (농촌형 소화전)<br>거창군 신원면 수옥길 38-14 최진술 집 뒤',
+    latlng: new kakao.maps.LatLng(35.583859, 127.962858)
+},
+{
+    title: '양지-1 (농촌형 소화전)<br>거창군 신원면 양지2길 21 양지농기계센터 위쪽 신용문 집 앞',
+    latlng: new kakao.maps.LatLng(35.585641, 127.957915)
+},
+{
+    title: '양지-2 (농촌형 소화전)<br>거창군 신원면 밤티재로 9-6 양지마을 입구',
+    latlng: new kakao.maps.LatLng(35.585287, 127.958818)
+},
+{
+    title: '양지-3 (농촌형 소화전)<br>거창군 신원면 양지1길 73 ',
+    latlng: new kakao.maps.LatLng(35.585794, 127.956378)
+},
+{
+    title: '저전-1 (농촌형 소화전)<br>거창군 신원면 응달길 106 저전마을회관 맡',
+    latlng: new kakao.maps.LatLng(35.601064, 127.950608)
+},
+{
+    title: '하원동-1 (농촌형 소화전)<br>거창군 신원면 원동길 94-3 하원동경로당 앞',
+    latlng: new kakao.maps.LatLng(35.585384, 127.97563)
+},
+{
+    title: '구사-1 (농촌형 소화전)<br>거창군 신원면 구사길 61 구사마을회관 옆',
+    latlng: new kakao.maps.LatLng(35.575423, 127.948294)
+},
+{
+    title: '신기-1 (농촌형 소화전)<br>거창군 신원면 월여산길 75 원평마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.569727, 127.950724)
+},
+{
+    title: '신기-2 (농촌형 소화전)<br>거창군 신원면 신기1길 101 이락구 집 앞',
+    latlng: new kakao.maps.LatLng(35.570149, 127.951583)
+},
+{
+    title: '신기-3 (농촌형 소화전)<br>거창군 신원면 신기1길 113 구술모 집 앞',
+    latlng: new kakao.maps.LatLng(35.569746, 127.952313)
+},
+{
+    title: '청용-1 (농촌형 소화전)<br>거창군 신원면 청용2길 39 박문규 집 뒤',
+    latlng: new kakao.maps.LatLng(35.571284, 127.902051)
+},
+{
+    title: '오례-1 (농촌형 소화전)<br>거창군 신원면 오례길 143 임점술 집 옆',
+    latlng: new kakao.maps.LatLng(35.569553, 127.891349)
+},
+{
+    title: '내동-1 (농촌형 소화전)<br>거창군 신원면 내동1길 38 이필순 집 앞',
+    latlng: new kakao.maps.LatLng(35.575713, 127.894648)
+},
+{
+    title: '내동-2 (농촌형 소화전)<br>거창군 신원면 내동2길 26 김일봉 폐가 앞',
+    latlng: new kakao.maps.LatLng(35.576161, 127.894449)
+},
+{
+    title: '대안-1 (농촌형 소화전)<br>거창군 신원면 대안길 16-4 김종석 집 앞',
+    latlng: new kakao.maps.LatLng(35.5548, 127.890042)
+},
+{
+    title: '외탐-1 (농촌형 소화전)<br>거창군 신원면 외탐길 37 마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.54717, 127.927385)
+},
+{
+    title: '대현-1 (농촌형 소화전)<br>거창군 신원면 대현길 79-3 김진식씨 집 앞',
+    latlng: new kakao.maps.LatLng(35.540476, 127.924182)
+},
+{
+    title: '대현-2 (농촌형 소화전)<br>거창군 신원면 대현길 101 ',
+    latlng: new kakao.maps.LatLng(35.540965, 127.923803)
+},
+{
+    title: '하대현-1 (농촌형 소화전)<br>거창군 신원면 하대길 25-11 회관 옆 문홍기 축사 뒤편',
+    latlng: new kakao.maps.LatLng(35.54253, 127.923709)
+},
+{
+    title: '소룡-1 (농촌형 소화전)<br>거창군 신원면 소룡길 123 마을회관 위 재실 옆',
+    latlng: new kakao.maps.LatLng(35.51991, 127.928692)
+},
+{
+    title: '소룡-2 (농촌형 소화전)<br>거창군 신원면 소룡길 133-4 마을회관 위 삼거리',
+    latlng: new kakao.maps.LatLng(35.520459, 127.928742)
+},
+{
+    title: '신촌-1 (농촌형 소화전)<br>거창군 신원면 신머리길 8 신촌마을회관 옆',
+    latlng: new kakao.maps.LatLng(35.535279, 127.883668)
+},
+{
+    title: '하유-1 (농촌형 소화전)<br>거창군 신원면 하유길 42 하유마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.559757, 127.905718)
+},
+{
+    title: '청연-1 (농촌형 소화전)<br>거창군 신원면 감악산로 449-80 김진근 축사 옆',
+    latlng: new kakao.maps.LatLng(35.600122, 127.906823)
+},
+{
+    title: '내탐-1 (농촌형 소화전)<br>거창군 신원면 내탐길 51-8 내탐 김태중 축사 앞',
+    latlng: new kakao.maps.LatLng(35.55352, 127.927141)
+},
+{
+    title: '창촌-1 (농촌형 소화전)<br>거창군 위천면 창말1길 44  ',
+    latlng: new kakao.maps.LatLng(35.751249, 127.829164)
+},
+{
+    title: '금곡-1 (농촌형 소화전)<br>거창군 위천면 가현길 316-9 ',
+    latlng: new kakao.maps.LatLng(35.723469, 127.826385)
+},
+{
+    title: '금곡-2 (농촌형 소화전)<br>거창군 위천면 가현길 331-29 ',
+    latlng: new kakao.maps.LatLng(35.723415, 127.826946)
+},
+{
+    title: '금곡-3 (농촌형 소화전)<br>거창군 위천면 금곡1길 158 ',
+    latlng: new kakao.maps.LatLng(35.738895, 127.829956)
+},
+{
+    title: '금곡-4 (농촌형 소화전)<br>거창군 위천면  금곡1길 250 마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.735772, 127.828241)
+},
+{
+    title: '금곡-5 (농촌형 소화전)<br>거창군 위천면 금곡1길 280 ',
+    latlng: new kakao.maps.LatLng(35.73448, 127.827627)
+},
+{
+    title: '상천-1 (농촌형 소화전)<br>거창군 위천면 상천길 36 ',
+    latlng: new kakao.maps.LatLng(35.745913, 127.82182)
+},
+{
+    title: '상천-2 (농촌형 소화전)<br>거창군 위천면 상천길 20 ',
+    latlng: new kakao.maps.LatLng(35.74619, 127.822572)
+},
+{
+    title: '강동-1 (농촌형 소화전)<br>거창군 위천면 강동1길 13 ',
+    latlng: new kakao.maps.LatLng(35.754915, 127.829026)
+},
+{
+    title: '강동-2 (농촌형 소화전)<br>거창군 위천면 강동2길 34-12 ',
+    latlng: new kakao.maps.LatLng(35.755263, 127.827319)
+},
+{
+    title: '강동-3 (농촌형 소화전)<br>거창군 위천면 강동1길 64-3  ',
+    latlng: new kakao.maps.LatLng(35.756876, 127.829072)
+},
+{
+    title: '강동-4 (농촌형 소화전)<br>거창군 위천면 강동1길 37-8 ',
+    latlng: new kakao.maps.LatLng(35.755701, 127.829279)
+},
+{
+    title: '마항-1 (농촌형 소화전)<br>거창군 위천면 마항길 7 ',
+    latlng: new kakao.maps.LatLng(35.755043, 127.820054)
+},
+{
+    title: '면동-1 (농촌형 소화전)<br>거창군 위천면 면동길 35 ',
+    latlng: new kakao.maps.LatLng(35.753001, 127.817659)
+},
+{
+    title: '면동-2 (농촌형 소화전)<br>거창군 위천면 면동길 10 ',
+    latlng: new kakao.maps.LatLng(35.75342, 127.81879)
+},
+{
+    title: '황산-1 (농촌형 소화전)<br>거창군 위천면 면동길 10 ',
+    latlng: new kakao.maps.LatLng(35.753413, 127.818772)
+},
+{
+    title: '당산-1 (농촌형 소화전)<br>거창군 위천면 당산2길 63 제실 앞',
+    latlng: new kakao.maps.LatLng(35.749773, 127.859035)
+},
+{
+    title: '당산-2 (농촌형 소화전)<br>거창군 위천면  당산1길 22-3 마을회관앞',
+    latlng: new kakao.maps.LatLng(35.749476, 127.857367)
+},
+{
+    title: '모전-1 (농촌형 소화전)<br>거창군 위천면  모전길 87-8 ',
+    latlng: new kakao.maps.LatLng(35.769072, 127.859807)
+},
+{
+    title: '석동-1 (농촌형 소화전)<br>거창군 위천면 석동길 58 ',
+    latlng: new kakao.maps.LatLng(35.769207, 127.866019)
+},
+{
+    title: '석동-2 (농촌형 소화전)<br>거창군 위천면 빼재로 812-91 정차균 집 앞',
+    latlng: new kakao.maps.LatLng(35.766782, 127.865243)
+},
+{
+    title: '석동-3 (농촌형 소화전)<br>거창군 위천면 석동길 54  마을회관 옆',
+    latlng: new kakao.maps.LatLng(35.768876, 127.865787)
+},
+{
+    title: '석동-4 (농촌형 소화전)<br>거창군 위천면 석동길 71  ',
+    latlng: new kakao.maps.LatLng(35.769151, 127.866561)
+},
+{
+    title: '석동-5 (농촌형 소화전)<br>거창군 위천면 석동길 82-1 ',
+    latlng: new kakao.maps.LatLng(35.768498, 127.866882)
+},
+{
+    title: '원당-1 (농촌형 소화전)<br>거창군 위천면 원당1길 45-2 ',
+    latlng: new kakao.maps.LatLng(35.774639, 127.868211)
+},
+{
+    title: '원당-2 (농촌형 소화전)<br>거창군 위천면 원당1길 55-2 ',
+    latlng: new kakao.maps.LatLng(35.774635, 127.868948)
+},
+{
+    title: '원당-3 (농촌형 소화전)<br>거창군 위천면  원당2길 53 ',
+    latlng: new kakao.maps.LatLng(35.7758, 127.868412)
+},
+{
+    title: '원당-4 (농촌형 소화전)<br>거창군 위천면  원당2길 34-3 ',
+    latlng: new kakao.maps.LatLng(35.775333, 127.868246)
+},
+{
+    title: '무월-1 (농촌형 소화전)<br>거창군 위천면 무월2길 104 ',
+    latlng: new kakao.maps.LatLng(35.783857, 127.862287)
+},
+{
+    title: '무월-2 (농촌형 소화전)<br>거창군 위천면 무월2길 24 ',
+    latlng: new kakao.maps.LatLng(35.784594, 127.864937)
+},
+{
+    title: '무월-3 (농촌형 소화전)<br>거창군 위천면 무월2길 78 ',
+    latlng: new kakao.maps.LatLng(35.784688, 127.863264)
+},
+{
+    title: '무월-4 (농촌형 소화전)<br>거창군 위천면 무월2길 49-4  ',
+    latlng: new kakao.maps.LatLng(35.785256, 127.863813)
+},
+{
+    title: '온곡-1 (농촌형 소화전)<br>거창군 고제면 온곡길 255    온곡마을회관 옆',
+    latlng: new kakao.maps.LatLng(35.810946, 127.850795)
+},
+{
+    title: '상개명-1 (농촌형 소화전)<br>거창군 고제면 상개명길 99  배정덕 집앞 ',
+    latlng: new kakao.maps.LatLng(35.83588, 127.855564)
+},
+{
+    title: '수류-1 (농촌형 소화전)<br>거창군 고제면 수유길 104-26  수유마을회관 앞 ',
+    latlng: new kakao.maps.LatLng(35.831369, 127.84914)
+},
+{
+    title: '궁항-1 (농촌형 소화전)<br>거창군 고제면 하궁항길35  하궁항마을회관앞 ',
+    latlng: new kakao.maps.LatLng(35.82913, 127.881164)
+},
+{
+    title: '학림-1 (농촌형 소화전)<br>거창군 고제면 방학길14 이승표 집앞 ',
+    latlng: new kakao.maps.LatLng(35.838687, 127.876641)
+},
+{
+    title: '학림-2 (농촌형 소화전)<br>거창군 고제면 방학길 31 이태원 집앞 ',
+    latlng: new kakao.maps.LatLng(35.838966, 127.875931)
+},
+{
+    title: '금계-1 (농촌형 소화전)<br>거창군 고제면 빼재로 1282-20 ',
+    latlng: new kakao.maps.LatLng(35.808364, 127.874232)
+},
+{
+    title: '원봉계-1 (농촌형 소화전)<br>거창군 고제면 원봉계길 129  정창영 집앞',
+    latlng: new kakao.maps.LatLng(35.872533, 127.87264)
+},
+{
+    title: '원봉계-2 (농촌형 소화전)<br>거창군 고제면 원봉계길118-6  하윤기 집앞',
+    latlng: new kakao.maps.LatLng(35.872203, 127.873435)
+},
+{
+    title: '둔기-1 (농촌형 소화전)<br>거창군 고제면 둔기길23  둔기마을회관 앞 ',
+    latlng: new kakao.maps.LatLng(35.852239, 127.877535)
+},
+{
+    title: '둔기-2 (농촌형 소화전)<br>거창군 고제면 둔기길 109   정연화 집앞',
+    latlng: new kakao.maps.LatLng(35.852259, 127.876316)
+},
+{
+    title: '손항-1 (농촌형 소화전)<br>거창군 고제면 온곡길 24-17   신일성 집앞 ',
+    latlng: new kakao.maps.LatLng(35.817171, 127.858201)
+},
+{
+    title: '입석-1 (농촌형 소화전)<br>거창군 고제면 입석1길 40-2  이월순 집앞 ',
+    latlng: new kakao.maps.LatLng(35.814555, 127.870065)
+},
+{
+    title: '입석-2 (농촌형 소화전)<br>거창군 고제면  입석2길 159-4  신무범 집앞',
+    latlng: new kakao.maps.LatLng(35.808959, 127.868929)
+},
+{
+    title: '둔기-3 (농촌형 소화전)<br>거창군 고제면 둔기길66  이시영 집앞',
+    latlng: new kakao.maps.LatLng(35.852988, 127.875815)
+},
+{
+    title: '둔기-4 (농촌형 소화전)<br>거창군 고제면 둔기길 50-5  하병두 집앞',
+    latlng: new kakao.maps.LatLng(35.852922, 127.876644)
+},
+{
+    title: '원농산-1 (농촌형 소화전)<br>거창군 고제면 원농산길 98 김시영 집앞',
+    latlng: new kakao.maps.LatLng(35.806713, 127.86985)
+},
+{
+    title: '탑선-1 (농촌형 소화전)<br>거창군 고제면 소사길 52-2  소사마을회관 뒤',
+    latlng: new kakao.maps.LatLng(35.899777, 127.863133)
+},
+{
+    title: '탑선-2 (농촌형 소화전)<br>거창군 고제면 지경길 정자나무 밑 ',
+    latlng: new kakao.maps.LatLng(35.902947, 127.869461)
+},
+{
+    title: '용초-1 (농촌형 소화전)<br>거창군 고제면 용초길 133-2  용초마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.863798, 127.872938)
+},
+{
+    title: '용초-2 (농촌형 소화전)<br>거창군 고제면 용초길 107  권종일 집뒤 ',
+    latlng: new kakao.maps.LatLng(35.863042, 127.874383)
+},
+{
+    title: '와룡-1 (농촌형 소화전)<br>거창군 고제면 와룡길81  와룡마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.865162, 127.876089)
+},
+{
+    title: '원기-1 (농촌형 소화전)<br>거창군 고제면 원기길 72  원기마을회관 앞 ',
+    latlng: new kakao.maps.LatLng(35.891078, 127.871467)
+},
+{
+    title: '원봉계-3 (농촌형 소화전)<br>거창군 고제면 내당길 102 임덕용집앞',
+    latlng: new kakao.maps.LatLng(35.878026, 127.875559)
+},
+{
+    title: '학림-3 (농촌형 소화전)<br>거창군 고제면 매학길 153   매학마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.840849, 127.883927)
+},
+{
+    title: '수내-1 (농촌형 소화전)<br>거창군 고제면 상수내길20 상수내마을회관 옆',
+    latlng: new kakao.maps.LatLng(35.848923, 127.838796)
+},
+{
+    title: '구송-1 (농촌형 소화전)<br>거창군 고제면 상구송길 68 황인수 집앞',
+    latlng: new kakao.maps.LatLng(35.86442, 127.880903)
+},
+{
+    title: '구송-2 (농촌형 소화전)<br>거창군 고제면 하구송길61 김분순 집앞',
+    latlng: new kakao.maps.LatLng(35.861674, 127.882809)
+},
+{
+    title: '용초-3 (농촌형 소화전)<br>거창군 고제면 용초길162  맞은편',
+    latlng: new kakao.maps.LatLng(35.864101, 127.87211)
+},
+{
+    title: '왕대-1 (농촌형 소화전)<br>거창군 가조면 우륵1길 99  박희수 집앞',
+    latlng: new kakao.maps.LatLng(35.69564, 128.036508)
+},
+{
+    title: '왕대-2 (농촌형 소화전)<br>거창군 가조면 우륵2길 60 문성도 짚압',
+    latlng: new kakao.maps.LatLng(35.69535, 128.03526)
+},
+{
+    title: '왕대-3 (농촌형 소화전)<br>거창군 가조면 우륵1길 89 신창술 집앞',
+    latlng: new kakao.maps.LatLng(35.696119, 128.036407)
+},
+{
+    title: '양기-1 (농촌형 소화전)<br>거창군 가조면 기리1길 44-5  마을회관 옆',
+    latlng: new kakao.maps.LatLng(35.683854, 128.021749)
+},
+{
+    title: '양기-2 (농촌형 소화전)<br>거창군 가조면 기리1길 40 이형도, 이재종 집 內',
+    latlng: new kakao.maps.LatLng(35.684349, 128.021691)
+},
+{
+    title: '학산-1 (농촌형 소화전)<br>거창군 가조면 기리5길 175  이수현 집 앞',
+    latlng: new kakao.maps.LatLng(35.66212, 128.021879)
+},
+{
+    title: '대초-1 (농촌형 소화전)<br>거창군 가조면 대초길 142-12  대초마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.690948, 128.014465)
+},
+{
+    title: '방촌-1 (농촌형 소화전)<br>거창군 가조면 방촌길 125-7  방무출 집 앞',
+    latlng: new kakao.maps.LatLng(35.703528, 128.014315)
+},
+{
+    title: '동례-1 (농촌형 소화전)<br>거창군 가조면 동례2길 61  이우현 축사 위',
+    latlng: new kakao.maps.LatLng(35.70716, 127.997749)
+},
+{
+    title: '동례-2 (농촌형 소화전)<br>거창군 가조면 동례1길 25 신동례 마을회관 앞 ',
+    latlng: new kakao.maps.LatLng(35.706167, 127.999108)
+},
+{
+    title: '역촌-1 (농촌형 소화전)<br>거창군 가조면 역촌1길 41-10  이강순 집 앞',
+    latlng: new kakao.maps.LatLng(35.714108, 127.995806)
+},
+{
+    title: '장기-1 (농촌형 소화전)<br>거창군 가조면 가조가야로 958-14 김제곤 집 옆(장기삼거리)',
+    latlng: new kakao.maps.LatLng(35.713388, 128.000007)
+},
+{
+    title: '장기-2 (농촌형 소화전)<br>거창군 가조면 가조가야로 942 장기마을  면학정 밑',
+    latlng: new kakao.maps.LatLng(35.713228, 127.999351)
+},
+{
+    title: '원천-1 (농촌형 소화전)<br>거창군 가조면  원천1길 80  원천마을 원천정 옆',
+    latlng: new kakao.maps.LatLng(35.728497, 127.993478)
+},
+{
+    title: '신천-1 (농촌형 소화전)<br>거창군 가조면  신천길 56  신천마을 박철용씨 집 앞',
+    latlng: new kakao.maps.LatLng(35.72373, 127.998599)
+},
+{
+    title: '신천-2 (농촌형 소화전)<br>거창군 가조면 신천길 31-5 이영대집 위 삼거리',
+    latlng: new kakao.maps.LatLng(35.723739, 127.99858)
+},
+{
+    title: '월포-1 (농촌형 소화전)<br>거창군 가조면 월포2길 99-4 정순호 집 앞',
+    latlng: new kakao.maps.LatLng(35.712835, 128.020928)
+},
+{
+    title: '월포-2 (농촌형 소화전)<br>거창군 가조면 월포1길 84-25 백창흠 집 앞',
+    latlng: new kakao.maps.LatLng(35.714209, 128.022848)
+},
+{
+    title: '용당소-1 (농촌형 소화전)<br>거창군 가조면  용당소1길 22-15 서덕수 집 앞',
+    latlng: new kakao.maps.LatLng(35.718801, 128.027922)
+},
+{
+    title: '용당소-2 (농촌형 소화전)<br>거창군 가조면  월포1길 141-433  ',
+    latlng: new kakao.maps.LatLng(35.724206, 128.028435)
+},
+{
+    title: '용당소-3 (농촌형 소화전)<br>거창군 가조면 월포1길 141-376 ',
+    latlng: new kakao.maps.LatLng(35.726515, 128.029637)
+},
+{
+    title: '용전-1 (농촌형 소화전)<br>거창군 가조면 용전3길 23 마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.721502, 128.018204)
+},
+{
+    title: '도산-1 (농촌형 소화전)<br>거창군 가조면 도산길 36-1 박철용 짚 앞',
+    latlng: new kakao.maps.LatLng(35.70011, 128.019817)
+},
+{
+    title: '녹동-1 (농촌형 소화전)<br>거창군 가조면 가조가야로 1296 ',
+    latlng: new kakao.maps.LatLng(35.704264, 128.034542)
+},
+{
+    title: '도산당-1 (농촌형 소화전)<br>거창군 가조면 도리1길 27 도산당 마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.704877, 128.046629)
+},
+{
+    title: '도산당-2 (농촌형 소화전)<br>거창군 가조면 도리1길 109-14 ',
+    latlng: new kakao.maps.LatLng(35.705578, 128.046474)
+},
+{
+    title: '도산당-3 (농촌형 소화전)<br>거창군 가조면 도리1길 89 ',
+    latlng: new kakao.maps.LatLng(35.705595, 128.045968)
+},
+{
+    title: '화곡-1 (농촌형 소화전)<br>거창군 가조면 도리3길 28 화곡회관 위',
+    latlng: new kakao.maps.LatLng(35.705469, 128.053375)
+},
+{
+    title: '대학동-1 (농촌형 소화전)<br>거창군 가조면 도리6길 58-18 신우범씨 집 앞',
+    latlng: new kakao.maps.LatLng(35.7048, 128.061308)
+},
+{
+    title: '대학동-2 (농촌형 소화전)<br>거창군 가조면 도리4길 251-2 ',
+    latlng: new kakao.maps.LatLng(35.700252, 128.065223)
+},
+{
+    title: '대촌-1 (농촌형 소화전)<br>거창군 남하면 대촌1길 126-11 박창일 집 옆',
+    latlng: new kakao.maps.LatLng(35.715654, 127.963906)
+},
+{
+    title: '대촌-2 (농촌형 소화전)<br>거창군 남하면 대촌1길 109 정운석 집 앞',
+    latlng: new kakao.maps.LatLng(35.715334, 127.964832)
+},
+{
+    title: '대촌-3 (농촌형 소화전)<br>거창군 남하면 대촌1길 112-11 제형해 집 앞',
+    latlng: new kakao.maps.LatLng(35.715634, 127.965351)
+},
+{
+    title: '신촌-1 (농촌형 소화전)<br>거창군 남하면 새마1길 94-3 박경분 집 옆',
+    latlng: new kakao.maps.LatLng(35.71392, 127.962788)
+},
+{
+    title: '신촌-2 (농촌형 소화전)<br>거창군 남하면 새마2길 69 양숙녀 집 앞',
+    latlng: new kakao.maps.LatLng(35.713915, 127.963953)
+},
+{
+    title: '신촌-3 (농촌형 소화전)<br>거창군 남하면 새마1길 82-8 정봉연 집 앞',
+    latlng: new kakao.maps.LatLng(35.713278, 127.96312)
+},
+{
+    title: '신촌-4 (농촌형 소화전)<br>거창군 남하면 새마2길 83-5 이창홍 집 앞',
+    latlng: new kakao.maps.LatLng(35.714485, 127.963245)
+},
+{
+    title: '안흥-1 (농촌형 소화전)<br>거창군 남하면 안흥1길 93-4 이춘화 집 옆',
+    latlng: new kakao.maps.LatLng(35.70617, 127.950067)
+},
+{
+    title: '안흥-2 (농촌형 소화전)<br>거창군 남하면 안흥1길 77-2 강점순 집 앞',
+    latlng: new kakao.maps.LatLng(35.705537, 127.950241)
+},
+{
+    title: '안흥-3 (농촌형 소화전)<br>거창군 남하면 안흥2길 29 김준식 집 앞',
+    latlng: new kakao.maps.LatLng(35.705502, 127.948755)
+},
+{
+    title: '안흥-4 (농촌형 소화전)<br>거창군 남하면 안흥2길 33-32 최보광 집 맞은편',
+    latlng: new kakao.maps.LatLng(35.703986, 127.948139)
+},
+{
+    title: '안흥-5 (농촌형 소화전)<br>거창군 남하면 가조가야로 345 한영대리석 옆',
+    latlng: new kakao.maps.LatLng(35.702448, 127.949015)
+},
+{
+    title: '아주-1 (농촌형 소화전)<br>거창군 남하면 아주3길 14 문재권 집 앞',
+    latlng: new kakao.maps.LatLng(35.695394, 127.963125)
+},
+{
+    title: '아주-2 (농촌형 소화전)<br>거창군 남하면 아주1길 419-3 윤남순 집 앞',
+    latlng: new kakao.maps.LatLng(35.694719, 127.962865)
+},
+{
+    title: '아주-3 (농촌형 소화전)<br>거창군 남하면 아주1길 405 마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.694647, 127.96202)
+},
+{
+    title: '아주-4 (농촌형 소화전)<br>거창군 남하면 아주2길 37-9 이달수 집 앞',
+    latlng: new kakao.maps.LatLng(35.693449, 127.963239)
+},
+{
+    title: '아주-5 (농촌형 소화전)<br>거창군 남하면 아주3길 32 김성대 집 앞',
+    latlng: new kakao.maps.LatLng(35.695619, 127.963522)
+},
+{
+    title: '내곡-1 (농촌형 소화전)<br>거창군 남하면 양항길 544 이단순 집 앞',
+    latlng: new kakao.maps.LatLng(35.693469, 127.945075)
+},
+{
+    title: '내곡-2 (농촌형 소화전)<br>거창군 남하면 양항길 532-4 ',
+    latlng: new kakao.maps.LatLng(35.692928, 127.945153)
+},
+{
+    title: '상촌-1 (농촌형 소화전)<br>거창군 남하면 양항길 372 윤정묵 집 앞',
+    latlng: new kakao.maps.LatLng(35.686535, 127.945298)
+},
+{
+    title: '상촌-2 (농촌형 소화전)<br>거창군 남하면 양항길 350 마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.685618, 127.945271)
+},
+{
+    title: '상촌-3 (농촌형 소화전)<br>거창군 남하면 양항길 310-5 신동헌 집 앞',
+    latlng: new kakao.maps.LatLng(35.683828, 127.944513)
+},
+{
+    title: '대곡-1 (농촌형 소화전)<br>거창군 남하면 대곡길 42-3 마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.682681, 127.945741)
+},
+{
+    title: '대곡-2 (농촌형 소화전)<br>거창군 남하면 대곡길 62-5 윤상복 집 앞',
+    latlng: new kakao.maps.LatLng(35.682441, 127.946556)
+},
+{
+    title: '양곡-1 (농촌형 소화전)<br>거창군 남하면 양곡2길 47 ',
+    latlng: new kakao.maps.LatLng(35.673514, 127.944357)
+},
+{
+    title: '무릉-1 (농촌형 소화전)<br>거창군 남하면 무릉3길 33 ',
+    latlng: new kakao.maps.LatLng(35.663801, 127.946112)
+},
+{
+    title: '무릉-2 (농촌형 소화전)<br>거창군 남하면 무릉2길 34 영빈서원 앞',
+    latlng: new kakao.maps.LatLng(35.665527, 127.94481)
+},
+{
+    title: '월곡-1 (농촌형 소화전)<br>거창군 남하면 월곡길 23 월곡마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.65781, 127.957943)
+},
+{
+    title: '월곡-2 (농촌형 소화전)<br>거창군 남하면 월곡길 74 장면근 집 옆, 사우당 옆',
+    latlng: new kakao.maps.LatLng(35.659241, 127.959645)
+},
+{
+    title: '월곡-3 (농촌형 소화전)<br>거창군 남하면 월곡길 93-8 최원목 집 옆',
+    latlng: new kakao.maps.LatLng(35.659852, 127.959538)
+},
+{
+    title: '산포-1 (농촌형 소화전)<br>거창군 남하면 산포1길 18 마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.650593, 127.953152)
+},
+{
+    title: '산포-2 (농촌형 소화전)<br>거창군 남하면 산포2길 42 최종권 집 뒤',
+    latlng: new kakao.maps.LatLng(35.651508, 127.955266)
+},
+{
+    title: '산포-3 (농촌형 소화전)<br>거창군 남하면 영서로 251 이홍식 집 앞',
+    latlng: new kakao.maps.LatLng(35.650686, 127.952171)
+},
+{
+    title: '산포-4 (농촌형 소화전)<br>거창군 남하면 산포1길 29 김용원 집 앞',
+    latlng: new kakao.maps.LatLng(35.650774, 127.953591)
+},
+{
+    title: '대야-1 (농촌형 소화전)<br>거창군 남하면 영서로 469 다사랑 식당 옆',
+    latlng: new kakao.maps.LatLng(35.634908, 127.964015)
+},
+{
+    title: '대야-2 (농촌형 소화전)<br>거창군 남하면 대야길 88-6 행복한 절 뒤',
+    latlng: new kakao.maps.LatLng(35.636284, 127.964104)
+},
+{
+    title: '오가-1 (농촌형 소화전)<br>거창군 남하면 오가2길 12-1 방점이 집 앞',
+    latlng: new kakao.maps.LatLng(35.655222, 127.973884)
+},
+{
+    title: '용동-1 (농촌형 소화전)<br>거창군 남하면 용동길 26-10 추연웅 집 앞',
+    latlng: new kakao.maps.LatLng(35.640199, 127.991687)
+},
+{
+    title: '용동-2 (농촌형 소화전)<br>거창군 남하면 용동길 24-1 김형도 집 앞',
+    latlng: new kakao.maps.LatLng(35.640026, 127.991951)
+},
+{
+    title: '용동-3 (농촌형 소화전)<br>거창군 남하면 용동길 9-5 마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.640501, 127.992399)
+},
+{
+    title: '가천-1 (농촌형 소화전)<br>거창군 남하면 가천길 63 이덕이 집 앞',
+    latlng: new kakao.maps.LatLng(35.644686, 128.005023)
+},
+{
+    title: '가천-2 (농촌형 소화전)<br>거창군 남하면 가천길 92 백은순 집 앞',
+    latlng: new kakao.maps.LatLng(35.64555, 128.005291)
+},
+{
+    title: '자하-1 (농촌형 소화전)<br>거창군 남하면 자하길 90 유학준 집 앞',
+    latlng: new kakao.maps.LatLng(35.667497, 127.995001)
+},
+{
+    title: '자하-2 (농촌형 소화전)<br>거창군 남하면 신기은행길 84 안선이 집 앞',
+    latlng: new kakao.maps.LatLng(35.666925, 127.995806)
+},
+{
+    title: '자하-3 (농촌형 소화전)<br>거창군 남하면 자하길 69-3  마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.666873, 127.994698)
+},
+{
+    title: '자하-4 (농촌형 소화전)<br>거창군 남하면 자하길 120 전희남 집 앞',
+    latlng: new kakao.maps.LatLng(35.668409, 127.993921)
+},
+{
+    title: '신기-1 (농촌형 소화전)<br>거창군 남하면 신기은행길 13-9 백점이 집 앞',
+    latlng: new kakao.maps.LatLng(35.665665, 127.996487)
+},
+{
+    title: '장전-1 (농촌형 소화전)<br>거창군 남하면 지산로 743-4 한남조 집 앞',
+    latlng: new kakao.maps.LatLng(35.665319, 127.999435)
+},
+{
+    title: '천동-1 (농촌형 소화전)<br>거창군 남하면 천동길 68-2 유순 집 앞',
+    latlng: new kakao.maps.LatLng(35.667479, 128.001749)
+},
+{
+    title: '천동-2 (농촌형 소화전)<br>거창군 남하면 천동길 77-33 박종범 집 앞',
+    latlng: new kakao.maps.LatLng(35.668304, 128.001338)
+},
+{
+    title: '천동-3 (농촌형 소화전)<br>거창군 남하면 천동길 68-32 박종욱 집 앞',
+    latlng: new kakao.maps.LatLng(35.667982, 128.00223)
+},
+{
+    title: '대사-1 (농촌형 소화전)<br>거창군 남하면 대사길 38-3 신신자 집 앞',
+    latlng: new kakao.maps.LatLng(35.666431, 128.00446)
+},
+{
+    title: '대사-2 (농촌형 소화전)<br>거창군 남하면 대사길 49 김창임 집 앞',
+    latlng: new kakao.maps.LatLng(35.666472, 128.003751)
+},
+{
+    title: '대사-3 (농촌형 소화전)<br>거창군 남하면 대사길 69 대사마을 경로당 옆',
+    latlng: new kakao.maps.LatLng(35.66685, 128.004668)
+},
+{
+    title: '도평리-1 (농촌형 소화전)<br>거창군 주상면 도평3길 24-3 어린이집 위',
+    latlng: new kakao.maps.LatLng(35.750037, 127.91249)
+},
+{
+    title: '도평리-2 (농촌형 소화전)<br>거창군 주상면 상도평길 32-13 구회관 옆',
+    latlng: new kakao.maps.LatLng(35.755623, 127.914414)
+},
+{
+    title: '도평리-3 (농촌형 소화전)<br>거창군 주상면 상도평길 119 농기계보관창고 앞',
+    latlng: new kakao.maps.LatLng(35.757479, 127.915696)
+},
+{
+    title: '도평리-5 (농촌형 소화전)<br>거창군 주상면 도평4길 29-14 김숙인 집',
+    latlng: new kakao.maps.LatLng(35.751524, 127.912908)
+},
+{
+    title: '도평리-6 (농촌형 소화전)<br>거창군 주상면 도평4길 14 도평마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.750845, 127.91386)
+},
+{
+    title: '도평리-7 (농촌형 소화전)<br>거창군 주상면 당대고개길 68-39 ',
+    latlng: new kakao.maps.LatLng(35.754756, 127.917738)
+},
+{
+    title: '연교리-1 (농촌형 소화전)<br>거창군 주상면 상임실길 138 정자나무 앞',
+    latlng: new kakao.maps.LatLng(35.749774, 127.894806)
+},
+{
+    title: '연교리-2 (농촌형 소화전)<br>거창군 주상면 연교1길 68 충효탑 옆',
+    latlng: new kakao.maps.LatLng(35.761724, 127.898214)
+},
+{
+    title: '연교리-3 (농촌형 소화전)<br>거창군 주상면  연교1길 102 김병개 집 앞',
+    latlng: new kakao.maps.LatLng(35.761055, 127.896668)
+},
+{
+    title: '내오리-2 (농촌형 소화전)<br>거창군 주상면 오류동길 66 서순애 집 앞',
+    latlng: new kakao.maps.LatLng(35.786605, 127.889042)
+},
+{
+    title: '내오리-3 (농촌형 소화전)<br>거창군 주상면 오류동길 27 이옥순 집 앞',
+    latlng: new kakao.maps.LatLng(35.785089, 127.888274)
+},
+{
+    title: '내오리-4 (농촌형 소화전)<br>거창군 주상면 오류동길 57-5 이우화 집안',
+    latlng: new kakao.maps.LatLng(35.786441, 127.888828)
+},
+{
+    title: '내오리-5 (농촌형 소화전)<br>거창군 주상면 오류동길 70-8 이범영 집 앞',
+    latlng: new kakao.maps.LatLng(35.787239, 127.889181)
+},
+{
+    title: '내오리-6 (농촌형 소화전)<br>거창군 주상면 오류동길 37 이점임 집 앞',
+    latlng: new kakao.maps.LatLng(35.785763, 127.888564)
+},
+{
+    title: '완대리-1 (농촌형 소화전)<br>거창군 주상면 도동길 134 전을순 집 앞',
+    latlng: new kakao.maps.LatLng(35.798344, 127.882299)
+},
+{
+    title: '완대리-2 (농촌형 소화전)<br>거창군 주상면 도동길 15 마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.796908, 127.87705)
+},
+{
+    title: '완대리-3 (농촌형 소화전)<br>거창군 주상면 넘터1길 40 넘터제실 옆',
+    latlng: new kakao.maps.LatLng(35.790319, 127.866496)
+},
+{
+    title: '완대리-4 (농촌형 소화전)<br>거창군 주상면 완수대길 11-5 이종국 집 앞',
+    latlng: new kakao.maps.LatLng(35.792591, 127.882341)
+},
+{
+    title: '성기리-1 (농촌형 소화전)<br>거창군 주상면 신촌길 29 창고 옆',
+    latlng: new kakao.maps.LatLng(35.770407, 127.917988)
+},
+{
+    title: '성기리-2 (농촌형 소화전)<br>거창군 주상면 미기들길 81 미기들 도랑 옆',
+    latlng: new kakao.maps.LatLng(35.769611, 127.922247)
+},
+{
+    title: '성기리-3 (농촌형 소화전)<br>거창군 주상면 원성기1길 102-30 조경래 집-농기계 창고 앞',
+    latlng: new kakao.maps.LatLng(35.775565, 127.925251)
+},
+{
+    title: '성기리-4 (농촌형 소화전)<br>거창군 주상면 희랑길 240 송정재실 앞',
+    latlng: new kakao.maps.LatLng(35.762092, 127.920076)
+},
+{
+    title: '성기리-5 (농촌형 소화전)<br>거창군 주상면 원성기1길 95 원성기 회관 뒤',
+    latlng: new kakao.maps.LatLng(35.776655, 127.924867)
+},
+{
+    title: '거기리-1 (농촌형 소화전)<br>거창군 주상면 거기1길 23 거기마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.756502, 127.941058)
+},
+{
+    title: '거기리-2 (농촌형 소화전)<br>거창군 주상면 거기1길 82 여선범 집 앞',
+    latlng: new kakao.maps.LatLng(35.755653, 127.943807)
+},
+{
+    title: '거기리-3 (농촌형 소화전)<br>거창군 주상면 고대길 91-3 고대마을회관 앞',
+    latlng: new kakao.maps.LatLng(35.745884, 127.947762)
+},
+{
+    title: '남산리-1 (농촌형 소화전)<br>거창군 주상면 원남산2길 20 오외생 집 뒤',
+    latlng: new kakao.maps.LatLng(35.765818, 127.948922)
+},
+{
+    title: '남산리-2 (농촌형 소화전)<br>거창군 주상면 중보광길 25-5 ',
+    latlng: new kakao.maps.LatLng(35.776819, 127.947645)
+},
+{
+    title: '남산리-3 (농촌형 소화전)<br>거창군 주상면 보해길 509 김양순 집 앞',
+    latlng: new kakao.maps.LatLng(35.778173, 127.945771)
+},
+{
+    title: '남산리-4 (농촌형 소화전)<br>거창군 주상면 포덕길 35 마을회관 정자나무 옆',
+    latlng: new kakao.maps.LatLng(35.767937, 127.943745)
+},
+{
+    title: '남산리-5 (농촌형 소화전)<br>거창군 주상면  보해길 390 포덕동 승강장 옆',
+    latlng: new kakao.maps.LatLng(35.767528, 127.945356)
+},
+{
+    title: '남산리-6 (농촌형 소화전)<br>거창군 주상면 상보광길 23-4 조현재 집 앞',
+    latlng: new kakao.maps.LatLng(35.779772, 127.948491)
+}
+];
+
+// 이미지 B 마커생성
+for (var i = 0; i < Coordinates_B.length; i ++) {
+    
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: Coordinates_B[i].latlng, // 마커를 표시할 위치
+        clickable: true,
+        image : markerImage_B // 마커 이미지 
+    });
+
+    var iwContent = Coordinates_B[i].title,
+        iwRemovable = true;
+
+    var infowindow = new kakao.maps.InfoWindow({
+        content: iwContent,
+        removable: iwRemovable
+    });
+
+    kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
 }
 
 // 이미지 C, 좌표
 var Coordinates_C = [
-    {
-        latlng: new kakao.maps.LatLng(35.6917816, 127.9229725)
-    },
-    {
-        latlng: new kakao.maps.LatLng(35.6989268, 128.0265324)
-    }
+{
+    title: '상림-50 (급수탑)<br>거창군 거창읍 거열로 106 파리바게트 인근',
+    latlng: new kakao.maps.LatLng(35.688487, 127.904702)
+}
 ];
 
 // 이미지 C 마커생성
@@ -1045,39 +2963,55 @@ for (var i = 0; i < Coordinates_C.length; i ++) {
     var marker = new kakao.maps.Marker({
         map: map, // 마커를 표시할 지도
         position: Coordinates_C[i].latlng, // 마커를 표시할 위치
-        title : Coordinates_C[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+        clickable: true,
         image : markerImage_C // 마커 이미지 
     });
+
+    var iwContent = Coordinates_C[i].title,
+        iwRemovable = true;
+
+    var infowindow = new kakao.maps.InfoWindow({
+        content: iwContent,
+        removable: iwRemovable
+    });
+
+    kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
 }
+
 
 // 이미지 E, 좌표
 var Coordinates_E = [
-    {
-    latlng: new kakao.maps.LatLng(35.6905539, 127.9063462)
+{
+    title: '주상-1 (저수조)<br>거창군 주상면 주곡로 664 여성농업센터 내',
+    latlng: new kakao.maps.LatLng(35.749666, 127.913270)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6905598, 127.9168559)
+    title: '웅양-1 (저수조)<br>거창군 웅양면 웅양로 1431 웅양면사무소 인근 ',
+    latlng: new kakao.maps.LatLng(35.805218, 127.917854)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6927894, 127.913761)
+    title: '남상-1 (저수조)<br>거창군 남상면 인평길 36 남상면사무소 앞',
+    latlng: new kakao.maps.LatLng(35.643359, 127.910099)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6851977, 127.9182779)
+    title: '신원-1 (저수조)<br>거창군 신원면 신차로 3067 신원면사무소 인근',
+    latlng: new kakao.maps.LatLng(35.567838, 127.925290)
 },
 {
-    latlng: new kakao.maps.LatLng(35.68275189, 127.9146988)
+    title: '위천 저-1 (저수조)<br>거창군 고제면 입석1길 14 고제면사무소 앞',
+    latlng: new kakao.maps.LatLng(35.814530, 127.871120)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6816788, 127.9169812)
+    title: '위천 저-2 (저수조)<br>거창군 마리면 빼재로 18 마리면사무소 내',
+    latlng: new kakao.maps.LatLng(35.701190, 127.854450)
 },
 {
-    latlng: new kakao.maps.LatLng(35.749441, 127.832673)
+    title: '위천 저-3 (저수조)<br>거창군 위천면 원학길 321 위천119안전센터 내',
+    latlng: new kakao.maps.LatLng(35.749250, 127.832900)
 },
 {
-    latlng: new kakao.maps.LatLng(35.6938528, 127.9228059)
-},
-{
-    latlng: new kakao.maps.LatLng(35.6984525, 128.0229597)
+    title: '저-3 (저수조)<br>거창군 남하면 영서로 41 면사무소 운동장 창고 앞',
+    latlng: new kakao.maps.LatLng(35.667480, 127.943440)
 }
 ];
 
@@ -1139,10 +3073,7 @@ var Coordinates_D = [
     }
 ];
 
-
-
-
-
+// 이미지 D 마커생성
 for (var i = 0; i < Coordinates_D.length; i ++) {
     
     // 마커를 생성합니다
@@ -1177,45 +3108,21 @@ function makeOverListener(map, marker, infowindow) {
 
 
 
-/*
-function my_Coordinates() {
-
-    // HTML5의 geolocation으로 사용할 수 있는지 확인
-    if (navigator.geolocation) {
-    
-        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-        navigator.geolocation.getCurrentPosition(function(position) {
-            
-            var lat = position.coords.latitude, // 위도
-                lon = position.coords.longitude; // 경도
-            
-            var locPosition = new kakao.maps.LatLng(lat, lon) // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-
-            // 마커 표시
-            displayMarker(locPosition);
-          }, null, {enableHighAccuracy: true});
-    }
-
-    // 현재위치 지도에 마커표시
-    function displayMarker(locPosition, message) {
-
-        // 마커를 생성합니다
-        var marker = new kakao.maps.Marker({  
-            position: locPosition
-        });
-        marker.setMap(map);
-        map.setCenter(locPosition);
-    }
-}
-
-setInterval(my_Coordinates, 2000);
 
 
-*/
 
 
-    
-    var markers = [];
+
+
+
+
+
+
+
+
+
+
+var markers = [];
 
 // 장소 검색 객체를 생성합니다
 var ps = new kakao.maps.services.Places();  
@@ -1304,7 +3211,7 @@ function displayPlaces(places) {
 
             itemEl.onmouseover =  function () {
                 displayInfowindow(marker, title);
-                map.setBounds(bounds);
+                    map.setBounds(bounds);
             };
 
             itemEl.onmouseout =  function () {
@@ -1326,25 +3233,25 @@ function displayPlaces(places) {
 // 검색결과 항목을 Element로 반환하는 함수입니다
 function getListItem(index, places) {
 
-var el = document.createElement('li'),
-itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
-            '<div class="info">' +
-            '   <h5>' + places.place_name + '</h5>';
+    var el = document.createElement('li'),
+    itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
+                '<div class="info">' +
+                '   <h5>' + places.place_name + '</h5>';
 
-if (places.road_address_name) {
-    itemStr += '    <span>' + places.road_address_name + '</span>' +
-                '   <span class="jibun gray">' +  places.address_name  + '</span>';
-} else {
-    itemStr += '    <span>' +  places.address_name  + '</span>'; 
-}
-             
-  itemStr += '  <span class="tel">' + places.phone  + '</span>' +
-            '</div>';           
+    if (places.road_address_name) {
+        itemStr += '    <span>' + places.road_address_name + '</span>' +
+                    '   <span class="jibun gray">' +  places.address_name  + '</span>';
+    } else {
+        itemStr += '    <span>' +  places.address_name  + '</span>'; 
+    }
+                 
+      itemStr += '  <span class="tel">' + places.phone  + '</span>' +
+                '</div>';           
 
-el.innerHTML = itemStr;
-el.className = 'item';
+    el.innerHTML = itemStr;
+    el.className = 'item';
 
-return el;
+    return el;
 }
 
 
@@ -1425,15 +3332,23 @@ function removeAllChildNods(el) {
 }
 
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
